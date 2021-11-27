@@ -1,0 +1,15 @@
+{
+    "name": "ns-system",
+    "version": "1.0.0",
+    "description": "Official application for the community of Next Saturday.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Aerosphia",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^12.5.3",
+        "noblox.js": "^4.12.0"
+    }
+}
