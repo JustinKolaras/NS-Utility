@@ -7,12 +7,10 @@ const makeEmbed = (src, userId, info, requester) => {
     try {
         const joinDate = new Date(info.joinDate).toDateString();
 
-        let oldNames;
-        if (info.oldNames && info.oldNames.length > 0) {
-            oldNames = info.oldNames.join(", ");
-        } else {
-            oldNames = "None";
-        }
+        let oldNames =
+            info.oldNames && info.oldNames.length > 0
+                ? info.oldNames.join(", ")
+                : "None";
 
         const toReturn = new MessageEmbed()
             .setColor("#497ec0")
@@ -80,7 +78,8 @@ const run = async (src, context) => {
         ]
     );
 
-    let playerId, playerInfo, hasPremium;
+    let playerId;
+    let info;
 
     if (!playerName || args.length > 1) {
         return src.reply("**Syntax Error:** `;info <username>`");
@@ -96,21 +95,20 @@ const run = async (src, context) => {
     }
 
     try {
-        playerInfo = await noblox.getPlayerInfo({ userId: playerId });
+        info = await noblox.getPlayerInfo({ userId: playerId });
     } catch (err) {
         console.log(err);
         return src.reply(errMessage);
     }
 
     try {
-        hasPremium = await noblox.getPremium(playerId);
-        playerInfo.premium = hasPremium;
+        info["premium"] = await noblox.getPremium(playerId);
     } catch (err) {
         console.log(err);
         return src.reply(errMessage);
     }
 
-    const embed = makeEmbed(src, playerId, playerInfo, src.member.user.tag);
+    const embed = makeEmbed(src, playerId, info, src.member.user.tag);
     src.channel.send({ embeds: [embed] });
 };
 
