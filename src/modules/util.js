@@ -188,14 +188,6 @@ class Utility {
         return [false, undefined];
     };
 
-    idFormat = (int) => {
-        return int.match(/^\d{17,19}$/);
-    };
-
-    mentionFormat = (str) => {
-        return str.match(/^<!?@\d{17,19}>$/);
-    };
-
     clean = async (text) => {
         if (text && text.constructor.name == "Promise") text = await text;
 
