@@ -251,7 +251,7 @@ class Utility {
 
         return cmdArray.length > 0
             ? prepend.toString() + cmdArray.join("\n")
-            : prepend.toString() + "You have access to no commands.";
+            : prepend.toString() + "No commands to show.";
     };
 }
 
