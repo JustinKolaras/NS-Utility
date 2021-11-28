@@ -1,7 +1,7 @@
 module.exports = {
     name: "ready",
     execute(client) {
-        client.user.setActivity(";help", { type: "LISTENING" });
+        client.user.setActivity("The Aerocast", { type: "LISTENING" });
         console.log("Updated");
     },
 };
