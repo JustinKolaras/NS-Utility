@@ -22,7 +22,7 @@ const run = async (src) => {
     src.author
         .send(`Available group funds: **R$${util.sep(funds)}**`)
         .then(() => {
-            src.reply("Sent you a DM!");
+            src.reply("Sent you a DM with information.");
         })
         .catch(() => {
             src.reply("I couldn't DM you. Are your DMs off?");

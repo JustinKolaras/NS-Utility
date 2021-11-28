@@ -16,7 +16,7 @@ const run = async (src, context) => {
         return src.author
             .send(helpMessage)
             .then(() => {
-                src.reply("Sent you a DM!");
+                src.reply("Sent you a DM with information.");
             })
             .catch(() => {
                 src.reply("I couldn't DM you. Are your DMs off?");

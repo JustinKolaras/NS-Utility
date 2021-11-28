@@ -81,7 +81,7 @@ const run = async (src, context) => {
     src.author
         .send({ embeds: [embed] })
         .then(() => {
-            src.reply("Sent you a DM!");
+            src.reply("Sent you a DM with information.");
         })
         .catch(() => {
             src.reply("I couldn't DM you. Are your DMs off?");
