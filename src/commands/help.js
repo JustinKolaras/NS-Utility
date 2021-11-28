@@ -9,7 +9,9 @@ const run = async (src, context) => {
     if (!command) {
         const helpMessage = await util.getCommandList(
             src,
-            `Bot prefix: \`${config.prefix}\`\n\n`,
+            `Bot prefix: \`${
+                config.prefix
+            }\`\nYour permission level: **${perm.toString()}**\n\n`,
             `\`%c\` - **%d** [%p]`,
             true
         );
