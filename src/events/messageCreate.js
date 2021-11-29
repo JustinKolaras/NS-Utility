@@ -78,7 +78,7 @@ module.exports = {
                             for (const key of Object.values(
                                 config.encryption
                             )) {
-                                msg.content = msg.content.replace(key, "");
+                                msg.content = msg.content.replaceAll(key, "");
                             }
 
                             const embed = makeEmbed(client, msg, command);
