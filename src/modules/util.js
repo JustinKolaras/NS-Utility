@@ -188,6 +188,20 @@ class Utility {
         return [false, undefined];
     };
 
+    omitKeys = (str) => {
+        for (const key of Object.values(config.encryption)) {
+            str = str.replaceAll(key, "");
+        }
+        return str;
+    };
+
+    hasKey = (str) => {
+        for (const key of Object.values(config.encryption)) {
+            if (str.includes(key)) return true;
+        }
+        return false;
+    };
+
     clean = async (text) => {
         if (text && text.constructor.name == "Promise") text = await text;
 
