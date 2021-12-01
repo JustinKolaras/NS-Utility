@@ -62,7 +62,7 @@ const run = async (src, context) => {
 
     src.delete();
 
-    const filter = (i) => i.member.id === src.member.id && i.channelId === src.channelId;
+    const filter = (i) => i.member.id === src.member.id;
     const collector = src.channel.createMessageComponentCollector({
         filter,
         time: 30000,
@@ -79,7 +79,7 @@ const run = async (src, context) => {
                 .groupPayout(config.group, playerId, amt)
                 .then(() => {
                     collector.stop();
-                    return mainInter.update({
+                    return mainInter.edit({
                         content: `<@${src.member.id}>, Payed out user successfully.`,
                         components: [],
                     });
@@ -87,7 +87,7 @@ const run = async (src, context) => {
                 .catch((err) => {
                     collector.stop();
                     console.log(err);
-                    return msg.reply(errMessage);
+                    return src.channel.send(errMessage);
                 });
         } else if (i.customId === "reject") {
             collector.stop();
