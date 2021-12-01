@@ -95,7 +95,7 @@ class Utility {
         return `${intro}\n${errors}`;
     };
 
-    prompt = (source, prefix, responses, otherParams) => {
+    prompt = (source, prefix, responses, options) => {
         let functions = {};
         let responseStr = prefix;
 
@@ -121,10 +121,10 @@ class Utility {
 
         source.channel.send(responseStr);
 
-        const filter = (m) => m.member.id === source.member.id && m.channelId === source.channelId;
+        const filter = (m) => m.user.id === source.user.id;
         const collector = source.channel.createMessageCollector({
             filter,
-            time: otherParams.timeout,
+            time: options.timeout,
         });
 
         collector.on("collect", (m) => {
@@ -137,19 +137,19 @@ class Utility {
         });
 
         collector.on("end", (_, reason) => {
-            if (reason.toString() === "time") {
+            if (reason === "time") {
                 functions["/timeout:"]();
             }
         });
     };
 
-    promptAny = (source, message, func, timeoutFunc, otherParams) => {
+    promptAny = (source, message, func, timeoutFunc, options) => {
         source.channel.send(message);
 
-        const filter = (m) => m.member.id === source.member.id && m.channelId === source.channelId;
+        const filter = (m) => m.user.id === source.user.id;
         const collector = source.channel.createMessageCollector({
             filter,
-            time: otherParams.timeout,
+            time: options.timeout,
         });
 
         collector.on("collect", (m) => {
