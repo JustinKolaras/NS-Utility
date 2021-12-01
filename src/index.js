@@ -4,20 +4,12 @@ const fs = require("fs");
 
 const { Client, Intents } = Discord;
 const client = new Client({
-    intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.DIRECT_MESSAGES,
-        Intents.FLAGS.GUILD_MEMBERS,
-        Intents.FLAGS.GUILD_PRESENCES,
-    ],
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES],
 
     partials: ["CHANNEL"],
 });
 
-const eventFiles = fs
-    .readdirSync(`../src/events/`)
-    .filter((file) => file.endsWith(".js"));
+const eventFiles = fs.readdirSync(`../src/events/`).filter((file) => file.endsWith(".js"));
 
 for (const file of eventFiles) {
     const event = require(`../src/events/${file}`);
