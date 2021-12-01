@@ -6,21 +6,16 @@ const run = async (src, context) => {
     try {
         await noblox.setCookie(config.cookie);
     } catch (err) {
-        return src.reply(
-            "Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down."
-        );
+        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
     }
 
     const args = context.args;
     const playerName = args[0];
-    const errMessage = util.makeError(
-        "There was an issue while trying to exile that user.",
-        [
-            "Your argument does not match a valid username.",
-            "You mistyped the username.",
-            "The user is not in the group.",
-        ]
-    );
+    const errMessage = util.makeError("There was an issue while trying to exile that user.", [
+        "Your argument does not match a valid username.",
+        "You mistyped the username.",
+        "The user is not in the group.",
+    ]);
 
     if (!playerName || args.length > 1) {
         return src.reply("**Syntax Error:** `;exile <username>`");
@@ -38,9 +33,7 @@ const run = async (src, context) => {
             }
 
             if (rankId >= 252) {
-                return src.reply(
-                    "Invalid rank! You can only exile members ranked below **Moderator**."
-                );
+                return src.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
             }
 
             noblox

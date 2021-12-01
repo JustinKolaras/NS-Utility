@@ -6,23 +6,18 @@ const run = async (src, context) => {
     try {
         await noblox.setCookie(config.cookie);
     } catch (err) {
-        return src.reply(
-            "Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down."
-        );
+        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
     }
 
     const args = context.args;
     const playerName = args[0];
     const newRank = util.combine(args, 1);
-    const errMessage = util.makeError(
-        "There was an issue while trying to change the rank of that user.",
-        [
-            "Your argument does not match a valid username.",
-            "Your argument does not match a valid role-name (role names are case sensitive)!",
-            "You mistyped the username and/or role-name.",
-            "The user is not in the group.",
-        ]
-    );
+    const errMessage = util.makeError("There was an issue while trying to change the rank of that user.", [
+        "Your argument does not match a valid username.",
+        "Your argument does not match a valid role-name (role names are case sensitive)!",
+        "You mistyped the username and/or role-name.",
+        "The user is not in the group.",
+    ]);
 
     if (!playerName || args.length > 2) {
         return src.reply("**Syntax Error:** `;rank <username> <role-name>`");

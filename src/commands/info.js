@@ -7,10 +7,7 @@ const makeEmbed = (src, userId, info, requester) => {
     try {
         const joinDate = new Date(info.joinDate).toDateString();
 
-        let oldNames =
-            info.oldNames && info.oldNames.length > 0
-                ? info.oldNames.join(", ")
-                : "None";
+        let oldNames = info.oldNames && info.oldNames.length > 0 ? info.oldNames.join(", ") : "None";
 
         const toReturn = new MessageEmbed()
             .setColor("#497ec0")
@@ -53,9 +50,7 @@ const makeEmbed = (src, userId, info, requester) => {
         return toReturn;
     } catch (err) {
         console.log(err);
-        return src.reply(
-            "There was an issue generating the info embed; this user might not exist. <@360239086117584906>"
-        );
+        return src.reply("There was an issue generating the info embed; this user might not exist. <@360239086117584906>");
     }
 };
 
@@ -63,20 +58,15 @@ const run = async (src, context) => {
     try {
         await noblox.setCookie(config.cookie);
     } catch (err) {
-        return src.reply(
-            "Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down."
-        );
+        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
     }
 
     const args = context.args;
     const playerName = args[0];
-    const errMessage = util.makeError(
-        "There was an issue while trying to gather information on that user.",
-        [
-            "Your argument does not match a valid username.",
-            "You mistyped the username.",
-        ]
-    );
+    const errMessage = util.makeError("There was an issue while trying to gather information on that user.", [
+        "Your argument does not match a valid username.",
+        "You mistyped the username.",
+    ]);
 
     let playerId;
     let info;

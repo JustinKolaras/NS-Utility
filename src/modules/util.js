@@ -19,10 +19,7 @@ class Utility {
             return [true, library];
         } catch (err) {
             console.log(err);
-            return [
-                false,
-                "Couldn't retrieve command library!\nThis command may not exist, or been archived/moved.",
-            ];
+            return [false, "Couldn't retrieve command library!\nThis command may not exist, or been archived/moved."];
         }
     };
 
@@ -38,10 +35,7 @@ class Utility {
         const t = config.permissions;
         let highestPerm;
 
-        if (!t)
-            return Promise.reject(
-                new Error("permissions table is undefined or null")
-            );
+        if (!t) return Promise.reject(new Error("permissions table is undefined or null"));
 
         for (const k in t) {
             if (this.hasRole(member, t[k])) {
@@ -85,8 +79,7 @@ class Utility {
     isValid = (str, caps, ...types) => {
         for (const k in types) {
             if (!caps) {
-                if (str.toLowerCase() === types[k].toLowerCase())
-                    return [true, str.toLowerCase()];
+                if (str.toLowerCase() === types[k].toLowerCase()) return [true, str.toLowerCase()];
             } else {
                 if (str === types[k]) return [true, str.toLowerCase()];
             }
@@ -128,9 +121,7 @@ class Utility {
 
         source.channel.send(responseStr);
 
-        const filter = (m) =>
-            m.member.id === source.member.id &&
-            m.channelId === source.channelId;
+        const filter = (m) => m.member.id === source.member.id && m.channelId === source.channelId;
         const collector = source.channel.createMessageCollector({
             filter,
             time: otherParams.timeout,
@@ -138,10 +129,7 @@ class Utility {
 
         collector.on("collect", (m) => {
             for (const r in functions) {
-                if (
-                    m.content.toString().toLowerCase() ===
-                    r.toString().toLowerCase()
-                ) {
+                if (m.content.toString().toLowerCase() === r.toString().toLowerCase()) {
                     functions[r](m);
                     collector.stop();
                 }
@@ -158,9 +146,7 @@ class Utility {
     promptAny = (source, message, func, timeoutFunc, otherParams) => {
         source.channel.send(message);
 
-        const filter = (m) =>
-            m.member.id === source.member.id &&
-            m.channelId === source.channelId;
+        const filter = (m) => m.member.id === source.member.id && m.channelId === source.channelId;
         const collector = source.channel.createMessageCollector({
             filter,
             time: otherParams.timeout,
@@ -205,12 +191,9 @@ class Utility {
     clean = async (text) => {
         if (text && text.constructor.name == "Promise") text = await text;
 
-        if (typeof text !== "string")
-            text = require("util").inspect(text, { depth: 1 });
+        if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });
 
-        text = text
-            .replace(/`/g, "`" + String.fromCharCode(8203))
-            .replace(/@/g, "@" + String.fromCharCode(8203));
+        text = text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
 
         if (text.toString() === "undefined") text = "void";
 
@@ -230,9 +213,7 @@ class Utility {
     */
     getCommandList = async (src, prepend, format, usableOnly) => {
         const cmdArray = [];
-        const commandFiles = fs
-            .readdirSync(`./commands/`)
-            .filter((file) => file.endsWith(".js"));
+        const commandFiles = fs.readdirSync(`./commands/`).filter((file) => file.endsWith(".js"));
 
         const parseString = (str, context) => {
             str = str.replaceAll("%c", context.name);
@@ -263,9 +244,7 @@ class Utility {
             }
         }
 
-        return cmdArray.length > 0
-            ? prepend.toString() + cmdArray.join("\n")
-            : prepend.toString() + "No commands to show.";
+        return cmdArray.length > 0 ? prepend.toString() + cmdArray.join("\n") : prepend.toString() + "No commands to show.";
     };
 }
 

@@ -12,9 +12,7 @@ const makeEmbed = (src, revSum, revType, requester) => {
         const toReturn = new MessageEmbed()
             .setColor("#3ac376")
             .setTitle(`Group Revenue (${util.upFirst(revType).toString()})`)
-            .setURL(
-                `https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`
-            )
+            .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
             .setDescription(
                 `Recurring Robux Stipend: **R$${revSum.recurringRobuxStipend}**
                 Item Sales: **R$${revSum.itemSaleRobux}**
@@ -30,9 +28,7 @@ const makeEmbed = (src, revSum, revType, requester) => {
         return toReturn;
     } catch (err) {
         console.log(err);
-        return src.channel.send(
-            "There was an issue generating the revenue embed. <@360239086117584906>"
-        );
+        return src.channel.send("There was an issue generating the revenue embed. <@360239086117584906>");
     }
 };
 
@@ -40,40 +36,24 @@ const run = async (src, context) => {
     try {
         await noblox.setCookie(config.cookie);
     } catch (err) {
-        return src.reply(
-            "Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down."
-        );
+        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
     }
 
     const args = context.args;
     const revType = util.verify(args[0], (self) => {
-        return util.isValid(
-            self || ".",
-            false,
-            "day",
-            "week",
-            "month",
-            "year"
-        )[0];
+        return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
     });
 
     if (!revType || args.length < 1) {
-        return src.reply(
-            '**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`'
-        );
+        return src.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
     }
 
     let revenueSummary;
     try {
-        revenueSummary = await noblox.getGroupRevenueSummary(
-            config.group,
-            util.upFirst(revType).toString()
-        );
+        revenueSummary = await noblox.getGroupRevenueSummary(config.group, util.upFirst(revType).toString());
     } catch (err) {
         console.log(err);
-        return src.reply(
-            "There was an issue while trying to gather revenue statistics."
-        );
+        return src.reply("There was an issue while trying to gather revenue statistics.");
     }
 
     const embed = makeEmbed(src, revenueSummary, revType, src.member.user.tag);

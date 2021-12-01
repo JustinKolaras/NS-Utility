@@ -41,10 +41,7 @@ module.exports = {
 
             const [success, result] = util.getLibrary(command);
             if (success) {
-                if (
-                    config.restrictUsage &&
-                    msg.guild.id === "761468835600924733"
-                ) {
+                if (config.restrictUsage && msg.guild.id === "761468835600924733") {
                     return void msg.reply(
                         `You cannot run commands here at this time.\nThis is usually due to heavy maintenance. If you see this warning for an extended period of time, contact **${config.developerTag}**.`
                     );
@@ -63,11 +60,7 @@ module.exports = {
                     );
                 }
 
-                if (
-                    (msg.guild.id == config.testServer &&
-                        msg.author.id == config.ownerId) ||
-                    result.permission <= userPermission
-                ) {
+                if ((msg.guild.id == config.testServer && msg.author.id == config.ownerId) || result.permission <= userPermission) {
                     result
                         .execute(msg, {
                             args: args,
@@ -80,12 +73,8 @@ module.exports = {
                             const guild = msg.guild;
 
                             util.getGuild(client, guild.id)
-                                .then((guild) =>
-                                    util.getChannel(guild, config.logChannel)
-                                )
-                                .then((channel) =>
-                                    channel.send({ embeds: [embed] })
-                                )
+                                .then((guild) => util.getChannel(guild, config.logChannel))
+                                .then((channel) => channel.send({ embeds: [embed] }))
                                 .catch(console.error);
                         })
                         .catch((err) => {
@@ -95,20 +84,14 @@ module.exports = {
                             );
                         });
                 } else {
-                    return void msg.reply(
-                        "You have insufficient permissions to run this command."
-                    );
+                    return void msg.reply("You have insufficient permissions to run this command.");
                 }
             }
         } else {
             // Check for keys - delete message and notify if so.
             if (util.hasKey(msg.content)) {
                 msg.delete();
-                msg.author
-                    .send(
-                        `Looks like you sent your encryption key. I deleted it for you - be careful!`
-                    )
-                    .catch(() => {});
+                msg.author.send(`Looks like you sent your encryption key. I deleted it for you - be careful!`).catch(() => {});
             }
         }
     },

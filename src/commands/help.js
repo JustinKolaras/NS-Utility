@@ -9,9 +9,7 @@ const run = async (src, context) => {
     if (!command) {
         const helpMessage = await util.getCommandList(
             src,
-            `Bot prefix: \`${
-                config.prefix
-            }\`\nYour permission level: **${perm.toString()}**\n\n`,
+            `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\n`,
             `\`%c\` - **%d** [%p]`,
             true
         );
@@ -23,10 +21,7 @@ const run = async (src, context) => {
             .catch(() => {
                 src.reply("I couldn't DM you. Are your DMs off?");
             });
-    } else if (
-        (command && args.length > 1) ||
-        command.toString().toLowerCase() === "help"
-    ) {
+    } else if ((command && args.length > 1) || command.toString().toLowerCase() === "help") {
         return src.reply("**Syntax Error:** `;help <?command>`");
     }
 
@@ -35,15 +30,9 @@ const run = async (src, context) => {
         return src.reply(result);
     } else {
         if (src.guild.id == config.testServer || result.permission <= perm) {
-            return src.reply(
-                `Command: \`${command.toLowerCase()}\`\nUsage: \`${
-                    result.usage
-                }\`\nDescription: **${result.description}**`
-            );
+            return src.reply(`Command: \`${command.toLowerCase()}\`\nUsage: \`${result.usage}\`\nDescription: **${result.description}**`);
         } else {
-            return src.reply(
-                "You have insufficient permissions to get help on this command."
-            );
+            return src.reply("You have insufficient permissions to get help on this command.");
         }
     }
 };
@@ -52,7 +41,6 @@ module.exports = {
     execute: run,
     name: "help",
     permission: -1, // Everyone, including non-verified.
-    description:
-        "Gives help and info on all usable commands, or specific commands.",
+    description: "Gives help and info on all usable commands, or specific commands.",
     usage: ";help <?command>",
 };

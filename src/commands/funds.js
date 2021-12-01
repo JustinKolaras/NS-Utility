@@ -6,9 +6,7 @@ const run = async (src) => {
     try {
         await noblox.setCookie(config.cookie);
     } catch (err) {
-        return src.reply(
-            "Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down."
-        );
+        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
     }
 
     let funds;

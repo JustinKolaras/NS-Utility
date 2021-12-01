@@ -6,9 +6,7 @@ const run = async (src, context) => {
     try {
         await noblox.setCookie(config.cookie);
     } catch (err) {
-        return src.reply(
-            "Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down."
-        );
+        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
     }
 
     const args = context.args;
@@ -21,9 +19,7 @@ const run = async (src, context) => {
             });
         } catch (err) {
             console.log(err);
-            return src.reply(
-                "There was an issue while trying to change the group shout."
-            );
+            return src.reply("There was an issue while trying to change the group shout.");
         }
     } else {
         try {
@@ -32,9 +28,7 @@ const run = async (src, context) => {
             });
         } catch (err) {
             console.log(err);
-            return src.reply(
-                "There was an issue while trying to change the group shout."
-            );
+            return src.reply("There was an issue while trying to change the group shout.");
         }
     }
 };
