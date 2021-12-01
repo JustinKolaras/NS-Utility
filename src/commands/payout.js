@@ -1,7 +1,8 @@
+const { MessageActionRow, MessageButton } = require("discord.js");
+
 const noblox = require("noblox.js");
 const config = require("../config.json");
 const util = require("../modules/util");
-const { MessageActionRow, MessageButton } = require("discord.js");
 
 const run = async (src, context) => {
     try {
@@ -87,7 +88,10 @@ const run = async (src, context) => {
                 .catch((err) => {
                     collector.stop();
                     console.log(err);
-                    return src.channel.send(errMessage);
+                    return mainInter.edit({
+                        content: errMessage,
+                        components: [],
+                    });
                 });
         } else if (i.customId === "reject") {
             collector.stop();
