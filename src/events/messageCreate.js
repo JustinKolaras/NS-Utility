@@ -91,7 +91,7 @@ module.exports = {
             // Check for keys - delete message and notify if so.
             if (util.hasKey(msg.content)) {
                 msg.delete();
-                msg.author.send(`Looks like you sent your encryption key. I deleted it for you - be careful!`).catch(() => {});
+                msg.author.send("Looks like you sent your encryption key. I deleted it for you - be careful!").catch(() => {});
             }
         }
     },
