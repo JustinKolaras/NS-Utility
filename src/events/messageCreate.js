@@ -1,6 +1,7 @@
+const { MessageEmbed } = require("discord.js");
+
 const util = require("../modules/util");
 const config = require("../config.json");
-const { MessageEmbed } = require("discord.js");
 
 const makeEmbed = (client, msg, command) => {
     const user = msg.member.user;
