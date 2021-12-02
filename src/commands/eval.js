@@ -31,6 +31,6 @@ module.exports = {
     execute: run,
     name: "eval",
     permission: 7, // Bot Owner
-    description: "Evaluates JavaScript code. If on strict mode, only a respone will be given if the provided code errors.",
+    description: "Evaluates JavaScript code.",
     usage: `;eval <code>`,
 };
