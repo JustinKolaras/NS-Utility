@@ -1,6 +1,5 @@
 const run = async (src) => {
-    const Latency = (Date.now() - src.createdTimestamp).toString();
-    return src.reply(`:ping_pong: Pong! Latency of ${Latency}ms.`);
+    return src.reply(`:ping_pong: Pong! Latency of ${(Date.now() - src.createdTimestamp).toString()}ms.`);
 };
 
 module.exports = {
