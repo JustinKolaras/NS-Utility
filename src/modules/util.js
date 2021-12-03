@@ -224,8 +224,7 @@ class Utility {
         };
 
         for (const file of commandFiles) {
-            const command = require(`../commands/${file}`);
-            command = command.class;
+            const command = require(`../commands/${file}`).class;
 
             let userPermission;
             try {
