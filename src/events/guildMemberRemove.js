@@ -1,14 +1,13 @@
 const util = require("../modules/util");
 
 const moderatorConfig = {
-    channelId: "810717109427503174",
-    onPermission: 2, // Trial Moderator
-};
-
-const designerConfig = {
-    channelId: "836839078469042177",
-    roleId: "790298819090448436", // Clothing Designer
-};
+        channelId: "810717109427503174",
+        onPermission: 2,
+    },
+    designerConfig = {
+        channelId: "836839078469042177",
+        roleId: "790298819090448436",
+    };
 
 module.exports = {
     name: "guildMemberRemove",
