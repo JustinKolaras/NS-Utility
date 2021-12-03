@@ -36,7 +36,7 @@ class Command {
             return void Msg.reply(result);
         } else {
             if (Msg.guild.id == config.testServer || result.permission <= perm) {
-                return void Msg.reply(`Command: \`${command.toLowerCase()}\`\nUsage: \`${result.usage}\`\nDescription: **${result.description}**`);
+                return void Msg.reply(`Command: \`${command.toLowerCase()}\`\nUsage: \`${result.Usage}\`\nDescription: **${result.Description}**`);
             } else {
                 return void Msg.reply("You have insufficient permissions to get help on this command.");
             }
