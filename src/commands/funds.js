@@ -30,7 +30,7 @@ const run = async (src) => {
 module.exports = {
     execute: run,
     name: "funds",
-    permission: 6, // Ownership Team
+    permission: 6,
     description: "DMs the user with the available group funds.",
     usage: ";funds",
 };

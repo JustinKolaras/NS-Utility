@@ -40,7 +40,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "help",
-    permission: -1, // Everyone, including non-verified.
+    permission: -1,
     description: "Gives help and info on all usable commands, or specific commands.",
     usage: ";help <?command>",
 };

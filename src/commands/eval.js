@@ -30,7 +30,7 @@ const run = async (msg, context) => {
 module.exports = {
     execute: run,
     name: "eval",
-    permission: 7, // Bot Owner
+    permission: 7,
     description: "Evaluates JavaScript code.",
     usage: `;eval <code>`,
 };

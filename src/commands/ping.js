@@ -5,7 +5,7 @@ const run = async (src) => {
 module.exports = {
     execute: run,
     name: "ping",
-    permission: 0, // Everyone
+    permission: 0,
     description: "Test & Debug Command - Replies with 'Pong!'",
     usage: ";ping",
 };

@@ -55,7 +55,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "exile",
-    permission: 5, // Command Team
+    permission: 5,
     description: "Exiles a user from the Roblox group.",
     usage: ";exile <username>",
 };

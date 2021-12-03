@@ -106,7 +106,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "info",
-    permission: 0, // Everyone
+    permission: 0,
     description: "Gets information on a Roblox user.",
     usage: ";info <username>",
 };
