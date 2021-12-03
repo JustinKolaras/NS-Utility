@@ -1,36 +1,44 @@
 const util = require("../modules/util");
-
-const run = async (msg, context) => {
-    // Secondary check..
-    if (msg.author.id !== "360239086117584906") {
-        return msg.reply("You have insufficient permissions to run this command.");
+class Command {
+    constructor(options) {
+        for (const k in options) {
+            this[k] = options[k];
+        }
     }
 
-    const args = context.args;
+    fn = async (msg, Context) => {
+        // Secondary check..
+        if (msg.author.id !== "360239086117584906") {
+            return void Msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906> **Vital**");
+        }
 
-    if (!args[0]) {
-        return msg.reply(`**Syntax Error:** \`;eval <code>\``);
-    }
+        const args = Context.args;
 
-    try {
-        const toEvaluate = util.combine(args, 0);
-        const evaled = eval(toEvaluate);
+        if (!args[0]) {
+            return void msg.reply(`**Syntax Error:** \`;eval <code>\``);
+        }
 
-        const cleaned = await util.clean(evaled);
-        msg.channel.send(
-            `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
-        );
-    } catch (err) {
-        msg.channel.send(
-            `<@${msg.member.id}>, *Evaluation callback..* **Error:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`xl\n${err}\n\`\`\``
-        );
-    }
-};
+        try {
+            const toEvaluate = util.combine(args, 0);
+            const evaled = eval(toEvaluate);
+
+            const cleaned = await util.clean(evaled);
+            void msg.channel.send(
+                `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
+            );
+        } catch (err) {
+            void msg.channel.send(
+                `<@${msg.member.id}>, *Evaluation callback..* **Error:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`xl\n${err}\n\`\`\``
+            );
+        }
+    };
+}
 
 module.exports = {
-    execute: run,
-    name: "eval",
-    permission: 7,
-    description: "Evaluates JavaScript code.",
-    usage: `;eval <code>`,
+    class: new Command({
+        Name: "eval",
+        Description: "Evaluates JavaScript code.",
+        Usage: ";eval <code>",
+        Permission: 7,
+    }),
 };

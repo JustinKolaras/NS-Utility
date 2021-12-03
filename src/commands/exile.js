@@ -1,61 +1,70 @@
 const noblox = require("noblox.js");
 const config = require("../config.json");
 const util = require("../modules/util");
-
-const run = async (src, context) => {
-    try {
-        await noblox.setCookie(config.cookie);
-    } catch (err) {
-        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+class Command {
+    constructor(options) {
+        for (const k in options) {
+            this[k] = options[k];
+        }
     }
 
-    const args = context.args;
-    const playerName = args[0];
-    const errMessage = util.makeError("There was an issue while trying to exile that user.", [
-        "Your argument does not match a valid username.",
-        "You mistyped the username.",
-        "The user is not in the group.",
-    ]);
+    fn = async (Msg, Context) => {
+        try {
+            await noblox.setCookie(config.cookie);
+        } catch (err) {
+            console.error(err);
+            return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+        }
 
-    if (!playerName || args.length > 1) {
-        return src.reply("**Syntax Error:** `;exile <username>`");
-    }
+        const args = Context.args;
+        const playerName = args[0];
+        const errMessage = util.makeError("There was an issue while trying to exile that user.", [
+            "Your argument does not match a valid username.",
+            "You mistyped the username.",
+            "The user is not in the group.",
+        ]);
 
-    noblox
-        .getIdFromUsername(playerName)
-        .then(async (userId) => {
-            let rankId;
-            try {
-                rankId = await noblox.getRankInGroup(config.group, userId);
-            } catch (err) {
-                console.log(err);
-                return src.reply(errMessage);
-            }
+        if (!playerName || args.length > 1) {
+            return void Msg.reply("**Syntax Error:** `;exile <username>`");
+        }
 
-            if (rankId >= 252) {
-                return src.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
-            }
+        noblox
+            .getIdFromUsername(playerName)
+            .then(async (userId) => {
+                let rankId;
+                try {
+                    rankId = await noblox.getRankInGroup(config.group, userId);
+                } catch (err) {
+                    console.error(err);
+                    return void Msg.reply(errMessage);
+                }
 
-            noblox
-                .exile(config.group, userId)
-                .then(() => {
-                    return src.reply(`Exiled user from group successfully.`);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    return src.reply(errMessage);
-                });
-        })
-        .catch((err) => {
-            console.log(err);
-            return src.reply(errMessage);
-        });
-};
+                if (rankId >= 252) {
+                    return void Msg.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
+                }
+
+                noblox
+                    .exile(config.group, userId)
+                    .then(() => {
+                        return void Msg.reply(`Exiled user from group successfully.`);
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        return void Msg.reply(errMessage);
+                    });
+            })
+            .catch((err) => {
+                console.error(err);
+                return void Msg.reply(errMessage);
+            });
+    };
+}
 
 module.exports = {
-    execute: run,
-    name: "exile",
-    permission: 5,
-    description: "Exiles a user from the Roblox group.",
-    usage: ";exile <username>",
+    class: new Command({
+        Name: "exile",
+        Description: "Exiles a user from the Roblox group.",
+        Usage: ";exile <username>",
+        Permission: 5,
+    }),
 };
