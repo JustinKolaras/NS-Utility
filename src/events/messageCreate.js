@@ -3,10 +3,20 @@ const { MessageEmbed } = require("discord.js");
 const util = require("../modules/util");
 const config = require("../config.json");
 
-const makeEmbed = (client, msg, command) => {
+const getLogChannel = () => {
+    let toReturn;
+    util.getGuild(client, guild.id)
+        .then((guild) => util.getChannel(guild, config.logChannel))
+        .then((channel) => {
+            toReturn = channel;
+        })
+        .catch(console.error);
+    return toReturn;
+};
+
+const makeEmbed = (msg, command) => {
     const user = msg.member.user;
     const tag = user.tag;
-    const guild = msg.guild;
     try {
         const toReturn = new MessageEmbed()
             .setColor("#58a2b4")
@@ -18,14 +28,9 @@ const makeEmbed = (client, msg, command) => {
         return toReturn;
     } catch (err) {
         console.log(err);
-        util.getGuild(client, guild.id)
-            .then((guild) => util.getChannel(guild, config.logChannel))
-            .then((channel) => {
-                return channel.send(
-                    `There was an issue generating a log. <@360239086117584906>\n\nAuthor: **${tag}**\nCommand: \`${command}\`\nMessage: *${msg.content}*`
-                );
-            })
-            .catch(console.error);
+        return void getLogChannel().send(
+            `There was an issue generating a log. <@360239086117584906>\n\nAuthor: **${tag}**\nCommand: \`${command}\`\nMessage: *${msg.content}*`
+        );
     }
 };
 
@@ -61,7 +66,7 @@ module.exports = {
                     );
                 }
 
-                if ((msg.guild.id == config.testServer && msg.author.id == config.ownerId) || result.permission <= userPermission) {
+                if ((msg.guild.id == config.testServer && msg.author.id === config.ownerId) || result.permission <= userPermission) {
                     result
                         .execute(msg, {
                             args: args,
@@ -70,13 +75,9 @@ module.exports = {
                         .then(() => {
                             msg.content = util.omitKeys(msg.content);
 
-                            const embed = makeEmbed(client, msg, command);
-                            const guild = msg.guild;
+                            const embed = makeEmbed(msg, command);
 
-                            util.getGuild(client, guild.id)
-                                .then((guild) => util.getChannel(guild, config.logChannel))
-                                .then((channel) => channel.send({ embeds: [embed] }))
-                                .catch(console.error);
+                            getLogChannel().send({ embeds: [embed] });
                         })
                         .catch((err) => {
                             console.log(err);
