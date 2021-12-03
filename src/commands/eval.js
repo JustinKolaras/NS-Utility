@@ -1,4 +1,5 @@
 const util = require("../modules/util");
+
 class Command {
     constructor(options) {
         for (const k in options) {
