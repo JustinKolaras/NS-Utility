@@ -115,7 +115,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "payout",
-    permission: 6, // Ownership Team
+    permission: 6,
     description: "Pays the user robux out from the group.",
     usage: ";payout <username> <amount> <key>",
 };

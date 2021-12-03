@@ -16,7 +16,7 @@ const run = async (src) => {
 module.exports = {
     execute: run,
     name: "logo",
-    permission: 0, // Everyone
+    permission: 0,
     description: "Replies with the group logo.",
     usage: ";logo",
 };

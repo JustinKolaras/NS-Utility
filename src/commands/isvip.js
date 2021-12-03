@@ -43,7 +43,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "isvip",
-    permission: 2, // Trial Moderator
+    permission: 2,
     description: "Returns a yes/no answer on if the user provided has the NS VIP gamepass or not.",
     usage: ";isvip <username>",
 };

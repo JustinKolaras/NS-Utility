@@ -36,7 +36,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "shout",
-    permission: 5, // Command Team
+    permission: 5,
     description: "Changes the Roblox group shout.",
     usage: ";shout <?text>",
 };

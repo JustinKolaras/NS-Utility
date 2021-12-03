@@ -56,7 +56,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "rank",
-    permission: 5, // Command Team
+    permission: 5,
     description: "Ranks a user from the Roblox group.",
     usage: ";rank <username> <role-name>",
 };

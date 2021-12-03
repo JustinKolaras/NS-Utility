@@ -72,7 +72,7 @@ const run = async (src, context) => {
 module.exports = {
     execute: run,
     name: "revenue",
-    permission: 6, // Ownership Team
+    permission: 6,
     description: "Outputs revenue statistics for the group.",
     usage: `;revenue <"day" | "week" | "month" | "year">`,
 };
