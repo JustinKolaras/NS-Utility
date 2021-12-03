@@ -3,52 +3,47 @@ const { MessageEmbed } = require("discord.js");
 const util = require("../modules/util");
 const config = require("../config.json");
 
-const getLogChannel = () => {
-    let toReturn;
-    util.getGuild(client, guild.id)
-        .then((guild) => util.getChannel(guild, config.logChannel))
-        .then((channel) => {
-            toReturn = channel;
-        })
-        .catch(console.error);
-    return toReturn;
-};
-
-const makeEmbed = (msg, command) => {
-    const user = msg.member.user;
+const makeEmbed = (client, Msg, command) => {
+    const user = Msg.member.user;
     const tag = user.tag;
+    const guild = Msg.guild;
     try {
         const toReturn = new MessageEmbed()
             .setColor("#58a2b4")
             .setAuthor(tag, user.avatarURL())
             .setTitle(`Ran command \`${command}\``)
-            .setDescription(msg.content.toString())
+            .setDescription(Msg.content.toString())
             .setTimestamp();
 
         return toReturn;
     } catch (err) {
-        console.log(err);
-        return void getLogChannel().send(
-            `There was an issue generating a log. <@360239086117584906>\n\nAuthor: **${tag}**\nCommand: \`${command}\`\nMessage: *${msg.content}*`
-        );
+        console.error(err);
+        util.getGuild(client, guild.id)
+            .then((guild) => util.getChannel(guild, config.logChannel))
+            .then((channel) => {
+                return void channel.send(
+                    `There was an issue generating a log. <@360239086117584906>\n\nAuthor: **${tag}**\nCommand: \`${command}\`\nMessage: *${msg.content}*`
+                );
+            })
+            .catch(console.error);
     }
 };
 
 module.exports = {
     name: "messageCreate",
-    async execute(client, msg) {
-        if (!msg.guild) return;
+    async execute(client, Msg) {
+        if (!Msg.guild) return;
 
         // Command Handler
-        if (!msg.author.bot && msg.content.startsWith(config.prefix)) {
-            const commandBody = msg.content.slice(config.prefix.length);
+        if (!Msg.author.bot && Msg.content.startsWith(config.prefix)) {
+            const commandBody = Msg.content.slice(config.prefix.length);
             const args = commandBody.split(" ");
             const command = args.shift().toLowerCase();
 
             const [success, result] = util.getLibrary(command);
             if (success) {
-                if (config.restrictUsage && msg.guild.id === "761468835600924733") {
-                    return void msg.reply(
+                if (config.restrictUsage && Msg.guild.id === "761468835600924733") {
+                    return void Msg.reply(
                         `You cannot run commands here at this time.\nThis is usually due to heavy maintenance. If you see this warning for an extended period of time, contact **${config.developerTag}**.`
                     );
                 }
@@ -59,41 +54,41 @@ module.exports = {
                 */
                 let userPermission;
                 try {
-                    userPermission = await util.getPerm(msg.member);
+                    userPermission = await util.getPerm(Msg.member);
                 } catch (err) {
-                    return void msg.reply(
+                    return void Msg.reply(
                         `There was an error fetching permissions, so your command was blocked.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
                     );
                 }
 
-                if ((msg.guild.id == config.testServer && msg.author.id === config.ownerId) || result.permission <= userPermission) {
-                    result
-                        .execute(msg, {
-                            args: args,
-                            permission: userPermission,
-                        })
+                if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= userPermission) {
+                    result.class
+                        .fn(Msg, { args: args, clientPerm: userPermission })
                         .then(() => {
-                            msg.content = util.omitKeys(msg.content);
+                            Msg.content = util.omitKeys(Msg.content);
 
-                            const embed = makeEmbed(msg, command);
+                            const embed = makeEmbed(client, Msg, command);
 
-                            getLogChannel().send({ embeds: [embed] });
+                            util.getGuild(client, Msg.guild.id)
+                                .then((guild) => util.getChannel(Msg.guild, config.logChannel))
+                                .then((channel) => channel.send({ embeds: [embed] }))
+                                .catch(console.error);
                         })
                         .catch((err) => {
-                            console.log(err);
-                            return void msg.reply(
+                            console.error(err);
+                            return void Msg.reply(
                                 `There was a script error running this command.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
                             );
                         });
                 } else {
-                    return void msg.reply("You have insufficient permissions to run this command.");
+                    return void Msg.reply("You have insufficient permissions to run this command.");
                 }
             }
         } else {
-            // Check for keys - delete message and notify if so.
-            if (util.hasKey(msg.content)) {
-                msg.delete();
-                msg.author.send("Looks like you sent your encryption key. I deleted it for you - be careful!").catch(() => {});
+            // Check for broad private keys in random messages..
+            if (util.hasKey(Msg.content)) {
+                Msg.delete();
+                Msg.author.send("Looks like you sent your private key. I deleted it for you - be careful!").catch(() => {});
             }
         }
     },

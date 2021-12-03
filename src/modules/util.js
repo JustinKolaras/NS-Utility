@@ -18,7 +18,7 @@ class Utility {
             const library = require(`../commands/${lib}`);
             return [true, library];
         } catch (err) {
-            console.log(err);
+            console.error(err);
             return [false, "Couldn't retrieve command library!\nThis command may not exist, or been archived/moved."];
         }
     };
@@ -165,7 +165,7 @@ class Utility {
     };
 
     getKey = (memberId) => {
-        const t = config.encryption;
+        const t = config.privateKeys;
         for (const k in t) {
             if (memberId === k) {
                 return [true, t[k]];
@@ -175,14 +175,14 @@ class Utility {
     };
 
     omitKeys = (str) => {
-        for (const key of Object.values(config.encryption)) {
+        for (const key of Object.values(config.privateKeys)) {
             str = str.replaceAll(key, "");
         }
         return str;
     };
 
     hasKey = (str) => {
-        for (const key of Object.values(config.encryption)) {
+        for (const key of Object.values(config.privateKeys)) {
             if (str.includes(key)) return true;
         }
         return false;
@@ -216,15 +216,16 @@ class Utility {
         const commandFiles = fs.readdirSync(`./commands/`).filter((file) => file.endsWith(".js"));
 
         const parseString = (str, context) => {
-            str = str.replaceAll("%c", context.name);
-            str = str.replaceAll("%p", context.permission);
-            str = str.replaceAll("%d", context.description);
-            str = str.replaceAll("%u", context.usage);
+            str = str.replaceAll("%c", context.Name);
+            str = str.replaceAll("%p", context.Permission);
+            str = str.replaceAll("%d", context.Description);
+            str = str.replaceAll("%u", context.Usage);
             return str;
         };
 
         for (const file of commandFiles) {
             const command = require(`../commands/${file}`);
+            command = command.class;
 
             let userPermission;
             try {

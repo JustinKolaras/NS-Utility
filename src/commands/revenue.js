@@ -3,76 +3,89 @@ const { MessageEmbed } = require("discord.js");
 const noblox = require("noblox.js");
 const config = require("../config.json");
 const util = require("../modules/util");
+class Command {
+    constructor(options) {
+        for (const k in options) {
+            this[k] = options[k];
+        }
+    }
 
-const makeEmbed = (src, revSum, revType, requester) => {
-    try {
-        for (const k in revSum) {
-            revSum[k] = util.sep(revSum[k]).toString();
+    fn = async (Msg, Context) => {
+        try {
+            await noblox.setCookie(config.cookie);
+        } catch (err) {
+            console.error(err);
+            return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
-        const toReturn = new MessageEmbed()
-            .setColor("#3ac376")
-            .setTitle(`Group Revenue (${util.upFirst(revType).toString()})`)
-            .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
-            .setDescription(
-                `Recurring Robux Stipend: **R$${revSum.recurringRobuxStipend}**
-                Item Sales: **R$${revSum.itemSaleRobux}**
-                Purchased Robux: **R$${revSum.purchasedRobux}**
-                Trade System: **R$${revSum.tradeSystemRobux}**
-                Pending: **R$${revSum.pendingRobux}**
-                Payed Out: **R$${revSum.groupPayoutRobux}**
-                ITG Robux: **R$${revSum.individualToGroupRobux}**`
-            )
-            .setTimestamp()
-            .setFooter(`Requested by ${requester}`);
-
-        return toReturn;
-    } catch (err) {
-        console.log(err);
-        return src.channel.send("There was an issue generating the revenue embed. <@360239086117584906>");
-    }
-};
-
-const run = async (src, context) => {
-    try {
-        await noblox.setCookie(config.cookie);
-    } catch (err) {
-        return src.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
-    }
-
-    const args = context.args;
-    const revType = util.verify(args[0], (self) => {
-        return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
-    });
-
-    if (!revType || args.length < 1) {
-        return src.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
-    }
-
-    let revenueSummary;
-    try {
-        revenueSummary = await noblox.getGroupRevenueSummary(config.group, util.upFirst(revType).toString());
-    } catch (err) {
-        console.log(err);
-        return src.reply("There was an issue while trying to gather revenue statistics.");
-    }
-
-    const embed = makeEmbed(src, revenueSummary, revType, src.member.user.tag);
-
-    src.author
-        .send({ embeds: [embed] })
-        .then(() => {
-            src.reply("Sent you a DM with information.");
-        })
-        .catch(() => {
-            src.reply("I couldn't DM you. Are your DMs off?");
+        const args = Context.args;
+        const revType = util.verify(args[0], (self) => {
+            return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
         });
-};
+
+        if (!revType || args.length < 1) {
+            return void Msg.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
+        }
+
+        let revenueSummary;
+        try {
+            revenueSummary = await noblox.getGroupRevenueSummary(config.group, util.upFirst(revType).toString());
+        } catch (err) {
+            console.error(err);
+            return void Msg.reply("There was an issue while trying to gather revenue statistics.");
+        }
+
+        try {
+            revenueSummary["currentFunds"] = await noblox.getGroupFunds(config.group);
+        } catch (err) {
+            console.error(err);
+            return void Msg.reply("There was an error while trying to gather group funds.");
+        }
+
+        let messageEmbed;
+        try {
+            for (const k in revenueSummary) {
+                revenueSummary[k] = util.sep(revenueSummary[k]).toString();
+            }
+
+            messageEmbed = new MessageEmbed()
+                .setColor("#3ac376")
+                .setTitle(`Group Revenue (${util.upFirst(revType).toString()})`)
+                .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
+                .setDescription(
+                    `Current Group Funds: **R$${revenueSummary.currentFunds}**
+                    
+                    Recurring Robux Stipend: **R$${revenueSummary.recurringRobuxStipend}**
+                    Item Sales: **R$${revenueSummary.itemSaleRobux}**
+                    Purchased Robux: **R$${revenueSummary.purchasedRobux}**
+                    Trade System: **R$${revenueSummary.tradeSystemRobux}**
+                    Pending: **R$${revenueSummary.pendingRobux}**
+                    Payed Out: **R$${revenueSummary.groupPayoutRobux}**
+                    ITG Robux: **R$${revenueSummary.individualToGroupRobux}**`
+                )
+                .setTimestamp()
+                .setFooter(`Requested by ${Msg.member.user.tag}`);
+        } catch (err) {
+            console.error(err);
+            return void Msg.channel.send("There was an issue generating the revenue embed. <@360239086117584906>");
+        }
+
+        Msg.author
+            .send({ embeds: [messageEmbed] })
+            .then(() => {
+                Msg.reply("Sent you a DM with information.");
+            })
+            .catch(() => {
+                Msg.reply("I couldn't DM you. Are your DMs off?");
+            });
+    };
+}
 
 module.exports = {
-    execute: run,
-    name: "revenue",
-    permission: 6,
-    description: "Outputs revenue statistics for the group.",
-    usage: `;revenue <"day" | "week" | "month" | "year">`,
+    class: new Command({
+        Name: "revenue",
+        Description: "DMs revenue statistics of a past timeframe.",
+        Usage: `;revenue <"day" | "week" | "month" | "year">`,
+        Permission: 6,
+    }),
 };
