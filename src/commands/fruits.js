@@ -10,11 +10,11 @@ class Command {
     fn = async (Msg) => {
         let timeout = 0;
         Msg.reply(`Please allow up to ${fruits.length} seconds for the bot to finish reacting!`);
-        fruits.forEach(fruit=>{
+        fruits.forEach((fruit) => {
             timeout++;
-            setTimeout(()=>{
+            setTimeout(() => {
                 Msg.react(fruit);
-            }, 1000*timeout);
+            }, 1000 * timeout);
         });
     };
 }
@@ -22,7 +22,7 @@ class Command {
 module.exports = {
     class: new Command({
         Name: "fruits",
-        Description: "A wonderful creation by Magical Cat which reacts with a bunch of fruit reactions to your message.",
+        Description: "A wonderful creation by Magical Cat...",
         Usage: ";fruits",
         Permission: 0,
     }),
