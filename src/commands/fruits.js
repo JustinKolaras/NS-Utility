@@ -1,4 +1,4 @@
-let fruits = ["🍎", "🍊", "🍇", "🥭", "🥝", "🍍", "🍌", "🍑", "🍈", "🥑", "🍉", "🍋", "🍓", "🍒", "🍏"]
+const fruits = ["🍎", "🍊", "🍇", "🥭", "🥝", "🍍", "🍌", "🍑", "🍈", "🥑", "🍉", "🍋", "🍓", "🍒", "🍏"];
 
 class Command {
     constructor(options) {
@@ -8,14 +8,14 @@ class Command {
     }
 
     fn = async (Msg) => {
-        let timeout = 0
-        Msg.reply(`Please allow up to ${fruits.length} seconds for the bot to finish reacting!`)
+        let timeout = 0;
+        Msg.reply(`Please allow up to ${fruits.length} seconds for the bot to finish reacting!`);
         fruits.forEach(fruit=>{
-            timeout++
+            timeout++;
             setTimeout(()=>{
-                Msg.react(fruit)
-            }, 1000*timeout)
-        })
+                Msg.react(fruit);
+            }, 1000*timeout);
+        });
     };
 }
 
