@@ -1,4 +1,4 @@
-const results = ["As I see it, yes.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "It is certain.", "It is decidedly so.", "Most likely.", "My reply is no.", "My sources say no.", "Outlook good.", "Outlook not so good.", "Reply hazy, try again.", "You may rely on it."];
+const util = require("../modules/util");
 
 class Command {
     constructor(options) {
@@ -7,11 +7,27 @@ class Command {
         }
     }
 
-    fn = async (Msg) => {
-        let args = message.content.slice(";".length).split(/ +/);
+    fn = async (Msg, Context) => {
+        const results = [
+            "As I see it, yes.",
+            "Ask again later.",
+            "Better not tell you now.",
+            "Cannot predict now.",
+            "Concentrate and ask again.",
+            "Don't count on it.",
+            "It is certain.",
+            "It is decidedly so.",
+            "Most likely.",
+            "My reply is no.",
+            "My sources say no.",
+            "Outlook good.",
+            "Outlook not so good.",
+            "Reply hazy, try again.",
+            "You may rely on it.",
+        ];
+        const args = util.combine(Context.args, 0);
         if (!args[0]) {
-            Msg.reply("Please give me a question, command usage: ;8ball <question>");
-            return;
+            return void Msg.reply("Please give me a question, command usage: `;8ball <question>`");
         }
         Msg.reply(results[Math.floor(Math.random() * results.length)]);
     };
