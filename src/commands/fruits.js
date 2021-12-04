@@ -1,18 +1,20 @@
-const util = require("../modules/util");
-
-const run = async (msg, context) => {
-
-    try {
-      msg.react('🍎');msg.react('🍊');msg.react('🍇');msg.react('🥭');msg.react('🥝');msg.react('🍍');msg.react('🍌');msg.react('🍑');msg.react('🍈');msg.react('🥑');msg.react('🍉');msg.react('🍋');msg.react('🍓');msg.react('🍒');msg.react('🍏');
-    } catch (err) {
-        msg.channel.send("magical cat broke me");
+class Command {
+    constructor(options) {
+        for (const k in options) {
+            this[k] = options[k];
+        }
     }
-};
+
+    fn = async (Msg) => {
+        msg.react('🍎');msg.react('🍊');msg.react('🍇');msg.react('🥭');msg.react('🥝');msg.react('🍍');msg.react('🍌');msg.react('🍑');msg.react('🍈');msg.react('🥑');msg.react('🍉');msg.react('🍋');msg.react('🍓');msg.react('🍒');msg.react('🍏');
+    };
+}
 
 module.exports = {
-    execute: run,
-    name: "fruits",
-    permission: 0, // Everyone
-    description: "Reacts with a bunch of fruit reactions to your message.",
-    usage: `;fruits`,
+    class: new Command({
+        Name: "fruits",
+        Description: "Reacts with a bunch of fruit reactions to your message.",
+        Usage: ";fruits",
+        Permission: 0,
+    }),
 };
