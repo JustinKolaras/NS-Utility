@@ -1,13 +1,13 @@
 {
-    "name": "ns-system",
+    "name": "ns-utility",
     "version": "1.0.0",
-    "description": "Official application for the community of Next Saturday.",
+    "description": "An application for the Next Saturday Discord server.",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "Aerosphia",
-    "license": "ISC",
+    "author": "Justin (Aerosphia)",
+    "license": "GPL-2.0",
     "dependencies": {
         "discord.js": "^12.5.3",
         "noblox.js": "^4.12.0"
