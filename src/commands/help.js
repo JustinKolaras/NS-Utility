@@ -32,7 +32,7 @@ class Command {
             return void Msg.reply("**Syntax Error:** `;help <?command>`");
         }
 
-        const [success, result] = util.getLibrary(command);
+        let [success, result] = util.getLibrary(command);
         if (!success) {
             return void Msg.reply(result);
         } else {
