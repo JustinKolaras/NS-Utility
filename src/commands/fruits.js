@@ -22,7 +22,7 @@ class Command {
 module.exports = {
     class: new Command({
         Name: "fruits",
-        Description: "Reacts with a bunch of fruit reactions to your message.",
+        Description: "A wonderful creation by Magical Cat which reacts with a bunch of fruit reactions to your message.",
         Usage: ";fruits",
         Permission: 0,
     }),
