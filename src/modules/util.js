@@ -224,7 +224,8 @@ class Utility {
         };
 
         for (const file of commandFiles) {
-            const command = require(`../commands/${file}`).class;
+            const command = require(`../commands/${file}`);
+            const commandClass = command.class;
 
             let userPermission;
             try {
@@ -236,11 +237,11 @@ class Utility {
             }
 
             if (usableOnly) {
-                if (command.permission <= userPermission) {
-                    cmdArray.push(parseString(format, command));
+                if (commandClass.Permission <= userPermission) {
+                    cmdArray.push(parseString(format, commandClass));
                 }
             } else {
-                cmdArray.push(parseString(format, command));
+                cmdArray.push(parseString(format, commandClass));
             }
         }
 
