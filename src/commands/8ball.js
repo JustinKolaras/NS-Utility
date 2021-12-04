@@ -34,7 +34,7 @@ class Command {
             return void Msg.reply("**Syntax Error:** `;8ball <question>`");
         }
 
-        return void Msg.reply(`:8ball: :worried: :grimace: :stuck_out_tongue_closed_eyes: ${results[Math.floor(Math.random() * results.length)]}`);
+        return void Msg.reply(`:8ball: :worried: :grimacing: :stuck_out_tongue_closed_eyes: ${results[Math.floor(Math.random() * results.length)]}`);
     };
 }
 
