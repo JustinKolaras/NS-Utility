@@ -1,5 +1,3 @@
-const util = require("../modules/util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -9,7 +7,6 @@ class Command {
 
     fn = async (Msg, Context) => {
         const args = Context.args;
-        const question = util.combine(args, 0);
 
         const results = [
             "As I see it, yes.",
@@ -29,7 +26,7 @@ class Command {
             "You may rely on it.",
         ];
 
-        if (!question) {
+        if (!args[0]) {
             return void Msg.reply("**Syntax Error:** `;8ball <question>`");
         }
 
