@@ -1,6 +1,5 @@
-# NS Utility 🚀
-
-An open-source application for the Next Saturday Discord server. This project is in beta.
+# NS Utility
+#### An open-source ease of use application that communicates with the Roblox API - specifically for Next Saturday. This bot is in beta.
 
 Bot Author: **Aero#7460**
 
