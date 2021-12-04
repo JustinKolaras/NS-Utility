@@ -28,6 +28,8 @@ class Command {
             "Something to consider.",
             "I don't know what to say.",
             "Uhhhh, sure.",
+            "Absolutely not.",
+            "Of course.",
         ];
 
         if (!args[0]) {
