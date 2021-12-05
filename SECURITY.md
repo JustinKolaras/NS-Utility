@@ -2,4 +2,4 @@
 
 ## Reporting a Vulnerability
 
-Contact the bot owner at **Aero#7460**. Response times will take up to a day maximum unless specifically said otherwise.
+To report a vulnerability, code flaw, or such alike, create an issue on the GitHub page. The bot owner will get to it as soon as possible.
