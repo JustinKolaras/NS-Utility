@@ -79,9 +79,8 @@ class Command {
         });
 
         const mainInter = await Msg.channel.send({
-            content: `<@${Msg.member.id}>, Are you sure you want to payout **R$${util.sep(
-                amt
-            )}** to **${playerName}**? **This action is stricly irreversible.**`,
+            // prettier-ignore
+            content: `<@${Msg.member.id}>, Are you sure you want to payout **R$${util.sep(amt)}** to **${playerName}**? **This action is stricly irreversible.**`,
             components: [row],
         });
 
@@ -91,7 +90,7 @@ class Command {
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
                         collector.stop();
-                        return mainInter.edit({
+                        return void mainInter.edit({
                             content: `<@${Msg.member.id}>, Payed out user successfully.`,
                             components: [],
                         });
@@ -99,14 +98,14 @@ class Command {
                     .catch((err) => {
                         collector.stop();
                         console.error(err);
-                        return mainInter.edit({
+                        return void mainInter.edit({
                             content: errMessage,
                             components: [],
                         });
                     });
             } else if (i.customId === "reject") {
                 collector.stop();
-                return mainInter.edit({
+                return void mainInter.edit({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
@@ -115,7 +114,7 @@ class Command {
 
         collector.on("end", async (_, reason) => {
             if (reason === "time") {
-                return mainInter.edit({
+                return void mainInter.edit({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
