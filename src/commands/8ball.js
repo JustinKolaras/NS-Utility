@@ -30,6 +30,13 @@ class Command {
             "Uhhhh, sure.",
             "Absolutely not.",
             "Of course.",
+            "Yes.",
+            "No.",
+            "Most definitely.",
+            "Ask me again.",
+            "I can confirm.",
+            "Surprisingly yes.",
+            "I guess.",
         ];
 
         if (!args[0]) {
