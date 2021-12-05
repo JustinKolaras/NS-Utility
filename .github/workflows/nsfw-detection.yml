@@ -1,2 +1,0 @@
-- name: NSFW Detection Action
-  uses: fabasoad/nsfw-detection-action@v1.3.16
