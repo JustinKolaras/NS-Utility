@@ -55,7 +55,6 @@ class Command {
                 .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
                 .setDescription(
                     `Current Group Funds: **R$${revenueSummary.currentFunds}**
-                    
                     Recurring Robux Stipend: **R$${revenueSummary.recurringRobuxStipend}**
                     Item Sales: **R$${revenueSummary.itemSaleRobux}**
                     Purchased Robux: **R$${revenueSummary.purchasedRobux}**
