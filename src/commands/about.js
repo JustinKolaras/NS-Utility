@@ -33,21 +33,6 @@ class Command {
                         name: "Source",
                         value: "[GitHub](https://github.com/Aerosphia/NS-Utility)",
                         inline: true,
-                    },
-                    {
-                        name: "Primary Use",
-                        value: "Communication",
-                        inline: true,
-                    },
-                    {
-                        name: "Target Usage",
-                        value: "Command Team",
-                        inline: true,
-                    },
-                    {
-                        name: "Help",
-                        value: "`;help`",
-                        inline: true,
                     }
                 )
                 .setTimestamp()
