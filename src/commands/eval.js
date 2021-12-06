@@ -24,11 +24,11 @@ class Command {
             const evaled = eval(toEvaluate);
 
             const cleaned = await util.clean(evaled);
-            void msg.channel.send(
+            return void msg.channel.send(
                 `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
             );
         } catch (err) {
-            void msg.channel.send(
+            return void msg.channel.send(
                 `<@${msg.member.id}>, *Evaluation callback..* **Error:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`xl\n${err}\n\`\`\``
             );
         }

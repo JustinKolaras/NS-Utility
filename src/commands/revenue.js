@@ -70,7 +70,7 @@ class Command {
             return void Msg.channel.send("There was an issue generating the revenue embed. <@360239086117584906>");
         }
 
-        Msg.author
+        return void Msg.author
             .send({ embeds: [messageEmbed] })
             .then(() => {
                 Msg.reply("Sent you a DM with information.");
