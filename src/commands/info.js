@@ -34,9 +34,8 @@ class Command {
         }
 
         try {
-            await noblox.getIdFromUsername(playerName).then((userId) => {
-                playerId = userId;
-            });
+            await noblox.getIdFromUsername(playerName);
+            playerId = userId;
         } catch (err) {
             console.error(err);
             return void Msg.reply(errMessage);
