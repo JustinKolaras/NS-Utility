@@ -70,7 +70,7 @@ module.exports = {
                             const embed = makeEmbed(client, Msg, command);
 
                             util.getGuild(client, Msg.guild.id)
-                                .then((guild) => util.getChannel(Msg.guild, config.logChannel))
+                                .then((guild) => util.getChannel(guild, config.logChannel))
                                 .then((channel) => channel.send({ embeds: [embed] }))
                                 .catch(console.error);
                         })
