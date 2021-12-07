@@ -59,7 +59,7 @@ class Command {
         let messageEmbed;
         try {
             const joinDate = new Date(info.joinDate).toDateString();
-            let oldNames = info.oldNames && info.oldNames.length > 0 ? info.oldNames.join(", ") : "None";
+            let oldNames = info.oldNames?.length > 0 ? info.oldNames.join(", ") : "None";
 
             messageEmbed = new MessageEmbed()
                 .setColor("#497ec0")
