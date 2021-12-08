@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const noblox = require("noblox.js");
 const config = require("../config.json");
 const util = require("../modules/util");
@@ -11,7 +13,7 @@ class Command {
 
     fn = async (Msg, Context) => {
         try {
-            await noblox.setCookie(config.cookie);
+            await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
             return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");

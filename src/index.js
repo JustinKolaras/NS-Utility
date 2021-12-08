@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const Discord = require("discord.js");
 const config = require("./config.json");
 const fs = require("fs");
@@ -27,4 +29,4 @@ for (const file of eventFiles) {
     }
 }
 
-void client.login(config.token);
+void client.login(process.env.token);
