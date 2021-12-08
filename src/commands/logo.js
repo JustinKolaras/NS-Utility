@@ -8,7 +8,7 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (Msg) => {
         let logo;
         try {
             logo = await noblox.getLogo(config.group);
