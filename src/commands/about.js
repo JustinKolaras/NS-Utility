@@ -31,6 +31,21 @@ class Command {
                         name: "Source",
                         value: "[GitHub](https://github.com/Aerosphia/NS-Utility)",
                         inline: true,
+                    },
+                    {
+                        name: "Version",
+                        value: config.version,
+                        inline: true,
+                    },
+                    {
+                        name: "Group",
+                        value: "[Roblox](https://www.roblox.com/groups/8046949/NEXT-SATURDAY#!/about)",
+                        inline: true,
+                    },
+                    {
+                        name: "Discord",
+                        value: "[Invite](https://discord.gg/SHRuvXcpMc)",
+                        inline: true,
                     }
                 )
                 .setTimestamp()
