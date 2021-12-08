@@ -60,12 +60,12 @@ class Command {
         let messageEmbed;
         try {
             const joinDate = new Date(info.joinDate).toDateString();
-            let oldNames = info.oldNames?.length > 0 ? info.oldNames.join(", ") : "None";
+            let oldNames = info.oldNames && info.oldNames.length > 0 ? info.oldNames.join(", ") : "None";
 
             messageEmbed = new MessageEmbed()
                 .setColor("#497ec0")
                 .setTitle(info.username + " (" + info.displayName + ")")
-                .setURL(`https://roblox.com/users/${userId}/profile`)
+                .setURL(`https://roblox.com/users/${playerId}/profile`)
                 .setDescription(info.blurb)
                 .addFields(
                     {
@@ -98,7 +98,7 @@ class Command {
                     { name: "Past Names", value: oldNames }
                 )
                 .setTimestamp()
-                .setFooter(`Requested by ${requester}`);
+                .setFooter(`Requested by ${Msg.member.user.tag}`);
         } catch (err) {
             console.error(err);
             return void Msg.reply("There was an issue generating the info embed; this user might not exist. <@360239086117584906>");
