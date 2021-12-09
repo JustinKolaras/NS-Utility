@@ -18,15 +18,17 @@ const client = new Client({
     partials: ["CHANNEL"],
 });
 
-const eventFiles = fs.readdirSync(`../src/events/`).filter((file) => file.endsWith(".js"));
-
-for (const file of eventFiles) {
-    const event = require(`../src/events/${file}`);
-    if (event.once) {
-        client.once(event.name, (...args) => event.execute(client, ...args));
-    } else {
-        client.on(event.name, (...args) => event.execute(client, ...args));
+// Event Handler
+(async () => {
+    const files = fs.readdirSync(`../src/events/`).filter((file) => file.endsWith(".js"));
+    for (const f of files) {
+        const event = require(`../src/events/${f}`);
+        if (event.once) {
+            client.once(event.name, (...args) => event.execute(client, ...args));
+        } else {
+            client.on(event.name, (...args) => event.execute(client, ...args));
+        }
     }
-}
+})();
 
 void client.login(process.env.token);
