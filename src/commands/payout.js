@@ -55,6 +55,7 @@ class Command {
             return void Msg.reply(errMessage);
         }
 
+        /*
         let rankId;
         try {
             rankId = await noblox.getRankInGroup(config.group, playerId);
@@ -66,6 +67,7 @@ class Command {
         if (rankId < 250 || rankId > 255) {
             return void Msg.reply("Invalid rank! You can only payout members ranked **Designer** or above.");
         }
+        */
 
         const row = new MessageActionRow().addComponents(
             new MessageButton().setCustomId("confirm").setLabel("Confirm").setStyle("PRIMARY"),
