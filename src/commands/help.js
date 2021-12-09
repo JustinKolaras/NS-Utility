@@ -37,7 +37,10 @@ class Command {
             return void Msg.reply(result);
         } else {
             if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= perm) {
-                return void Msg.reply(`Command: \`${command.toLowerCase()}\`\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`);
+                return void Msg.reply(
+                    // prettier-ignore
+                    `Command: \`${command.toLowerCase()}\` **[${result.class.Permission}]**\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`
+                );
             } else {
                 return void Msg.reply("You have insufficient permissions to get help on this command.");
             }
