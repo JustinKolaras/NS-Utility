@@ -10,7 +10,7 @@ class Command {
     fn = async (msg, Context) => {
         // Secondary check..
         if (msg.author.id !== "360239086117584906") {
-            return void Msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906> **Vital**");
+            return void Msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906>");
         }
 
         const args = Context.args;
