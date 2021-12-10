@@ -56,14 +56,16 @@ class Command {
                 .setTitle(`Group Revenue (${util.upFirst(revType).toString()})`)
                 .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
                 .setDescription(
-                    `Current Group Funds: **R$${revenueSummary.currentFunds}**
-                    Recurring Robux Stipend: **R$${revenueSummary.recurringRobuxStipend}**
-                    Item Sales: **R$${revenueSummary.itemSaleRobux}**
-                    Purchased Robux: **R$${revenueSummary.purchasedRobux}**
-                    Trade System: **R$${revenueSummary.tradeSystemRobux}**
-                    Pending: **R$${revenueSummary.pendingRobux}**
-                    Payed Out: **R$${revenueSummary.groupPayoutRobux}**
-                    ITG Robux: **R$${revenueSummary.individualToGroupRobux}**`
+                    [
+                        `Current Group Funds: **R$${revenueSummary.currentFunds}**`,
+                        `Recurring Robux Stipend: **R$${revenueSummary.recurringRobuxStipend}**`,
+                        `Item Sales: **R$${revenueSummary.itemSaleRobux}**`,
+                        `Purchased Robux: **R$${revenueSummary.purchasedRobux}**`,
+                        `Trade System: **R$${revenueSummary.tradeSystemRobux}**`,
+                        `Pending: **R$${revenueSummary.pendingRobux}**`,
+                        `Payed Out: **R$${revenueSummary.groupPayoutRobux}**`,
+                        `ITG Robux: **R$${revenueSummary.individualToGroupRobux}**`,
+                    ].join("\n")
                 )
                 .setTimestamp()
                 .setFooter(`Requested by ${Msg.member.user.tag}`);
