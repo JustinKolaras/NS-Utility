@@ -62,24 +62,30 @@ module.exports = {
                 }
 
                 if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= userPermission) {
-                    result.class
-                        .fn(Msg, { args: args, clientPerm: userPermission })
-                        .then(() => {
-                            Msg.content = util.omitKeys(Msg.content);
+                    if (result.class.isAutoResponder) {
+                        return Msg.delete()
+                            .catch(console.error)
+                            .finally(() => Msg.channel.send(result.class.autoResponderResult));
+                    } else {
+                        return result.class
+                            .fn(Msg, { args: args, clientPerm: userPermission })
+                            .then(() => {
+                                Msg.content = util.omitKeys(Msg.content);
 
-                            const embed = makeEmbed(client, Msg, command);
+                                const embed = makeEmbed(client, Msg, command);
 
-                            util.getGuild(client, Msg.guild.id)
-                                .then((guild) => util.getChannel(guild, config.logChannel))
-                                .then((channel) => channel.send({ embeds: [embed] }))
-                                .catch(console.error);
-                        })
-                        .catch((err) => {
-                            console.error(err);
-                            return void Msg.reply(
-                                `There was a script error running this command.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
-                            );
-                        });
+                                util.getGuild(client, Msg.guild.id)
+                                    .then((guild) => util.getChannel(guild, config.logChannel))
+                                    .then((channel) => channel.send({ embeds: [embed] }))
+                                    .catch(console.error);
+                            })
+                            .catch((err) => {
+                                console.error(err);
+                                return void Msg.reply(
+                                    `There was a script error running this command.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
+                                );
+                            });
+                    }
                 } else {
                     return void Msg.reply("You have insufficient permissions to run this command.");
                 }
