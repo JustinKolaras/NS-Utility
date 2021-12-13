@@ -16,7 +16,7 @@ class Command {
         if (!command) {
             const helpMessage = await util.getCommandList(
                 Msg,
-                `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\n`,
+                `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\n${config.permissionIndex.join("\n")}\n\n`,
                 `\`%c\` - **%d** [%p]`,
                 true
             );
