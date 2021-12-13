@@ -14,7 +14,7 @@ module.exports = {
         Permission: 1,
         autoResponse: {
             active: true,
-            result: "**About Next Saturday**\n\nNext Saturday is a streetwear clothing group that strives in helping other designers with their work. You can get critique, feedback, showcase your designs, and even participate in designing tournaments! Make sure to read the server <#761470483194445844> for more information.",
+            result: "**About Next Saturday**\n\nNext Saturday is a streetwear clothing group that strives in helping other designers with their work. You can get critique, feedback, showcase your designs, and even participate in design tournaments! Make sure to read the server <#761470483194445844> for more information.",
         },
     }),
 };
