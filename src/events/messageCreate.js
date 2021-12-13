@@ -62,10 +62,10 @@ module.exports = {
                 }
 
                 if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= userPermission) {
-                    if (result.class.isAutoResponder) {
+                    if (result.class.autoResponse?.active) {
                         return Msg.delete()
                             .catch(console.error)
-                            .finally(() => Msg.channel.send(result.class.autoResponderResult));
+                            .finally(() => Msg.channel.send(result.class.autoResponse.result));
                     } else {
                         return result.class
                             .fn(Msg, { args: args, clientPerm: userPermission })
