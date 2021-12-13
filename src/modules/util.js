@@ -247,6 +247,25 @@ class Utility {
 
         return cmdArray.length > 0 ? prepend.toString() + cmdArray.join("\n") : prepend.toString() + "No commands to show.";
     };
+
+    getUserAttributes = async (guild, str) => {
+        str = str.toString();
+
+        let match = str.match(/(\d+)/);
+        let returnValue;
+
+        if (match) {
+            match = match[0];
+            await guild.members
+                .fetch(match)
+                .then((m) => {
+                    returnValue = { success: true, id: match, member: m };
+                })
+                .catch(() => {});
+        }
+
+        return returnValue || { success: false };
+    };
 }
 
 module.exports = new Utility();
