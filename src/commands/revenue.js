@@ -26,7 +26,7 @@ class Command {
             return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
         });
 
-        if (!revType || args.length < 1) {
+        if (!revType) {
             return void Msg.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
         }
 
@@ -76,12 +76,8 @@ class Command {
 
         return void Msg.author
             .send({ embeds: [messageEmbed] })
-            .then(() => {
-                Msg.reply("Sent you a DM with information.");
-            })
-            .catch(() => {
-                Msg.reply("I couldn't DM you. Are your DMs off?");
-            });
+            .then(() => Msg.reply("Sent you a DM with information."))
+            .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));
     };
 }
 
