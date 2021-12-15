@@ -9,7 +9,7 @@ setInterval(() => {
 module.exports = {
     name: "roleDelete",
     execute(client, role) {
-        deletedRoleNames.push(role.name);
+        deletedRoleNames.push(`${role.name} <${role.id}>`);
         if (deletedRoleNames.length >= 3) {
             const alertMessage = `@everyone, **Excessive Role Deletion Alert:** \`3 w/i 120s\`\n\`\`\`\n${deletedRoleNames.join("\n")}\n\`\`\``;
 
