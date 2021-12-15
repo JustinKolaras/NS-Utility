@@ -52,7 +52,7 @@ class Command {
                 .setFooter(`Requested by ${Msg.member.user.tag}`);
         } catch (err) {
             console.error(err);
-            return void Msg.channel.send("There was an issue generating the embed. <@360239086117584906>");
+            return void Msg.channel.send("There was an issue generating the embed.");
         }
 
         return void Msg.channel.send({ embeds: [messageEmbed] });

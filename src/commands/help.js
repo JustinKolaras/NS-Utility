@@ -14,20 +14,13 @@ class Command {
         const command = args[0];
 
         if (!command) {
-            const helpMessage = await util.getCommandList(
-                Msg,
-                `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\n${config.permissionIndex.join("\n")}\n\n`,
-                `\`%c\` - **%d** [%p]`,
-                true
-            );
+            const commandList = await util.getCommandList(Msg, `\`%c\` - **%d** [%p]`, true);
             return void Msg.author
-                .send(helpMessage)
-                .then(() => {
-                    void Msg.reply("Sent you a DM with information.");
-                })
-                .catch(() => {
-                    void Msg.reply("I couldn't DM you. Are your DMs off?");
-                });
+                .send(
+                    `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\n${config.permissionIndex.join("\n")}\n\n${commandList}`
+                )
+                .then(() => Msg.reply("Sent you a DM with information."))
+                .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));
         } else if ((command && args.length > 1) || command.toString().toLowerCase() === "help") {
             return void Msg.reply("**Syntax Error:** `;help <?command>`");
         }
