@@ -45,22 +45,11 @@ class Command {
             return void Msg.reply("Rank provided is too high. Please do this manually.");
         }
 
-        try {
-            await noblox.getIdFromUsername(playerName).then((userId) => {
-                noblox
-                    .setRank(config.group, userId, newRank)
-                    .then(() => {
-                        return void Msg.reply(`Changed user rank successfully.`);
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        return void Msg.reply(errMessage);
-                    });
-            });
-        } catch (err) {
-            console.error(err);
-            return void Msg.reply(errMessage);
-        }
+        noblox
+            .getIdFromUsername(playerName)
+            .then((userId) => noblox.setRank(config.group, userId, newRank))
+            .then(() => Msg.reply("Changed user rank successfully."))
+            .catch(() => Msg.reply(errMessage));
     };
 }
 

@@ -22,25 +22,10 @@ class Command {
         const args = Context.args;
         const parsedText = util.combine(args, 0);
 
-        if (!parsedText) {
-            try {
-                await noblox.shout(config.group, "").then(() => {
-                    return void Msg.reply("Successfully removed group shout.");
-                });
-            } catch (err) {
-                console.error(err);
-                return void Msg.reply("There was an issue while trying to change the group shout.");
-            }
-        } else {
-            try {
-                await noblox.shout(config.group, parsedText).then(() => {
-                    return void Msg.reply("Successfully changed group shout.");
-                });
-            } catch (err) {
-                console.error(err);
-                return void Msg.reply("There was an issue while trying to change the group shout.");
-            }
-        }
+        noblox
+            .shout(config.group, parsedText || "")
+            .then(() => Msg.reply("Successfully changed group shout."))
+            .catch(() => Msg.reply("There was an issue while trying to change the group shout."));
     };
 }
 

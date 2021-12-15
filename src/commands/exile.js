@@ -48,18 +48,10 @@ class Command {
 
                 noblox
                     .exile(config.group, userId)
-                    .then(() => {
-                        return void Msg.reply(`Exiled user from group successfully.`);
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        return void Msg.reply(errMessage);
-                    });
+                    .then(() => Msg.reply(`Exiled user from group successfully.`))
+                    .catch(() => Msg.reply(errMessage));
             })
-            .catch((err) => {
-                console.error(err);
-                return void Msg.reply(errMessage);
-            });
+            .catch(() => Msg.reply(errMessage));
     };
 }
 
