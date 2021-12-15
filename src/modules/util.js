@@ -211,7 +211,7 @@ class Utility {
         %d - Command Desc
         %u - Command Usage
     */
-    getCommandList = async (src, prepend, format, usableOnly) => {
+    getCommandList = async (src, format, usableOnly) => {
         const cmdArray = [];
         const commandFiles = fs.readdirSync(`./commands/`).filter((file) => file.endsWith(".js"));
 
@@ -245,7 +245,7 @@ class Utility {
             }
         }
 
-        return cmdArray.length > 0 ? prepend.toString() + cmdArray.join("\n") : prepend.toString() + "No commands to show.";
+        return cmdArray.length > 0 ? cmdArray.join("\n") : "No commands to show.";
     };
 
     getUserAttributes = async (guild, str) => {
