@@ -30,9 +30,11 @@ class Command {
             return void Msg.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
         }
 
+        revType = util.upFirst(revType);
+
         let revenueSummary;
         try {
-            revenueSummary = await noblox.getGroupRevenueSummary(config.group, util.upFirst(revType).toString());
+            revenueSummary = await noblox.getGroupRevenueSummary(config.group, revType);
         } catch (err) {
             console.error(err);
             return void Msg.reply("There was an issue while trying to gather revenue statistics.");
@@ -53,7 +55,7 @@ class Command {
 
             messageEmbed = new MessageEmbed()
                 .setColor("#3ac376")
-                .setTitle(`Group Revenue (${util.upFirst(revType).toString()})`)
+                .setTitle(`Group Revenue (${revType})`)
                 .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
                 .setDescription(
                     [
@@ -71,7 +73,7 @@ class Command {
                 .setFooter(`Requested by ${Msg.member.user.tag}`);
         } catch (err) {
             console.error(err);
-            return void Msg.channel.send("There was an issue generating the revenue embed. <@360239086117584906>");
+            return void Msg.channel.send("There was an issue generating the revenue embed.");
         }
 
         return void Msg.author
