@@ -22,7 +22,7 @@ class Command {
         }
 
         const args = Context.args;
-        const revType = util.verify(args[0], (self) => {
+        let revType = util.verify(args[0], (self) => {
             return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
         });
 
