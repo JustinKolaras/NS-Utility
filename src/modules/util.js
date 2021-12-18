@@ -1,16 +1,17 @@
 const config = require("../config.json");
 const fs = require("fs");
 
+// Probably going to migrate utility outside of a class soon, and use another method of handling.
 class Utility {
-    combine = (args, f, l) => {
-        if (!l) l = Infinity;
+    combine = (args, first, last) => {
+        if (!last) last = Infinity;
         for (const k in args) {
-            if (k > f && k < l) {
-                args[f] += ` ${args[k]}`;
+            if (k > first && k < last) {
+                args[first] += ` ${args[k]}`;
             }
         }
-        args.splice(f + 1, l);
-        return args[f];
+        args.splice(first + 1, last);
+        return args[first];
     };
 
     getLibrary = (lib) => {
@@ -27,15 +28,15 @@ class Utility {
         return new Promise((resolve) => setTimeout(resolve, ms));
     };
 
-    hasRole = (member, roleId) => {
-        return member.roles.cache.has(roleId);
-    };
-
     getPerm = async (member) => {
         const t = config.permissions;
         let highestPerm;
 
-        if (!t) return Promise.reject(new Error("permissions table is undefined or null"));
+        // prettier-ignore
+        if (!t) 
+            return Promise.reject(
+                new Error("permissions table is undefined or null")
+            );
 
         for (const k in t) {
             if (this.hasRole(member, t[k])) {
@@ -47,11 +48,11 @@ class Utility {
             highestPerm = 7;
         }
 
-        if (highestPerm === undefined) {
-            return -1;
-        } else {
-            return parseInt(highestPerm);
-        }
+        return highestPerm === undefined ? -1 : parseInt(highestPerm);
+    };
+
+    hasRole = (member, roleId) => {
+        return member.roles.cache.has(roleId);
     };
 
     getGuild = (client, guildId) => {
@@ -67,32 +68,36 @@ class Utility {
     };
 
     sep = (int) => {
-        var str = int.toString().split(".");
+        let str = int.toString().split(".");
         str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return str.join(".");
     };
 
     upFirst = (str) => {
-        return str[0].toUpperCase() + str.substring(1);
+        return str?.length > 0 ? str[0].toUpperCase() + str.substring(1) : "";
     };
 
-    isValid = (str, caps, ...types) => {
+    isValid = (str, isCapsSensitive, ...types) => {
         for (const k in types) {
-            if (!caps) {
-                if (str.toLowerCase() === types[k].toLowerCase()) return [true, str.toLowerCase()];
+            if (!isCapsSensitive) {
+                // prettier-ignore
+                if (str.toLowerCase() === types[k].toLowerCase()) 
+                    return [true, str.toLowerCase()];
             } else {
-                if (str === types[k]) return [true, str.toLowerCase()];
+                // prettier-ignore
+                if (str === types[k]) 
+                    return [true, str.toLowerCase()];
             }
         }
         return [false, undefined];
     };
 
-    makeError = (intro, errors) => {
+    makeError = (prefix, errors) => {
         for (const i in errors) {
             errors[i] = `**- ${errors[i]}**`;
         }
         errors = errors.join("\n");
-        return `${intro}\n${errors}`;
+        return `${prefix}\n${errors}`;
     };
 
     prompt = (source, prefix, responses, options) => {
@@ -189,13 +194,22 @@ class Utility {
     };
 
     clean = async (text) => {
-        if (text && text.constructor.name == "Promise") text = await text;
+        // prettier-ignore
+        if (text && text.constructor.name == "Promise") 
+            text = await text;
 
-        if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });
+        // prettier-ignore
+        if (typeof text !== "string") 
+            text = require("util").inspect(text, { depth: 1 });
 
-        text = text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+        // prettier-ignore
+        text = text.replace(
+            /`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203)
+        );
 
-        if (text.toString() === "undefined") text = "void";
+        // prettier-ignore
+        if (text.toString() === "undefined") 
+            text = "void";
 
         return text;
     };

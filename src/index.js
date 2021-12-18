@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const Discord = require("discord.js");
-const config = require("./config.json");
 const fs = require("fs");
 
 const { Client, Intents } = Discord;
@@ -21,8 +20,8 @@ const client = new Client({
 // Event Handler
 (async () => {
     const files = fs.readdirSync(`../src/events/`).filter((file) => file.endsWith(".js"));
-    for (const f of files) {
-        const event = require(`../src/events/${f}`);
+    for (const file of files) {
+        const event = require(`../src/events/${file}`);
         if (event.once) {
             client.once(event.name, (...args) => event.execute(client, ...args));
         } else {
