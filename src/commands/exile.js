@@ -43,7 +43,7 @@ class Command {
         }
 
         if (!playerName || args.length > 1) {
-            return void Msg.reply("**Syntax Error:** `;exile <username>`");
+            return void Msg.reply("**Syntax Error:** `;exile <username | @user | userId>`");
         }
 
         if (!usingDiscord) {
@@ -78,7 +78,7 @@ module.exports = {
     class: new Command({
         Name: "exile",
         Description: "Exiles a user from the Roblox group.",
-        Usage: ";exile <username>",
+        Usage: ";exile <username | @user | userId>",
         Permission: 5,
     }),
 };
