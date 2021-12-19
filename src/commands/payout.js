@@ -35,7 +35,6 @@ class Command {
 
         let playerName = args[0];
         let playerId;
-
         let amt = parseInt(args[1]);
 
         if (!playerName || !amt || typeof amt !== "number" || !key) {

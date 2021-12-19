@@ -1,5 +1,6 @@
 const config = require("../config.json");
 const fs = require("fs");
+const axios = require("axios");
 
 // Probably going to migrate utility outside of a class soon, and use another method of handling.
 class Utility {
@@ -279,6 +280,18 @@ class Utility {
         }
 
         return returnValue || { success: false };
+    };
+
+    getRobloxAccount = async (discordId) => {
+        let endpointResponse = await axios.get(`https://verify.eryn.io/api/user/${discordId.toString()}`).catch(() => {});
+
+        // prettier-ignore
+        if (endpointResponse) {
+            endpointResponse = endpointResponse.data;
+            return { success: endpointResponse.status === "ok", response: endpointResponse };
+        } else {
+            return { success: false }
+        }
     };
 }
 
