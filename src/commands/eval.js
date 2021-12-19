@@ -10,7 +10,7 @@ class Command {
     fn = async (msg, Context) => {
         // Secondary check..
         if (msg.author.id !== "360239086117584906") {
-            return void Msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906>");
+            return void msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906>");
         }
 
         const args = Context.args;
@@ -25,11 +25,12 @@ class Command {
 
             const cleaned = await util.clean(evaled);
             return void msg.channel.send(
-                `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
+                `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${Date.now() - msg.createdTimestamp}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
             );
         } catch (err) {
             return void msg.channel.send(
-                `<@${msg.member.id}>, *Evaluation callback..* **Error:** [${(Date.now() - msg.createdTimestamp).toString()}ms]\n\`\`\`xl\n${err}\n\`\`\``
+                // prettier-ignore
+                `<@${msg.member.id}>, *Evaluation callback..* **Error:** [${Date.now() - msg.createdTimestamp}ms]\n\`\`\`xl\n${err}\n\`\`\``
             );
         }
     };

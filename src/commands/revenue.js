@@ -22,15 +22,15 @@ class Command {
         }
 
         const args = Context.args;
-        let revType = util.verify(args[0], (self) => {
-            return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
-        });
+        let revType = util.upFirst(
+            util.verify(args[0], (self) => {
+                return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
+            })
+        );
 
         if (!revType) {
             return void Msg.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
         }
-
-        revType = util.upFirst(revType);
 
         let revenueSummary;
         try {
@@ -47,12 +47,12 @@ class Command {
             return void Msg.reply("There was an error while trying to gather group funds.");
         }
 
+        for (const k in revenueSummary) {
+            revenueSummary[k] = util.sep(revenueSummary[k]);
+        }
+
         let messageEmbed;
         try {
-            for (const k in revenueSummary) {
-                revenueSummary[k] = util.sep(revenueSummary[k]).toString();
-            }
-
             messageEmbed = new MessageEmbed()
                 .setColor("#3ac376")
                 .setTitle(`Group Revenue (${revType})`)

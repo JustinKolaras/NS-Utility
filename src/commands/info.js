@@ -70,21 +70,21 @@ class Command {
                 .addFields(
                     {
                         name: "Friends",
-                        value: info.friendCount.toString(),
+                        value: info.friendCount,
                         inline: true,
                     },
                     {
                         name: "Followers",
-                        value: info.followerCount.toString(),
+                        value: info.followerCount,
                         inline: true,
                     },
                     {
                         name: "Following",
-                        value: info.followingCount.toString(),
+                        value: info.followingCount,
                         inline: true,
                     },
-                    { name: "Join Date", value: joinDate.toString(), inline: true },
-                    { name: "Age", value: info.age.toString(), inline: true },
+                    { name: "Join Date", value: joinDate, inline: true },
+                    { name: "Age", value: info.age, inline: true },
                     {
                         name: "Banned",
                         value: info.isBanned ? "yes" : "no",
@@ -101,10 +101,10 @@ class Command {
                 .setFooter(`Requested by ${Msg.member.user.tag}`);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("There was an issue generating the info embed; this user might not exist. <@360239086117584906>");
+            return void Msg.reply("There was an issue generating the info embed; this user might not exist.");
         }
 
-        void Msg.channel.send({ embeds: [messageEmbed] });
+        return void Msg.channel.send({ embeds: [messageEmbed] });
     };
 }
 
