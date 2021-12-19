@@ -57,6 +57,13 @@ class Command {
             return void Msg.reply(errMessage);
         }
 
+        try {
+            info["thumbnail"] = await noblox.getPlayerThumbnail(playerId, "150x200", "png", false, "body");
+        } catch (err) {
+            console.error(err);
+            return void Msg.reply(errMessage);
+        }
+
         let messageEmbed;
         try {
             const joinDate = new Date(info.joinDate).toDateString();
@@ -65,6 +72,7 @@ class Command {
             messageEmbed = new MessageEmbed()
                 .setColor("#497ec0")
                 .setTitle(info.username + " (" + info.displayName + ")")
+                .setThumbnail(info.thumbnail[0].imageUrl)
                 .setURL(`https://roblox.com/users/${playerId}/profile`)
                 .setDescription(info.blurb)
                 .addFields(
