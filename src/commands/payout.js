@@ -55,20 +55,6 @@ class Command {
             return void Msg.reply(errMessage);
         }
 
-        /*
-        let rankId;
-        try {
-            rankId = await noblox.getRankInGroup(config.group, playerId);
-        } catch (err) {
-            console.error(err);
-            return void Msg.reply(errMessage);
-        }
-
-        if (rankId < 250 || rankId > 255) {
-            return void Msg.reply("Invalid rank! You can only payout members ranked **Designer** or above.");
-        }
-        */
-
         const row = new MessageActionRow().addComponents(
             new MessageButton().setCustomId("confirm").setLabel("Confirm").setStyle("PRIMARY"),
             new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER")
@@ -82,7 +68,7 @@ class Command {
             time: 30000,
         });
 
-        const mainInter = await Msg.channel.send({
+        const main = await Msg.channel.send({
             // prettier-ignore
             content: `<@${Msg.member.id}>, Are you sure you want to payout **R$${util.sep(amt)}** to **${playerName}**? **This action is stricly irreversible.**`,
             components: [row],
@@ -94,7 +80,7 @@ class Command {
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
                         collector.stop();
-                        return void mainInter.edit({
+                        return void main.edit({
                             content: `<@${Msg.member.id}>, Payed out user successfully.`,
                             components: [],
                         });
@@ -102,14 +88,14 @@ class Command {
                     .catch((err) => {
                         collector.stop();
                         console.error(err);
-                        return void mainInter.edit({
+                        return void main.edit({
                             content: errMessage,
                             components: [],
                         });
                     });
             } else if (i.customId === "reject") {
                 collector.stop();
-                return void mainInter.edit({
+                return void main.edit({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
@@ -118,7 +104,7 @@ class Command {
 
         collector.on("end", async (_, reason) => {
             if (reason === "time") {
-                return void mainInter.edit({
+                return void main.edit({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
