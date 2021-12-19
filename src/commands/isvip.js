@@ -26,16 +26,31 @@ class Command {
         ]);
 
         let playerId;
+        let usingDiscord = false;
 
-        if (!playerName || args.length > 1) {
-            return void Msg.reply("**Syntax Error:** `;isvip <username>`");
+        // Discord Mention Support
+        const attributes = await util.getUserAttributes(Msg.guild, args[0]);
+        if (attributes.success) {
+            const rblxInfo = await util.getRobloxAccount(attributes.id);
+            if (rblxInfo.success) {
+                usingDiscord = true;
+                playerId = rblxInfo.response.robloxId;
+            } else {
+                return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+            }
         }
 
-        try {
-            playerId = await noblox.getIdFromUsername(playerName);
-        } catch (err) {
-            console.error(err);
-            return void Msg.reply(errMessage);
+        if (!playerName || args.length > 1) {
+            return void Msg.reply("**Syntax Error:** `;isvip <username | @user | userId>`");
+        }
+
+        if (!usingDiscord) {
+            try {
+                playerId = await noblox.getIdFromUsername(playerName);
+            } catch (err) {
+                console.error(err);
+                return void Msg.reply(errMessage);
+            }
         }
 
         let ownership;
@@ -54,7 +69,7 @@ module.exports = {
     class: new Command({
         Name: "isvip",
         Description: "Returns a yes/no answer on if the user provided has the NS VIP gamepass or not.",
-        Usage: ";isvip",
+        Usage: ";isvip <username | @user | userId>",
         Permission: 2,
     }),
 };

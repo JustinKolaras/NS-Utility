@@ -15,7 +15,7 @@ class Command {
             messageEmbed = new MessageEmbed()
                 .setColor("#256ab4")
                 .setTitle("NS Utility")
-                .setDescription("An ease of use bot application which interacts with the Roblox API.\nNeed help? Try `;help`")
+                .setDescription("An ease of use bot application which interacts with the Roblox API.")
                 .addFields(
                     {
                         name: "Developer",
