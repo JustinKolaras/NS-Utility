@@ -285,12 +285,11 @@ class Utility {
     getRobloxAccount = async (discordId) => {
         let endpointResponse = await axios.get(`https://verify.eryn.io/api/user/${discordId.toString()}`).catch(() => {});
 
-        // prettier-ignore
         if (endpointResponse) {
             endpointResponse = endpointResponse.data;
             return { success: endpointResponse.status === "ok", response: endpointResponse };
         } else {
-            return { success: false }
+            return { success: false };
         }
     };
 }
