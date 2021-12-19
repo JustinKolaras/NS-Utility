@@ -29,8 +29,32 @@ class Command {
             "The user is not in the group.",
         ]);
 
+        let playerId;
+        let usingDiscord = false;
+
+        // Discord Mention Support
+        const attributes = await util.getUserAttributes(Msg.guild, args[0]);
+        if (attributes.success) {
+            const rblxInfo = await util.getRobloxAccount(attributes.id);
+            if (rblxInfo.success) {
+                usingDiscord = true;
+                playerId = rblxInfo.response.robloxId;
+            } else {
+                return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+            }
+        }
+
         if (!playerName || args.length > 2) {
             return void Msg.reply("**Syntax Error:** `;rank <username> <role-name>`");
+        }
+
+        if (!usingDiscord) {
+            try {
+                playerId = await noblox.getIdFromUsername(playerName);
+            } catch (err) {
+                console.error(err);
+                return void Msg.reply(errMessage);
+            }
         }
 
         let parsedRank;
@@ -46,8 +70,7 @@ class Command {
         }
 
         noblox
-            .getIdFromUsername(playerName)
-            .then((userId) => noblox.setRank(config.group, userId, newRank))
+            .setRank(config.group, playerId, newRank)
             .then(() => Msg.reply("Changed user rank successfully."))
             .catch(() => Msg.reply(errMessage));
     };
