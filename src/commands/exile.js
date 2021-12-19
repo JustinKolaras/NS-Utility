@@ -27,30 +27,49 @@ class Command {
             "The user is not in the group.",
         ]);
 
+        let playerId;
+        let usingDiscord = false;
+
+        // Discord Mention Support
+        const attributes = await util.getUserAttributes(Msg.guild, args[0]);
+        if (attributes.success) {
+            const rblxInfo = await util.getRobloxAccount(attributes.id);
+            if (rblxInfo.success) {
+                usingDiscord = true;
+                playerId = rblxInfo.response.robloxId;
+            } else {
+                return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+            }
+        }
+
         if (!playerName || args.length > 1) {
             return void Msg.reply("**Syntax Error:** `;exile <username>`");
         }
 
+        if (!usingDiscord) {
+            try {
+                playerId = await noblox.getIdFromUsername(playerName);
+            } catch (err) {
+                console.error(err);
+                return void Msg.reply(errMessage);
+            }
+        }
+
+        let rankId;
+        try {
+            rankId = await noblox.getRankInGroup(config.group, playerId);
+        } catch (err) {
+            console.error(err);
+            return void Msg.reply(errMessage);
+        }
+
+        if (rankId >= 252) {
+            return void Msg.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
+        }
+
         noblox
-            .getIdFromUsername(playerName)
-            .then(async (userId) => {
-                let rankId;
-                try {
-                    rankId = await noblox.getRankInGroup(config.group, userId);
-                } catch (err) {
-                    console.error(err);
-                    return void Msg.reply(errMessage);
-                }
-
-                if (rankId >= 252) {
-                    return void Msg.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
-                }
-
-                noblox
-                    .exile(config.group, userId)
-                    .then(() => Msg.reply(`Exiled user from group successfully.`))
-                    .catch(() => Msg.reply(errMessage));
-            })
+            .exile(config.group, playerId)
+            .then(() => Msg.reply(`Exiled user from group successfully.`))
             .catch(() => Msg.reply(errMessage));
     };
 }
