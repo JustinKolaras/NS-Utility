@@ -70,21 +70,21 @@ class Command {
                 .addFields(
                     {
                         name: "Friends",
-                        value: info.friendCount,
+                        value: info.friendCount.toString(),
                         inline: true,
                     },
                     {
                         name: "Followers",
-                        value: info.followerCount,
+                        value: info.followerCount.toString(),
                         inline: true,
                     },
                     {
                         name: "Following",
-                        value: info.followingCount,
+                        value: info.followingCount.toString(),
                         inline: true,
                     },
                     { name: "Join Date", value: joinDate, inline: true },
-                    { name: "Age", value: info.age, inline: true },
+                    { name: "Age", value: info.age.toString(), inline: true },
                     {
                         name: "Banned",
                         value: info.isBanned ? "yes" : "no",
@@ -104,7 +104,7 @@ class Command {
             return void Msg.reply("There was an issue generating the info embed; this user might not exist.");
         }
 
-        return void Msg.channel.send({ embeds: [messageEmbed] });
+        return void Msg.channel.send({ content: ":mag_right: :newspaper2: Got some intel..", embeds: [messageEmbed] });
     };
 }
 
