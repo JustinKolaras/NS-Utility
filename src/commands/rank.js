@@ -45,7 +45,7 @@ class Command {
         }
 
         if (!playerName || args.length > 2) {
-            return void Msg.reply("**Syntax Error:** `;rank <username> <role-name>`");
+            return void Msg.reply("**Syntax Error:** `;rank <username | @user | userId> <role-name>`");
         }
 
         if (!usingDiscord) {
@@ -80,7 +80,7 @@ module.exports = {
     class: new Command({
         Name: "rank",
         Description: "Changes a user's rank in the Roblox group.",
-        Usage: ";rank <username> <role-name>",
+        Usage: ";rank <username | @user | userId> <role-name>",
         Permission: 5,
     }),
 };
