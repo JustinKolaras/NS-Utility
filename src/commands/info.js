@@ -71,7 +71,6 @@ class Command {
             return void Msg.reply(errMessage);
         }
 
-        /*
         try {
             const rank = await noblox.getRankInGroup(config.group, playerId);
             info["ns_rank"] = await noblox.getRole(config.group, rank);
@@ -79,7 +78,6 @@ class Command {
             console.error(err);
             return void Msg.reply(errMessage);
         }
-        */
 
         let messageEmbed;
         try {
@@ -120,13 +118,16 @@ class Command {
                         value: info.premium ? "yes" : "no",
                         inline: true,
                     },
-                    /*
                     {
                         name: "NS Rank",
                         value: info.ns_rank.name !== "Guest" ? info.ns_rank.name : "N/A",
                         inline: true,
                     },
-                    */
+                    {
+                        name: "User ID",
+                        value: playerId.toString(),
+                        inline: true,
+                    },
                     { name: "Past Names", value: oldNames }
                 )
                 .setTimestamp()
