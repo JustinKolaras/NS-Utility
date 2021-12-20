@@ -13,7 +13,10 @@ class Command {
         noblox
             .setCookie(process.env.cookie)
             .then(() => {
-                return void Msg.reply(`:electric_plug: nPong! Latency of ${(Date.now() - Msg.createdTimestamp).toString()}ms.`);
+                return void Msg.reply(
+                    // prettier-ignore
+                    `:electric_plug: nPong! Latency of *${Date.now() - Msg.createdTimestamp}ms/${Number.parseFloat((Date.now() - Msg.createdTimestamp) / 1000).toFixed(4)}s*`
+                );
             })
             .catch((err) => {
                 console.error(err);
