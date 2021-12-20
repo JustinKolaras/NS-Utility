@@ -71,13 +71,6 @@ class Command {
             return void Msg.reply(errMessage);
         }
 
-        try {
-            info["thumbnail"] = await noblox.getPlayerThumbnail(playerId, "150x200", "png", false, "body");
-        } catch (err) {
-            console.error(err);
-            return void Msg.reply(errMessage);
-        }
-
         /*
         try {
             const rank = await noblox.getRankInGroup(config.group, playerId);
@@ -96,7 +89,7 @@ class Command {
             messageEmbed = new MessageEmbed()
                 .setColor("#497ec0")
                 .setTitle(info.username + " (" + info.displayName + ")")
-                .setThumbnail(info.thumbnail[0].imageUrl)
+                .setThumbnail(`https://www.roblox.com/avatar-thumbnail/image?userId=${playerId}&width=420&height=420&format=png`)
                 .setURL(`https://roblox.com/users/${playerId}/profile`)
                 .setDescription(info.blurb)
                 .addFields(
