@@ -2,7 +2,7 @@ const util = require("../modules/util");
 
 module.exports = {
     name: "guildCreate",
-    execute(client, guild) {
+    execute(client, _, guild) {
         const tsGuild = client.guilds.cache.get("900218984287313920");
         const tsChannel = util.getChannel(tsGuild, "907828976083435541");
 
