@@ -11,7 +11,7 @@ const moderatorConfig = {
 
 module.exports = {
     name: "guildMemberRemove",
-    execute(_, member) {
+    execute(_, _1, member) {
         if (util.getPerm(member) >= moderatorConfig.onPermission) {
             util.getChannel(member.guild, moderatorConfig.channelId).send(
                 `<@&788877981874389014>, **${member.displayName} (${member.user.tag}) (Mod Team)** has left the server. They could have been kicked or banned.`

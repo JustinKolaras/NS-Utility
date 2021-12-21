@@ -31,7 +31,7 @@ const makeEmbed = (client, Msg, command) => {
 
 module.exports = {
     name: "messageCreate",
-    async execute(client, Msg) {
+    async execute(client, mongoClient, Msg) {
         if (!Msg.guild) return;
 
         // Command Handler
@@ -68,7 +68,7 @@ module.exports = {
                             .finally(() => Msg.channel.send(result.class.autoResponse.result));
                     } else {
                         return result.class
-                            .fn(Msg, { args: args, clientPerm: userPermission })
+                            .fn(Msg, { args: args, clientPerm: userPermission }, mongoClient)
                             .then(() => {
                                 Msg.content = util.omitKeys(Msg.content);
 
