@@ -24,7 +24,7 @@ class Command {
 
         noblox
             .shout(config.group, parsedText || "")
-            .then(() => Msg.reply(`Successfully ${parsedText.length > 0 ? "changed" : "removed"} group shout.`))
+            .then(() => Msg.reply(`Successfully ${parsedText ? "changed" : "removed"} group shout.`))
             .catch(() => Msg.reply("There was an issue while trying to change the group shout."));
     };
 }
