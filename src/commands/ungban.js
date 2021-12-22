@@ -65,13 +65,8 @@ class Command {
 
         groupBans
             .deleteOne(currentStat)
-            .then(() =>
-                Msg.reply(
-                    // prettier-ignore
-                    `Successfully removed the group ban from this user.`
-                )
-            )
-            .catch((err) => `*Error:*\n\`\`\`\n${err}\n\`\`\``);
+            .then(() => Msg.reply(`Successfully removed the group ban from this user.`))
+            .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
     };
 }
 
