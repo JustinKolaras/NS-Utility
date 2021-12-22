@@ -21,7 +21,9 @@ class Command {
 
         const args = Context.args;
         const playerName = args[0];
-        const reason = util.combine(args, 1);
+        const reason = util.verify(util.combine(args, 1), (self) => {
+            return typeof self === "string";
+        });
         const errMessage = util.makeError("There was an issue while trying to gban that user.", [
             "Your argument does not match a valid username.",
             "You mistyped the username.",
@@ -33,7 +35,7 @@ class Command {
         let playerId;
         let usingDiscord = false;
 
-        if (!playerName || !reason || typeof reason !== "string") {
+        if (!playerName || !reason) {
             return void Msg.reply("**Syntax Error:** `;gban <username | @user | userId> <reason>`");
         }
 
