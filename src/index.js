@@ -54,8 +54,9 @@ const client = new Client({
 // Special Event Handler
 (async () => {
     await noblox.setCookie(process.env.cookie).catch(console.error);
+    const onJoinRequestHandle = require(`../src/events/onJoinRequestHandle`);
 
-    noblox.onJoinRequestHandle(config.group).on("data", (...args) => require(`../src/events/onJoinRequestHandle`)(mongoClient, ...args));
+    noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(mongoClient, ...args));
 })().catch(console.error);
 
 void client.login(process.env.token);
