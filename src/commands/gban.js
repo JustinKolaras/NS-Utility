@@ -94,7 +94,7 @@ class Command {
                     `Successfully group banned user. ${couldExile ? "" : "\nBy the way, I couldn't exile them. If they weren't in the group originally, this doesn't matter."}`
                 )
             )
-            .catch((err) => `*Error:*\n\`\`\`\n${err}\n\`\`\``);
+            .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
     };
 }
 
