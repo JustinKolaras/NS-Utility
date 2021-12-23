@@ -19,7 +19,7 @@ class Command {
                 .addFields(
                     {
                         name: "Developer",
-                        value: config.developerTag.toString(),
+                        value: "<@360239086117584906>",
                         inline: true,
                     },
                     {
@@ -46,6 +46,10 @@ class Command {
                         name: "Discord",
                         value: "[Invite](https://discord.gg/SHRuvXcpMc)",
                         inline: true,
+                    },
+                    {
+                        name: "Contributors",
+                        value: "<@478849686267232256>, <@816041207113187348>, <@310879289786761216>, <@113691352327389188>",
                     }
                 )
                 .setTimestamp()
