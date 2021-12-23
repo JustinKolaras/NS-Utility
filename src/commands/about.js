@@ -24,7 +24,7 @@ class Command {
                     },
                     {
                         name: "Library",
-                        value: "discord-js",
+                        value: "discord.js",
                         inline: true,
                     },
                     {
@@ -46,6 +46,10 @@ class Command {
                         name: "Discord",
                         value: "[Invite](https://discord.gg/SHRuvXcpMc)",
                         inline: true,
+                    },
+                    {
+                        name: "Dependencies",
+                        value: "noblox.js, MongoDB, dotenv, axios",
                     },
                     {
                         name: "Contributors",
