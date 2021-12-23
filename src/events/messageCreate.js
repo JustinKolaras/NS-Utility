@@ -34,6 +34,9 @@ module.exports = {
     async execute(client, mongoClient, Msg) {
         if (!Msg.guild) return;
 
+        const database = mongoClient.db("main");
+        const botBans = database.collection("botBans");
+
         // Command Handler
         if (!Msg.author.bot && Msg.content.startsWith(config.prefix)) {
             const commandBody = Msg.content.slice(config.prefix.length);
@@ -46,6 +49,13 @@ module.exports = {
                     return void Msg.reply(
                         `You cannot run commands here at this time.\nThis is usually due to heavy maintenance. If you see this warning for an extended period of time, contact **${config.developerTag}**.`
                     );
+                }
+
+                const isBanned = await botBans.findOne({ id: Msg.author.id });
+                console.log(isBanned);
+
+                if (isBanned) {
+                    return void Msg.reply("You are banned from using NS Utility. No commands can be ran.");
                 }
 
                 /*
