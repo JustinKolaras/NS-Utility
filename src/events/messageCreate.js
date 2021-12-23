@@ -52,11 +52,7 @@ module.exports = {
                 }
 
                 const isBanned = await botBans.findOne({ id: Msg.author.id });
-                console.log(isBanned);
-
-                if (isBanned) {
-                    return void Msg.reply("You are banned from using NS Utility. No commands can be ran.");
-                }
+                if (isBanned) return;
 
                 /*
                  Using try/catch blocks instead of functions so I can return on outermost scope.
