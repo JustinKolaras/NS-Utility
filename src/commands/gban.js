@@ -35,10 +35,6 @@ class Command {
         let playerId;
         let usingDiscord = false;
 
-        if (!playerName || !reason) {
-            return void Msg.reply("**Syntax Error:** `;gban <username | @user | userId> <reason>`");
-        }
-
         // Discord Mention Support
         const attributes = await util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
@@ -49,6 +45,10 @@ class Command {
             } else {
                 return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
+        }
+
+        if (!playerName || !reason) {
+            return void Msg.reply("**Syntax Error:** `;gban <username | @user | userId> <reason>`");
         }
 
         if (!usingDiscord) {

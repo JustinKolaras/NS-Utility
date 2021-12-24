@@ -33,11 +33,7 @@ class Utility {
         const t = config.permissions;
         let highestPerm;
 
-        // prettier-ignore
-        if (!t) 
-            return Promise.reject(
-                new Error("permissions table is undefined or null")
-            );
+        if (!t) throw "cannot reference permissions table";
 
         for (const k in t) {
             if (this.hasRole(member, t[k])) {
@@ -264,6 +260,8 @@ class Utility {
     };
 
     getUserAttributes = async (guild, str) => {
+        if (!str) return { success: false };
+
         str = str.toString();
 
         let match = str.match(/(\d+)/);
