@@ -292,6 +292,24 @@ class Utility {
             return { success: false };
         }
     };
+
+    isReputableChannel = (channelId) => {
+        for (const c of config.reputationChannels) {
+            if (channelId == c) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    isOfType = (url, ...types) => {
+        for (const type of types) {
+            if (url.indexOf(type, url.length - type.length) !== -1) {
+                return true;
+            }
+        }
+        return false;
+    };
 }
 
 module.exports = new Utility();

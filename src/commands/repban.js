@@ -18,31 +18,31 @@ class Command {
         const attributes = await util.getUserAttributes(Msg.guild, args[1]);
 
         if (!banType || !attributes.success) {
-            return void Msg.reply('**Syntax Error:** `;botban <"add" | "remove"> <@user | userId>`');
+            return void Msg.reply('**Syntax Error:** `;repban <"add" | "remove"> <@user | userId>`');
         }
 
         const database = mongoClient.db("main");
-        const botBans = database.collection("botBans");
+        const repBans = database.collection("repBans");
 
-        const currentStat = await botBans.findOne({ id: attributes.id });
+        const currentStat = await repBans.findOne({ id: attributes.id });
 
         if (banType === "add") {
             if (currentStat) {
-                return void Msg.reply(`This user is already banned from using NS Utility.`);
+                return void Msg.reply(`This user is already banned from gaining reputation.`);
             }
 
-            botBans
+            repBans
                 .insertOne({
                     id: attributes.id,
                 })
-                .then(() => Msg.reply(`Successfully banned user from using NS Utility.`))
+                .then(() => Msg.reply(`Successfully banned user from gaining reputation.`))
                 .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else if (banType === "remove") {
             if (!currentStat) {
-                return void Msg.reply(`This user is not already banned from using NS Utility.`);
+                return void Msg.reply(`This user is not already banned from gaining reputation.`);
             }
 
-            botBans
+            repBans
                 .deleteOne(currentStat)
                 .then(() => Msg.reply(`Successfully removed ban.`))
                 .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
@@ -52,9 +52,9 @@ class Command {
 
 module.exports = {
     class: new Command({
-        Name: "botban",
-        Description: "Bans a user from running commands on NS Utility.",
-        Usage: `;botban <"add" | "remove"> <@user | userId>`,
-        Permission: 7,
+        Name: "repban",
+        Description: "Bans and prohibits a user from attaining reputation.",
+        Usage: `;repban <"add" | "remove"> <@user | userId>`,
+        Permission: 5,
     }),
 };

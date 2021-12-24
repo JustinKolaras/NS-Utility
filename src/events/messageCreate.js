@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 
 const util = require("../modules/util");
 const config = require("../config.json");
+const repAlg = require(`../modules/reputation/algorithm`);
 
 const makeEmbed = (client, Msg, command) => {
     const user = Msg.member.user;
@@ -36,6 +37,10 @@ module.exports = {
 
         const database = mongoClient.db("main");
         const botBans = database.collection("botBans");
+
+        if (util.isReputableChannel(Msg.channel.id)) {
+            repAlg(client, Msg, mongoClient);
+        }
 
         // Command Handler
         if (!Msg.author.bot && Msg.content.startsWith(config.prefix)) {
