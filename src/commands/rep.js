@@ -19,14 +19,18 @@ class Command {
         let response;
         amount = currentStat?.reputationNum || 0;
 
-        if (amount < 20) {
+        if (amount < 1) {
             response = `:innocent: :innocent: Hello! The mighty kingdom of NS Reputation :crown: told me you have **${util.sep(
                 amount
             )}** reputation points in your bank today. That's not good.. :grimacing: :sleepy: :worried:`;
+        } else if (amount < 20) {
+            response = `:innocent: :innocent: Hello! The mighty kingdom of NS Reputation :crown: told me you have **${util.sep(
+                amount
+            )}** reputation points in your bank today. At least that's something..? :pray: :zany_face: :confounded:`;
         } else if (amount < 100) {
             response = `:innocent: :innocent: Hello! The mighty kingdom of NS Reputation :crown: told me you have **${util.sep(
                 amount
-            )}** reputation points in your bank today. Seems pretty average. :grin: :pray:`;
+            )}** reputation points in your bank today. Seems pretty average. :star_struck: :astonished: :stuck_out_tongue_closed_eyes: :stuck_out_tongue_closed_eyes:`;
         } else if (amount >= 100) {
             response = `:innocent: :innocent: Hello! The mighty kingdom of NS Reputation :crown: told me you have **${util.sep(
                 amount
