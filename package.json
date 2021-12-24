@@ -1,12 +1,12 @@
 {
     "name": "ns-utility",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "An application for the Next Saturday Discord server.",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "Justin (Aerosphia)",
+    "author": "Justin K.",
     "license": "GPL-2.0",
     "dependencies": {
         "axios": "^0.24.0",
