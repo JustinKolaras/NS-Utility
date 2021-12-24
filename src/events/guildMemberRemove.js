@@ -11,7 +11,16 @@ const moderatorConfig = {
 
 module.exports = {
     name: "guildMemberRemove",
-    execute(_, _1, member) {
+    async execute(_, mongoClient, member) {
+        const database = mongoClient.db("main");
+        const reputation = database.collection("reputation");
+
+        const currentStat = await reputation.findOne({ id: member.id });
+
+        if (currentStat) {
+            mongoClient.deleteOne(currentStat).catch(console.error);
+        }
+
         if (util.getPerm(member) >= moderatorConfig.onPermission) {
             util.getChannel(member.guild, moderatorConfig.channelId).send(
                 `<@&788877981874389014>, **${member.displayName} (${member.user.tag}) (Mod Team)** has left the server. They could have been kicked or banned.`
