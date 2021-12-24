@@ -28,6 +28,10 @@ class Command {
         let playerId;
         let usingDiscord = false;
 
+        if (!playerName || args.length > 1) {
+            return void Msg.reply("**Syntax Error:** `;isvip <username | @user | userId>`");
+        }
+
         // Discord Mention Support
         const attributes = await util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
@@ -38,10 +42,6 @@ class Command {
             } else {
                 return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
-        }
-
-        if (!playerName || args.length > 1) {
-            return void Msg.reply("**Syntax Error:** `;isvip <username | @user | userId>`");
         }
 
         if (!usingDiscord) {
