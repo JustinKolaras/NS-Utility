@@ -33,9 +33,9 @@ class Command {
 
 module.exports = {
     class: new Command({
-        Name: "botban",
-        Description: "Bans a user from running commands on NS Utility.",
-        Usage: `;botban <"add" | "remove"> <@user | userId>`,
-        Permission: 7,
+        Name: "rep",
+        Description: "Outputs the command executor's reputation points.",
+        Usage: `;rep`,
+        Permission: 0,
     }),
 };
