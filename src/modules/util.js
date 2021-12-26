@@ -2,7 +2,6 @@ const config = require("../config.json");
 const fs = require("fs");
 const axios = require("axios");
 
-// Probably going to migrate utility outside of a class soon, and use another method of handling.
 class Utility {
     combine = (args, first, last) => {
         if (!last) last = Infinity;
