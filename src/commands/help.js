@@ -1,5 +1,5 @@
 const config = require("../config.json");
-const util = require("../modules/util");
+const util = require("../modules/Util");
 
 class Command {
     constructor(options) {
