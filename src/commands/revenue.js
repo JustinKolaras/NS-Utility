@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
-const util = require("../modules/util");
+const util = require("../modules/Util");
 
 class Command {
     constructor(options) {

@@ -1,4 +1,4 @@
-const util = require("../modules/util");
+const util = require("../modules/Util");
 
 const moderatorConfig = {
         channelId: "810717109427503174",
