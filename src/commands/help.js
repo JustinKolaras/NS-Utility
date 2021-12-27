@@ -1,5 +1,5 @@
 const config = require("../config.json");
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -14,8 +14,8 @@ class Command {
         const command = args[0];
 
         if (!command) {
-            const commandList = await util.getCommandList(Msg, `\`%c\` - **%d** [%p]`, true);
-            return void Msg.author
+            const commandList = await Util.getCommandList(Msg, `\`%c\` - **%d** [%p]`, true);
+            return Msg.author
                 .send(
                     // prettier-ignore
                     `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\nCommands above your permission level are hidden.\n\n${config.permissionIndex.join("\n")}\n\n${commandList}`
@@ -23,20 +23,20 @@ class Command {
                 .then(() => Msg.reply("Sent you a DM with information."))
                 .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));
         } else if ((command && args.length > 1) || command.toString().toLowerCase() === "help") {
-            return void Msg.reply("**Syntax Error:** `;help <?command>`");
+            return Msg.reply("**Syntax Error:** `;help <?command>`");
         }
 
-        let [success, result] = util.getLibrary(command);
+        let [success, result] = Util.getLibrary(command);
         if (!success) {
-            return void Msg.reply(result);
+            return Msg.reply(result);
         } else {
             if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= perm) {
-                return void Msg.reply(
+                return Msg.reply(
                     // prettier-ignore
                     `Command: \`${command.toLowerCase()}\` **[${result.class.Permission}]**\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`
                 );
             } else {
-                return void Msg.reply("You have insufficient permissions to get help on this command.");
+                return Msg.reply("You have insufficient permissions to get help on this command.");
             }
         }
     };

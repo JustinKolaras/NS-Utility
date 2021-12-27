@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -12,11 +12,11 @@ class Command {
     fn = async (Msg, Context, mongoClient) => {
         const args = Context.args;
 
-        const attributes = await util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         const amt = parseInt(args[1]);
 
         if (!attributes.success || !amt || typeof amt !== "number") {
-            return void Msg.reply("**Syntax Error:** `;repedit <@user | userId> <amt>`");
+            return Msg.reply("**Syntax Error:** `;repedit <@user | userId> <amt>`");
         }
 
         const database = mongoClient.db("main");
@@ -25,7 +25,7 @@ class Command {
         const currentStat = await reputation.findOne({ id: attributes.id });
 
         if (!currentStat) {
-            return void Msg.reply("This user needs at least some reputation to edit.");
+            return Msg.reply("This user needs at least some reputation to edit.");
         }
 
         reputation

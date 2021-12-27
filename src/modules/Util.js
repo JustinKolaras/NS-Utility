@@ -29,19 +29,21 @@ class Utility {
     };
 
     getPerm = async (member) => {
-        const t = config.permissions;
+        const permissionsTable = config.permissions;
         let highestPerm;
 
-        if (!t) throw "cannot reference permissions table";
-
-        for (const k in t) {
-            if (this.hasRole(member, t[k])) {
-                highestPerm = k;
-            }
+        if (!permissionsTable) {
+            throw new Error(`Util.getPerm: Could not reference permissions table.`);
         }
 
         if (member.id === config.ownerId) {
-            highestPerm = 7;
+            return 7;
+        }
+
+        for (const k in permissionsTable) {
+            if (this.hasRole(member, permissionsTable[k])) {
+                highestPerm = k;
+            }
         }
 
         return highestPerm === undefined ? -1 : parseInt(highestPerm);
@@ -241,7 +243,7 @@ class Utility {
             try {
                 userPermission = await this.getPerm(src.member);
             } catch (err) {
-                return void src.reply(
+                return src.reply(
                     `There was an error fetching permissions, so I couldn't display commands correctly.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
                 );
             }
@@ -306,6 +308,14 @@ class Utility {
             }
         }
         return false;
+    };
+
+    sendInChannel = async (client, guildId, channelId, toSend) => {
+        const guild = await this.getGuild(client, guildId);
+        const channel = await this.getChannel(guild, channelId);
+        channel.send(toSend).catch((err) => {
+            throw new Error(`Util.sendInChannel: Could not send message. Err: ${err}`);
+        });
     };
 }
 

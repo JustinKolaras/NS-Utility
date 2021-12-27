@@ -14,10 +14,10 @@ class Command {
             logo = await noblox.getLogo(config.group);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("There was an error. <@360239086117584906>");
+            return Msg.reply("There was an error. <@360239086117584906>");
         }
 
-        return void Msg.reply(logo);
+        return Msg.reply(logo);
     };
 }
 
