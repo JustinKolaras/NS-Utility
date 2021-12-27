@@ -22,7 +22,7 @@ const makeEmbed = (client, Msg, command) => {
             client,
             "761468835600924733",
             config.logChannel,
-            `There was an issue generating a log. <@360239086117584906>\n\nAuthor: **${tag}**\nCommand: \`${command}\`\nMessage: *${Msg.content}*`
+            `There was an issue generating a log. <@360239086117584906>\n\nAuthor: **${Tag}**\nCommand: \`${command}\`\nMessage: *${Msg.content}*`
         );
     }
 };
