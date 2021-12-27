@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -18,12 +18,12 @@ class Command {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
         const playerName = args[0];
-        const errMessage = util.makeError("There was an issue while trying to gather information on that user.", [
+        const errMessage = Util.makeError("There was an issue while trying to gather information on that user.", [
             "Your argument does not match a valid username.",
             "You mistyped the username.",
         ]);
@@ -33,19 +33,19 @@ class Command {
         let usingDiscord = false;
 
         // Discord Mention Support
-        const attributes = await util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
-            const rblxInfo = await util.getRobloxAccount(attributes.id);
+            const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
         if (!playerName || args.length > 1) {
-            return void Msg.reply("**Syntax Error:** `;info <username | @user | userId>`");
+            return Msg.reply("**Syntax Error:** `;info <username | @user | userId>`");
         }
 
         if (!usingDiscord) {
@@ -53,7 +53,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return void Msg.reply(errMessage);
+                return Msg.reply(errMessage);
             }
         }
 
@@ -61,14 +61,14 @@ class Command {
             info = await noblox.getPlayerInfo({ userId: playerId });
         } catch (err) {
             console.error(err);
-            return void Msg.reply(errMessage);
+            return Msg.reply(errMessage);
         }
 
         try {
             info["premium"] = await noblox.getPremium(playerId);
         } catch (err) {
             console.error(err);
-            return void Msg.reply(errMessage);
+            return Msg.reply(errMessage);
         }
 
         try {
@@ -76,7 +76,7 @@ class Command {
             info["ns_rank"] = await noblox.getRole(config.group, rank);
         } catch (err) {
             console.error(err);
-            return void Msg.reply(errMessage);
+            return Msg.reply(errMessage);
         }
 
         let messageEmbed;
@@ -134,10 +134,10 @@ class Command {
                 .setFooter(`Requested by ${Msg.member.user.tag}`);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("There was an issue generating the info embed; this user might not exist.");
+            return Msg.reply("There was an issue generating the info embed; this user might not exist.");
         }
 
-        return void Msg.channel.send({ content: ":mag_right: :newspaper2: Got some intel..", embeds: [messageEmbed] });
+        return Msg.channel.send({ content: ":mag_right: :newspaper2: Got some intel..", embeds: [messageEmbed] });
     };
 }
 

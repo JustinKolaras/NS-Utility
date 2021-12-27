@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -18,18 +18,18 @@ class Command {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
-        let revType = util.upFirst(
-            util.verify(args[0], (self) => {
-                return util.isValid(self || ".", false, "day", "week", "month", "year")[0];
+        let revType = Util.upFirst(
+            Util.verify(args[0], (self) => {
+                return Util.isValid(self || ".", false, "day", "week", "month", "year")[0];
             })
         );
 
         if (!revType) {
-            return void Msg.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
+            return Msg.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
         }
 
         let revenueSummary;
@@ -37,18 +37,18 @@ class Command {
             revenueSummary = await noblox.getGroupRevenueSummary(config.group, revType);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("There was an issue while trying to gather revenue statistics.");
+            return Msg.reply("There was an issue while trying to gather revenue statistics.");
         }
 
         try {
             revenueSummary["currentFunds"] = await noblox.getGroupFunds(config.group);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("There was an error while trying to gather group funds.");
+            return Msg.reply("There was an error while trying to gather group funds.");
         }
 
         for (const k in revenueSummary) {
-            revenueSummary[k] = util.sep(revenueSummary[k]);
+            revenueSummary[k] = Util.sep(revenueSummary[k]);
         }
 
         let messageEmbed;
@@ -73,10 +73,10 @@ class Command {
                 .setFooter(`Requested by ${Msg.member.user.tag}`);
         } catch (err) {
             console.error(err);
-            return void Msg.channel.send("There was an issue generating the revenue embed.");
+            return Msg.channel.send("There was an issue generating the revenue embed.");
         }
 
-        return void Msg.author
+        return Msg.author
             .send({ embeds: [messageEmbed] })
             .then(() => Msg.reply("Sent you a DM with information."))
             .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));

@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -16,11 +16,11 @@ class Command {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
-        const parsedText = util.combine(args, 0);
+        const parsedText = Util.combine(args, 0);
 
         noblox
             .shout(config.group, parsedText || "")

@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -12,13 +12,13 @@ class Command {
     fn = async (Msg, Context, mongoClient) => {
         const args = Context.args;
 
-        const banType = util.verify(args[0], (self) => {
-            return util.isValid(self || ".", false, "add", "remove")[0];
+        const banType = Util.verify(args[0], (self) => {
+            return Util.isValid(self || ".", false, "add", "remove")[0];
         });
-        const attributes = await util.getUserAttributes(Msg.guild, args[1]);
+        const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
 
         if (!banType || !attributes.success) {
-            return void Msg.reply('**Syntax Error:** `;repban <"add" | "remove"> <@user | userId>`');
+            return Msg.reply('**Syntax Error:** `;repban <"add" | "remove"> <@user | userId>`');
         }
 
         const database = mongoClient.db("main");
@@ -28,7 +28,7 @@ class Command {
 
         if (banType === "add") {
             if (currentStat) {
-                return void Msg.reply(`This user is already banned from gaining reputation.`);
+                return Msg.reply(`This user is already banned from gaining reputation.`);
             }
 
             repBans
@@ -39,7 +39,7 @@ class Command {
                 .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else if (banType === "remove") {
             if (!currentStat) {
-                return void Msg.reply(`This user is not already banned from gaining reputation.`);
+                return Msg.reply(`This user is not already banned from gaining reputation.`);
             }
 
             repBans

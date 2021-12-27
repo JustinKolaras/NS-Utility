@@ -6,7 +6,7 @@ class Command {
     }
 
     fn = async (Msg) => {
-        return void Msg.reply(
+        return Msg.reply(
             `:ping_pong: Pong! Latency of *${Date.now() - Msg.createdTimestamp}ms/${Number.parseFloat((Date.now() - Msg.createdTimestamp) / 1000).toFixed(4)}s*`
         );
     };

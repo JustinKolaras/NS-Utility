@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -16,13 +16,13 @@ class Command {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
         const playerName = args[0];
-        const newRank = util.combine(args, 1);
-        const errMessage = util.makeError("There was an issue while trying to change the rank of that user.", [
+        const newRank = Util.combine(args, 1);
+        const errMessage = Util.makeError("There was an issue while trying to change the rank of that user.", [
             "Your argument does not match a valid username.",
             "Your argument does not match a valid role-name (role names are case sensitive!)",
             "You mistyped the username and/or role-name.",
@@ -33,19 +33,19 @@ class Command {
         let usingDiscord = false;
 
         // Discord Mention Support
-        const attributes = await util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
-            const rblxInfo = await util.getRobloxAccount(attributes.id);
+            const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
         if (!playerName || args.length > 2) {
-            return void Msg.reply("**Syntax Error:** `;rank <username | @user | userId> <role-name>`");
+            return Msg.reply("**Syntax Error:** `;rank <username | @user | userId> <role-name>`");
         }
 
         if (!usingDiscord) {
@@ -53,7 +53,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return void Msg.reply(errMessage);
+                return Msg.reply(errMessage);
             }
         }
 
@@ -62,11 +62,11 @@ class Command {
             parsedRank = await noblox.getRole(config.group, newRank);
         } catch (err) {
             console.error(err);
-            return void Msg.reply(errMessage);
+            return Msg.reply(errMessage);
         }
 
         if (parsedRank.rank >= 15) {
-            return void Msg.reply("Rank provided is too high. Please do this manually.");
+            return Msg.reply("Rank provided is too high. Please do this manually.");
         }
 
         noblox

@@ -40,10 +40,10 @@ class Command {
         ];
 
         if (!args[0]) {
-            return void Msg.reply("**Syntax Error:** `;8ball <question>`");
+            return Msg.reply("**Syntax Error:** `;8ball <question>`");
         }
 
-        return void Msg.reply(`:8ball: ${results[Math.floor(Math.random() * results.length)]}`);
+        return Msg.reply(`:8ball: ${results[Math.floor(Math.random() * results.length)]}`);
     };
 }
 

@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 class Command {
     constructor(options) {
@@ -16,15 +16,15 @@ class Command {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return void Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
         const playerName = args[0];
-        const reason = util.verify(util.combine(args, 1), (self) => {
+        const reason = Util.verify(Util.combine(args, 1), (self) => {
             return typeof self === "string";
         });
-        const errMessage = util.makeError("There was an issue while trying to gban that user.", [
+        const errMessage = Util.makeError("There was an issue while trying to gban that user.", [
             "Your argument does not match a valid username.",
             "You mistyped the username.",
         ]);
@@ -36,19 +36,19 @@ class Command {
         let usingDiscord = false;
 
         // Discord Mention Support
-        const attributes = await util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
-            const rblxInfo = await util.getRobloxAccount(attributes.id);
+            const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return void Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
         if (!playerName || !reason) {
-            return void Msg.reply("**Syntax Error:** `;gban <username | @user | userId> <reason>`");
+            return Msg.reply("**Syntax Error:** `;gban <username | @user | userId> <reason>`");
         }
 
         if (!usingDiscord) {
@@ -56,7 +56,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return void Msg.reply(errMessage);
+                return Msg.reply(errMessage);
             }
         }
 
@@ -65,18 +65,18 @@ class Command {
             rankId = await noblox.getRankInGroup(config.group, playerId);
         } catch (err) {
             console.error(err);
-            return void Msg.reply(errMessage);
+            return Msg.reply(errMessage);
         }
 
         if (rankId >= 252) {
-            return void Msg.reply("Invalid rank! You can only group-ban members ranked below **Moderator**.");
+            return Msg.reply("Invalid rank! You can only group-ban members ranked below **Moderator**.");
         }
 
         const currentStat = await groupBans.findOne({ id: playerId });
 
         if (currentStat) {
             const gbReason = currentStat.reason;
-            return void Msg.reply(`This user is already banned: **${gbReason}**`);
+            return Msg.reply(`This user is already banned: **${gbReason}**`);
         }
 
         let couldExile = true;

@@ -1,4 +1,4 @@
-const util = require("../modules/Util");
+const Util = require("../modules/Util");
 
 const moderatorConfig = {
         channelId: "810717109427503174",
@@ -15,18 +15,18 @@ module.exports = {
         const database = mongoClient.db("main");
         const reputation = database.collection("reputation");
 
-        const currentStat = await reputation.findOne({ id: member.id });
+        const hasReputation = await reputation.findOne({ id: member.id });
 
-        if (currentStat) {
+        if (hasReputation) {
             mongoClient.deleteOne(currentStat).catch(console.error);
         }
 
-        if (util.getPerm(member) >= moderatorConfig.onPermission) {
-            util.getChannel(member.guild, moderatorConfig.channelId).send(
+        if (Util.getPerm(member) >= moderatorConfig.onPermission) {
+            Util.getChannel(member.guild, moderatorConfig.channelId).send(
                 `<@&788877981874389014>, **${member.displayName} (${member.user.tag}) (Mod Team)** has left the server. They could have been kicked or banned.`
             );
-        } else if (util.hasRole(member, designerConfig.roleId)) {
-            util.getChannel(member.guild, designerConfig.channelId).send(
+        } else if (Util.hasRole(member, designerConfig.roleId)) {
+            Util.getChannel(member.guild, designerConfig.channelId).send(
                 `@everyone, **${member.displayName} (${member.user.tag}) (Design Team)** has left the server. They could have been kicked or banned.`
             );
         }

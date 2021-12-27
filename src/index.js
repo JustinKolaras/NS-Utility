@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: "src/.env" });
 
 const Discord = require("discord.js");
 const noblox = require("noblox.js");
@@ -40,7 +40,7 @@ const client = new Client({
 
 // Event Handler
 (async () => {
-    const files = fs.readdirSync(`../src/events/`).filter((file) => file.endsWith(".js"));
+    const files = fs.readdirSync("./src/events/").filter((file) => file.endsWith(".js"));
     for (const file of files) {
         const event = require(`../src/events/${file}`);
         if (event.once) {
@@ -54,7 +54,7 @@ const client = new Client({
 // Special Event Handler
 (async () => {
     await noblox.setCookie(process.env.cookie).catch(console.error);
-    const onJoinRequestHandle = require(`../src/events/onJoinRequestHandle`);
+    const onJoinRequestHandle = require("../src/events/onJoinRequestHandle");
 
     noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(mongoClient, ...args));
 })().catch(console.error);
