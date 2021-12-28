@@ -36,7 +36,7 @@ module.exports = {
         const botBans = database.collection("botBans");
 
         if (Util.isReputableChannel(Msg.channel.id)) {
-            repAlg(client, Msg, mongoClient);
+            if (!Msg.member.user.bot) repAlg(client, Msg, mongoClient);
         }
 
         // Command Handler
