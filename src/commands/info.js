@@ -137,7 +137,7 @@ class Command {
             return Msg.reply("There was an issue generating the info embed; this user might not exist.");
         }
 
-        return Msg.channel.send({ content: ":mag_right: :newspaper2: Got some intel..", embeds: [messageEmbed] });
+        return Msg.channel.send({ content: `<@${Msg.author.id}>,`, embeds: [messageEmbed] });
     };
 }
 
