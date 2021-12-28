@@ -213,8 +213,7 @@ class Utility {
     };
 
     verify = (define, func) => {
-        const returnStatement = func(define);
-        return returnStatement ? define : null;
+        return func(define) ? define : null;
     };
 
     /*
@@ -225,7 +224,7 @@ class Utility {
     */
     getCommandList = async (src, format, usableOnly) => {
         const cmdArray = [];
-        const commandFiles = fs.readdirSync(`./commands/`).filter((file) => file.endsWith(".js"));
+        const commandFiles = fs.readdirSync("./src/commands").filter((file) => file.endsWith(".js"));
 
         const parseString = (str, context) => {
             str = str.replaceAll("%c", context.Name);
