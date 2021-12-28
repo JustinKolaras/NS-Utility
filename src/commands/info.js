@@ -83,6 +83,12 @@ class Command {
         try {
             const joinDate = new Date(info.joinDate).toDateString();
             let oldNames = info.oldNames && info.oldNames.length > 0 ? info.oldNames.join(", ") : "None";
+            let pastUsernamesOverflow = false;
+
+            if (oldNames.length > 1024) {
+                oldNames = oldNames.substring(0, 1021) + "...";
+                pastUsernamesOverflow = true;
+            }
 
             messageEmbed = new MessageEmbed()
                 .setColor("#497ec0")
@@ -128,7 +134,7 @@ class Command {
                         value: playerId.toString(),
                         inline: true,
                     },
-                    { name: "Past Names", value: oldNames }
+                    { name: `Past Names ${pastUsernamesOverflow ? "[Overflow]" : ""}`, value: oldNames }
                 )
                 .setTimestamp()
                 .setFooter(`Requested by ${Msg.member.user.tag}`);
