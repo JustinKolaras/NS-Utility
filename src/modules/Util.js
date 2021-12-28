@@ -91,8 +91,8 @@ class Utility {
     };
 
     makeError = (prefix, errors) => {
-        for (const i in errors) {
-            errors[i] = `**- ${errors[i]}**`;
+        for (const error in errors) {
+            errors[error] = `**- ${errors[error]}**`;
         }
         errors = errors.join("\n");
         return `${prefix}\n${errors}`;
