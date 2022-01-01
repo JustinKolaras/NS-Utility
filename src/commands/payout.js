@@ -80,7 +80,7 @@ class Command {
                     .then(() => {
                         collector.stop();
                         return main.edit({
-                            content: `<@${Msg.member.id}>, Payed out user successfully.`,
+                            content: `<@${Msg.member.id}>, Paid out user successfully.`,
                             components: [],
                         });
                     })
