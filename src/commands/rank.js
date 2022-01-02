@@ -69,6 +69,18 @@ class Command {
             return Msg.reply("Rank provided is too high. Please do this manually.");
         }
 
+        let rankId;
+        try {
+            rankId = await noblox.getRankInGroup(config.group, playerId);
+        } catch (err) {
+            console.error(err);
+            return Msg.reply(errMessage);
+        }
+
+        if (rankId >= 252) {
+            return Msg.reply("Invalid rank! You can only change the rank of members ranked below **Moderator**.");
+        }
+
         noblox
             .setRank(config.group, playerId, newRank)
             .then(() => Msg.reply("Changed user rank successfully."))
