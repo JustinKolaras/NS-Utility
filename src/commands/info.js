@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { MessageEmbed } = require("discord.js");
+const { MessageActionRow, MessageButton } = require("discord.js");
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
@@ -22,6 +23,7 @@ class Command {
         }
 
         const args = Context.args;
+        const executorPerm = Context.clientPerm;
         const playerName = args[0];
         const errMessage = Util.makeError("There was an issue while trying to gather information on that user.", [
             "Your argument does not match a valid username.",
@@ -137,7 +139,7 @@ class Command {
                     { name: `Past Names ${pastUsernamesOverflow ? "[Overflow]" : ""}`, value: oldNames }
                 )
                 .setTimestamp()
-                .setFooter(`Requested by ${Msg.member.user.tag}`);
+                .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
             return Msg.reply("There was an issue generating the info embed; this user might not exist.");

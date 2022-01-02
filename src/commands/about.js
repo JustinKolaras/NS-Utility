@@ -57,7 +57,7 @@ class Command {
                     }
                 )
                 .setTimestamp()
-                .setFooter(`Requested by ${Msg.member.user.tag}`);
+                .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
             return Msg.channel.send("There was an issue generating the embed.");
