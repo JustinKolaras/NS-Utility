@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const { MessageEmbed } = require("discord.js");
-const { MessageActionRow, MessageButton } = require("discord.js");
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
