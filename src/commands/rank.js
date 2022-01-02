@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const { MessageActionRow, MessageSelectMenu } = require("discord.js");
+
 const noblox = require("noblox.js");
 const config = require("../config.json");
 const Util = require("../modules/Util");
@@ -21,7 +23,6 @@ class Command {
 
         const args = Context.args;
         const playerName = args[0];
-        const newRank = Util.combine(args, 1);
         const errMessage = Util.makeError("There was an issue while trying to change the rank of that user.", [
             "Your argument does not match a valid username.",
             "Your argument does not match a valid role-name (role names are case sensitive!)",
@@ -44,8 +45,8 @@ class Command {
             }
         }
 
-        if (!playerName || args.length > 2) {
-            return Msg.reply("**Syntax Error:** `;rank <username | @user | userId> <role-name>`");
+        if (!playerName) {
+            return Msg.reply("**Syntax Error:** `;rank <username | @user | userId>`");
         }
 
         if (!usingDiscord) {
@@ -55,18 +56,6 @@ class Command {
                 console.error(err);
                 return Msg.reply(errMessage);
             }
-        }
-
-        let parsedRank;
-        try {
-            parsedRank = await noblox.getRole(config.group, newRank);
-        } catch (err) {
-            console.error(err);
-            return Msg.reply(errMessage);
-        }
-
-        if (parsedRank.rank >= 15) {
-            return Msg.reply("Rank provided is too high. Please do this manually.");
         }
 
         let rankId;
@@ -81,10 +70,72 @@ class Command {
             return Msg.reply("Invalid rank! You can only change the rank of members ranked below **Moderator**.");
         }
 
-        noblox
-            .setRank(config.group, playerId, newRank)
-            .then(() => Msg.reply("Changed user rank successfully."))
-            .catch(() => Msg.reply(errMessage));
+        let roles;
+        const discordReadableRoles = [];
+        try {
+            roles = await noblox.getRoles(config.group);
+        } catch (err) {
+            console.error(err);
+            return Msg.reply(errMessage);
+        }
+
+        for (const role of roles) {
+            if (role.name === "Guest") continue;
+            discordReadableRoles.push({
+                label: role.name,
+                description: `ct. ${role.memberCount} [${role.id}]`,
+                value: role.name,
+            });
+        }
+
+        const row = new MessageActionRow().addComponents(
+            new MessageSelectMenu().setCustomId("selectRank").setPlaceholder("Select rank..").addOptions(discordReadableRoles)
+        );
+
+        const filter = (i) => i.member.id === Msg.author.id;
+        const collector = Msg.channel.createMessageComponentCollector({
+            filter,
+            time: 30000,
+        });
+
+        const main = await Msg.channel.send({
+            content: `<@${Msg.member.id}>, Role to appoint? Select from the dropdown below.\nThis command will cancel in 30 seconds if no option is selected.`,
+            components: [row],
+        });
+
+        collector.on("collect", async (i) => {
+            if (i.customId === "selectRank") {
+                collector.stop();
+
+                const newRank = i.values[0];
+
+                let parsedRank;
+                try {
+                    parsedRank = await noblox.getRole(config.group, newRank);
+                } catch (err) {
+                    console.error(err);
+                    return Msg.reply(errMessage);
+                }
+
+                if (parsedRank.rank >= 15) {
+                    return main.edit({ content: `<@${Msg.member.id}>, Rank provided is too high. Please do this manually.`, components: [] });
+                }
+
+                noblox
+                    .setRank(config.group, playerId, newRank)
+                    .then(() => main.edit({ content: `<@${Msg.member.id}>, Successfully ranked user.`, components: [] }))
+                    .catch(() => main.edit({ content: errMessage, components: [] }));
+            }
+        });
+
+        collector.on("end", async (_, reason) => {
+            if (reason === "time") {
+                return main.edit({
+                    content: `<@${Msg.member.id}>, Cancelled command execution.`,
+                    components: [],
+                });
+            }
+        });
     };
 }
 
@@ -92,7 +143,7 @@ module.exports = {
     class: new Command({
         Name: "rank",
         Description: "Changes a user's rank in the Roblox group.",
-        Usage: ";rank <username | @user | userId> <role-name>",
+        Usage: ";rank <username | @user | userId>",
         Permission: 5,
     }),
 };
