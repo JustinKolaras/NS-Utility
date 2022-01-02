@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { MessageEmbed } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
 const config = require("../config.json");
@@ -93,9 +93,8 @@ class Command {
 
             messageEmbed = new MessageEmbed()
                 .setColor("#497ec0")
-                .setTitle(info.username + " (" + info.displayName + ")")
+                .setTitle(`${info.username} ${info.displayName !== info.username ? `(${info.displayName})` : ""}`)
                 .setThumbnail(`https://www.roblox.com/avatar-thumbnail/image?userId=${playerId}&width=420&height=420&format=png`)
-                .setURL(`https://roblox.com/users/${playerId}/profile`)
                 .setDescription(info.blurb)
                 .addFields(
                     {
@@ -144,7 +143,11 @@ class Command {
             return Msg.reply("There was an issue generating the info embed; this user might not exist.");
         }
 
-        return Msg.channel.send({ content: `<@${Msg.author.id}>,`, embeds: [messageEmbed] });
+        const row = new MessageActionRow().addComponents(
+            new MessageButton().setLabel("Profile").setStyle("LINK").setURL(`https://roblox.com/users/${playerId}/profile`)
+        );
+
+        return Msg.reply({ embeds: [messageEmbed], components: [row] });
     };
 }
 
