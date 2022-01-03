@@ -104,7 +104,7 @@ class Command {
             components: [row],
         });
 
-        collector.on("collect", async (i) => {
+        collector.on("collect", (i) => {
             if (i.customId === "selectRole") {
                 collector.stop();
 
@@ -115,7 +115,7 @@ class Command {
             }
         });
 
-        collector.on("end", async (_, reason) => {
+        collector.on("end", (_, reason) => {
             if (reason === "time") {
                 return main.edit({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
