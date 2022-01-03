@@ -89,7 +89,7 @@ class Command {
         }
 
         const row = new MessageActionRow().addComponents(
-            new MessageSelectMenu().setCustomId("selectRank").setPlaceholder("Select rank..").addOptions(discordReadableRoles)
+            new MessageSelectMenu().setCustomId("selectRole").setPlaceholder("Select role..").addOptions(discordReadableRoles)
         );
 
         const filter = (i) => i.member.id === Msg.author.id;
@@ -104,7 +104,7 @@ class Command {
         });
 
         collector.on("collect", async (i) => {
-            if (i.customId === "selectRank") {
+            if (i.customId === "selectRole") {
                 collector.stop();
 
                 const newRank = i.values[0];
