@@ -46,7 +46,7 @@ module.exports = {
 
             const [success, result] = Util.getLibrary(command);
             if (success) {
-                if (config.restrictUsage && Msg.guild.id === "761468835600924733") {
+                if (config.restrictUsage === true && Msg.guild.id === "761468835600924733") {
                     return Msg.reply(
                         `You cannot run commands here at this time.\nThis is usually due to heavy maintenance. If you see this warning for an extended period of time, contact **${config.developerTag}**.`
                     );

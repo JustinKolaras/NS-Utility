@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const Util = require("../modules/Util");
 
 class Command {
@@ -23,7 +25,11 @@ class Command {
             const toEvaluate = Util.combine(args, 0);
             const evaled = eval(toEvaluate);
 
-            const cleaned = await Util.clean(evaled);
+            let cleaned = await Util.clean(evaled);
+            cleaned = cleaned.replaceAll(process.env.token, "%REDACTED_TOKEN%");
+            cleaned = cleaned.replaceAll(process.env.cookie, "%REDACTED_COOKIE%");
+            cleaned = cleaned.replaceAll(process.env.mongoURI, "%REDACTED_MONGO-URI%");
+
             return msg.channel.send(
                 `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${Date.now() - msg.createdTimestamp}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
             );
