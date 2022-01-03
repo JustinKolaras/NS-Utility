@@ -1,7 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
 const Util = require("../modules/Util");
-// const config = require("../config.json");
 const repAlg = require(`../modules/reputation/algorithm`);
 
 const makeEmbed = (client, Msg, command) => {

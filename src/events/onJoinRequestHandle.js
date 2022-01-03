@@ -1,5 +1,4 @@
 const noblox = require("noblox.js");
-// const config = require("../config.json");
 
 module.exports = async (mongoClient, data) => {
     const database = mongoClient.db("main");

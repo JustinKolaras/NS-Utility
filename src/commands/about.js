@@ -1,7 +1,5 @@
 const { MessageEmbed } = require("discord.js");
 
-// const config = require("../config.json");
-
 class Command {
     constructor(options) {
         for (const k in options) {

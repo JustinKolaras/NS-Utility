@@ -2,7 +2,6 @@ require("dotenv").config({ path: "src/.env" });
 
 const Discord = require("discord.js");
 const noblox = require("noblox.js");
-// const config = require("./config.json");
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const yaml = require("js-yaml");
