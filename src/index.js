@@ -2,9 +2,14 @@ require("dotenv").config({ path: "src/.env" });
 
 const Discord = require("discord.js");
 const noblox = require("noblox.js");
-const config = require("./config.json");
+// const config = require("./config.json");
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
+const yaml = require("js-yaml");
+
+const yamlFileContents = fs.readFileSync("./src/config.yaml", "utf8");
+
+global.config = yaml.load(yamlFileContents);
 
 const mongoClient = new MongoClient(
     process.env.mongoURI,
