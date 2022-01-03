@@ -59,7 +59,7 @@ class Command {
             new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER")
         );
 
-        Msg.delete();
+        Msg.delete().catch(() => {});
 
         const filter = (i) => i.member.id === Msg.author.id;
         const collector = Msg.channel.createMessageComponentCollector({
@@ -67,9 +67,13 @@ class Command {
             time: 30000,
         });
 
+        let msgContent = `<@%ID>, Are you sure you want to payout **R$%AMT** to **%NAME**? **This action is stricly irreversible.**\nThis command will cancel in 30 seconds if no option is selected.`;
+        msgContent = msgContent.replace("%ID", Msg.member.id);
+        msgContent = msgContent.replace("%AMT", Util.sep(amt));
+        msgContent = msgContent.replace("%NAME", playerName);
+
         const main = await Msg.channel.send({
-            // prettier-ignore
-            content: `<@${Msg.member.id}>, Are you sure you want to payout **R$${Util.sep(amt)}** to **${playerName}**? **This action is stricly irreversible.**`,
+            content: msgContent,
             components: [row],
         });
 
