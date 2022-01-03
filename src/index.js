@@ -1,6 +1,6 @@
 require("dotenv").config({ path: "src/.env" });
 
-const Discord = require("discord.js");
+const { Client, Intents } = require("discord.js");
 const noblox = require("noblox.js");
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
@@ -18,8 +18,7 @@ const mongoClient = new MongoClient(
     { keepAlive: 1 }
 );
 
-const { Client, Intents } = Discord;
-const client = new Client({
+const discordClient = new Client({
     // prettier-ignore
     intents: [
         Intents.FLAGS.GUILDS, 
@@ -48,9 +47,9 @@ const client = new Client({
     for (const file of files) {
         const event = require(`../src/events/${file}`);
         if (event.once) {
-            client.once(event.name, (...args) => event.execute(client, mongoClient, ...args));
+            discordClient.once(event.name, (...args) => event.execute(discordClient, mongoClient, ...args));
         } else {
-            client.on(event.name, (...args) => event.execute(client, mongoClient, ...args));
+            discordClient.on(event.name, (...args) => event.execute(discordClient, mongoClient, ...args));
         }
     }
 })().catch(console.error);
@@ -63,4 +62,4 @@ const client = new Client({
     noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(mongoClient, ...args));
 })().catch(console.error);
 
-void client.login(process.env.token);
+void discordClient.login(process.env.token);
