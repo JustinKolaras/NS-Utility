@@ -81,9 +81,10 @@ class Command {
 
         for (const role of roles) {
             if (role.name === "Guest") continue;
+            if (role.rank >= 15) continue;
             discordReadableRoles.push({
                 label: role.name,
-                description: `ct. ${role.memberCount} [${role.id}]`,
+                description: `Group Roleset [${role.id}]`,
                 value: role.name,
             });
         }
@@ -107,22 +108,8 @@ class Command {
             if (i.customId === "selectRole") {
                 collector.stop();
 
-                const newRank = i.values[0];
-
-                let parsedRank;
-                try {
-                    parsedRank = await noblox.getRole(config.group, newRank);
-                } catch (err) {
-                    console.error(err);
-                    return Msg.reply(errMessage);
-                }
-
-                if (parsedRank.rank >= 15) {
-                    return main.edit({ content: `<@${Msg.member.id}>, Rank provided is too high. Please do this manually.`, components: [] });
-                }
-
                 noblox
-                    .setRank(config.group, playerId, newRank)
+                    .setRank(config.group, playerId, i.values[0])
                     .then(() => main.edit({ content: `<@${Msg.member.id}>, Successfully ranked user.`, components: [] }))
                     .catch(() => main.edit({ content: errMessage, components: [] }));
             }
