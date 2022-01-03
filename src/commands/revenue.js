@@ -3,7 +3,6 @@ require("dotenv").config();
 const { MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
-// const config = require("../config.json");
 const Util = require("../modules/Util");
 
 class Command {

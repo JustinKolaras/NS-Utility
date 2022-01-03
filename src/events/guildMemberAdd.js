@@ -1,5 +1,3 @@
-// const config = require("../config.json");
-
 module.exports = {
     name: "guildMemberAdd",
     async execute(_, _1, member) {
