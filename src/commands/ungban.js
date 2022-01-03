@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const config = require("../config.json");
+// const config = require("../config.json");
 const Util = require("../modules/Util");
 
 class Command {
