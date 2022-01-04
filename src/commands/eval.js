@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-const { MongoClient } = require("mongodb");
 const Util = require("../modules/Util");
 
 class Command {
