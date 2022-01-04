@@ -9,7 +9,7 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context, mongoClient) => {
+    fn = async (Msg, Context) => {
         const args = Context.args;
 
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);

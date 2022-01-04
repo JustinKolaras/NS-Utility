@@ -52,8 +52,8 @@ class Utility {
         return member.roles.cache.has(roleId);
     };
 
-    getGuild = (client, guildId) => {
-        return client.guilds.fetch(`${guildId}`);
+    getGuild = (guildId) => {
+        return discordClient.guilds.fetch(`${guildId}`);
     };
 
     getChannel = (guild, channelId) => {
@@ -308,8 +308,8 @@ class Utility {
         return false;
     };
 
-    sendInChannel = async (client, guildId, channelId, toSend) => {
-        const guild = await this.getGuild(client, guildId);
+    sendInChannel = async (guildId, channelId, toSend) => {
+        const guild = await this.getGuild(discordClient, guildId);
         const channel = await this.getChannel(guild, channelId);
         channel.send(toSend).catch((err) => {
             throw new Error(`Util.sendInChannel: Could not send message. Err: ${err}`);

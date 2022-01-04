@@ -6,11 +6,9 @@ const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const yaml = require("js-yaml");
 
-const yamlFileContents = fs.readFileSync("./src/config.yaml", "utf8");
+global.config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
 
-global.config = yaml.load(yamlFileContents);
-
-const mongoClient = new MongoClient(
+global.mongoClient = new MongoClient(
     process.env.mongoURI,
     { useUnifiedTopology: true },
     { useNewUrlParser: true },
@@ -18,7 +16,7 @@ const mongoClient = new MongoClient(
     { keepAlive: 1 }
 );
 
-const discordClient = new Client({
+global.discordClient = new Client({
     // prettier-ignore
     intents: [
         Intents.FLAGS.GUILDS, 
@@ -47,9 +45,9 @@ const discordClient = new Client({
     for (const file of files) {
         const event = require(`../src/events/${file}`);
         if (event.once) {
-            discordClient.once(event.name, (...args) => event.execute(discordClient, mongoClient, ...args));
+            discordClient.once(event.name, (...args) => event.execute(...args));
         } else {
-            discordClient.on(event.name, (...args) => event.execute(discordClient, mongoClient, ...args));
+            discordClient.on(event.name, (...args) => event.execute(...args));
         }
     }
 })().catch(console.error);
@@ -59,7 +57,7 @@ const discordClient = new Client({
     await noblox.setCookie(process.env.cookie).catch(console.error);
     const onJoinRequestHandle = require("../src/events/onJoinRequestHandle");
 
-    noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(mongoClient, ...args));
+    noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(...args));
 })().catch(console.error);
 
 void discordClient.login(process.env.token);

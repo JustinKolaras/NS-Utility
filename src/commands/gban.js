@@ -10,7 +10,7 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context, mongoClient) => {
+    fn = async (Msg, Context) => {
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {

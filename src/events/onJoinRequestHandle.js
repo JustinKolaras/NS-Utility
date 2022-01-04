@@ -1,6 +1,6 @@
 const noblox = require("noblox.js");
 
-module.exports = async (mongoClient, data) => {
+module.exports = async (data) => {
     const database = mongoClient.db("main");
     const groupBans = database.collection("groupBans");
 

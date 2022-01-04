@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const { MongoClient } = require("mongodb");
 const Util = require("../modules/Util");
 
 class Command {
@@ -9,16 +10,21 @@ class Command {
         }
     }
 
-    fn = async (msg, Context) => {
+    fn = async (Msg, Context) => {
         // Secondary check..
-        if (msg.author.id !== "360239086117584906") {
-            return msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906>");
+        if (Msg.author.id !== "360239086117584906") {
+            return Msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906>");
         }
+
+        // Make aliases
+        const msg = Msg;
+        const client = discordClient;
+        const mongo = mongoClient;
 
         const args = Context.args;
 
         if (!args[0]) {
-            return msg.reply(`**Syntax Error:** \`;eval <code>\``);
+            return Msg.reply(`**Syntax Error:** \`;eval <code>\``);
         }
 
         try {
@@ -30,13 +36,12 @@ class Command {
             cleaned = cleaned.replaceAll(process.env.cookie, "%REDACTED_COOKIE%");
             cleaned = cleaned.replaceAll(process.env.mongoURI, "%REDACTED_MONGO-URI%");
 
-            return msg.channel.send(
-                `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${Date.now() - msg.createdTimestamp}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
+            return Msg.channel.send(
+                `<@${Msg.member.id}>, *Evaluation callback..* **Success:** [${Date.now() - Msg.createdTimestamp}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
             );
         } catch (err) {
-            return msg.channel.send(
-                // prettier-ignore
-                `<@${msg.member.id}>, *Evaluation callback..* **Error:** [${Date.now() - msg.createdTimestamp}ms]\n\`\`\`xl\n${err}\n\`\`\``
+            return Msg.channel.send(
+                `<@${Msg.member.id}>, *Evaluation callback..* **Error:** [${Date.now() - Msg.createdTimestamp}ms]\n\`\`\`xl\n${err}\n\`\`\``
             );
         }
     };
