@@ -9,7 +9,7 @@ class Command {
         }
     }
 
-    fn = async (Msg, _, mongoClient) => {
+    fn = async (Msg) => {
         const database = mongoClient.db("main");
         const reputation = database.collection("reputation");
 

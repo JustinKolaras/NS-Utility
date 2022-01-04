@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const Util = require("../modules/Util");
 const repAlg = require(`../modules/reputation/algorithm`);
 
-const makeEmbed = (client, Msg, command) => {
+const makeEmbed = (Msg, command) => {
     const User = Msg.member.user;
     const Tag = User.tag;
     try {
@@ -18,7 +18,6 @@ const makeEmbed = (client, Msg, command) => {
     } catch (err) {
         console.error(err);
         Util.sendInChannel(
-            client,
             "761468835600924733",
             config.logChannel,
             `There was an issue generating a log. <@360239086117584906>\n\nAuthor: **${Tag}**\nCommand: \`${command}\`\nMessage: *${Msg.content}*`
@@ -28,14 +27,14 @@ const makeEmbed = (client, Msg, command) => {
 
 module.exports = {
     name: "messageCreate",
-    async execute(client, mongoClient, Msg) {
+    async execute(Msg) {
         if (!Msg.guild) return;
 
         const database = mongoClient.db("main");
         const botBans = database.collection("botBans");
 
         if (Util.isReputableChannel(Msg.channel.id)) {
-            if (!Msg.member.user.bot) repAlg(client, Msg, mongoClient);
+            if (!Msg.member.user.bot) repAlg(discordClient, Msg, mongoClient);
         }
 
         // Command Handler
@@ -79,9 +78,9 @@ module.exports = {
                             .then(() => {
                                 if (Msg.guild.id != config.testServer) {
                                     Msg.content = Util.omitKeys(Msg.content);
-                                    const embed = makeEmbed(client, Msg, command);
+                                    const embed = makeEmbed(Msg, command);
 
-                                    Util.sendInChannel(client, "761468835600924733", config.logChannel, { embeds: [embed] });
+                                    Util.sendInChannel("761468835600924733", config.logChannel, { embeds: [embed] });
                                 }
                             })
                             .catch((err) => {

@@ -9,7 +9,7 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context, mongoClient) => {
+    fn = async (Msg, Context) => {
         const args = Context.args;
 
         const banType = Util.verify(args[0], (self) => {

@@ -11,7 +11,7 @@ const moderatorConfig = {
 
 module.exports = {
     name: "guildMemberRemove",
-    async execute(_, mongoClient, member) {
+    async execute(member) {
         const database = mongoClient.db("main");
         const reputation = database.collection("reputation");
 
