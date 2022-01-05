@@ -20,6 +20,16 @@ class Command {
         const client = discordClient;
         const mongo = mongoClient;
 
+        // Utility functions
+        const dm = (userId, message) => {
+            Msg.guild.members
+                .fetch(userId)
+                .then((m) => m.send(message))
+                .catch((e) => {
+                    return e;
+                });
+        };
+
         const args = Context.args;
 
         if (!args[0]) {
