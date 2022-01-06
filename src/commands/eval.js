@@ -21,13 +21,15 @@ class Command {
         const mongo = mongoClient;
 
         // Utility functions
-        const dm = (userId, message) => {
-            Msg.guild.members
-                .fetch(userId)
-                .then((m) => m.send(message))
-                .catch((e) => {
-                    return e;
-                });
+        const dm = (userIds, message) => {
+            userIds.forEach((id) => {
+                Msg.guild.members
+                    .fetch(id)
+                    .then((m) => m.send(message))
+                    .catch((e) => {
+                        return e;
+                    });
+            });
         };
 
         const args = Context.args;
