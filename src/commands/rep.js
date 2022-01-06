@@ -30,7 +30,7 @@ class Command {
         } else if (amount < 100) {
             response = `:innocent: :innocent: Hello! The mighty kingdom of NS Reputation :crown: told me you have **${Util.sep(
                 amount
-            )}** reputation points in your bank today. Niiicee!! I like it. :star_struck: :astonished: :stuck_out_tongue_closed_eyes: :stuck_out_tongue_closed_eyes:`;
+            )}** reputation points in your bank today. Niiicee!! I like it. :astonished: :star_struck: :stuck_out_tongue_closed_eyes: :stuck_out_tongue_closed_eyes:`;
         } else if (amount >= 100) {
             response = `:innocent: :innocent: Hello! The mighty kingdom of NS Reputation :crown: told me you have **${Util.sep(
                 amount
