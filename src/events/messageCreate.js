@@ -96,7 +96,7 @@ module.exports = {
             }
         } else {
             if (Util.hasKey(Msg.content)) {
-                Msg.delete();
+                Msg.delete().catch(() => {});
                 Msg.author.send("Looks like you sent your private key. I deleted it for you - be careful!").catch(() => {});
             }
         }
