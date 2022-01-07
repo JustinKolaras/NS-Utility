@@ -52,7 +52,7 @@ class Command {
             );
         } catch (err) {
             return Msg.channel.send(
-                `<@${Msg.member.id}>, *Evaluation callback..* **Error:** [${Date.now() - Msg.createdTimestamp}ms]\n\`\`\`xl\n${err}\n\`\`\``
+                `<@${Msg.member.id}>, *Evaluation callback..* **Error:** [${Date.now() - Msg.createdTimestamp}ms]\n\`\`\`xl\n${new EvalError(err)}\n\`\`\``
             );
         }
     };
