@@ -32,7 +32,7 @@ class Utility {
         let highestPerm;
 
         if (!permissionsTable) {
-            throw new Error(`Util.getPerm: Could not reference permissions table.`);
+            throw new ReferenceError(`Util.getPerm: Could not reference permissions table.`);
         }
 
         if (member.id === config.ownerId) {
