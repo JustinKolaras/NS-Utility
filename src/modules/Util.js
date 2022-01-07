@@ -53,11 +53,11 @@ class Utility {
     };
 
     getGuild = (guildId) => {
-        return discordClient.guilds.fetch(`${guildId}`);
+        return discordClient.guilds.fetch(guildId);
     };
 
     getChannel = (guild, channelId) => {
-        return guild.channels.cache.get(`${channelId}`);
+        return guild.channels.cache.get(channelId);
     };
 
     getRole = (guild, roleId) => {
@@ -265,8 +265,22 @@ class Utility {
 
         let match = str.match(/(\d+)/);
         let returnValue;
+        let isTag = false;
 
-        if (match) {
+        if (str.includes("#")) {
+            const user = discordClient.users.cache.find((u) => u.tag === str);
+            if (user?.id) {
+                isTag = true;
+                await guild.members
+                    .fetch(user.id)
+                    .then((m) => {
+                        returnValue = { success: true, id: user.id, member: m };
+                    })
+                    .catch(() => {});
+            }
+        }
+
+        if (match && !isTag) {
             match = match[0];
             await guild.members
                 .fetch(match)
