@@ -84,17 +84,23 @@ class Command {
             const joinDate = new Date(info.joinDate).toDateString();
             let oldNames = info.oldNames && info.oldNames.length > 0 ? info.oldNames.join(", ") : "None";
             let pastUsernamesOverflow = false;
+            let descriptionOverflow = false;
 
             if (oldNames.length > 1024) {
                 oldNames = oldNames.substring(0, 1021) + "...";
                 pastUsernamesOverflow = true;
             }
 
+            if (info.blurb.length > 1024) {
+                info.blurb = info.blurb.substring(0, 1021) + "...";
+                descriptionOverflow = true;
+            }
+
             messageEmbed = new MessageEmbed()
                 .setColor("#497ec0")
                 .setTitle(`${info.username} ${info.displayName !== info.username ? `(${info.displayName})` : ""}`)
                 .setThumbnail(`https://www.roblox.com/avatar-thumbnail/image?userId=${playerId}&width=420&height=420&format=png`)
-                .setDescription(info.blurb)
+                .setDescription(`${info.blurb} ${descriptionOverflow ? "[Overflow]" : ""}`)
                 .addFields(
                     {
                         name: "Friends",
