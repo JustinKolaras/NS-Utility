@@ -53,7 +53,6 @@ class Utility {
     };
 
     getGuild = (guildId) => {
-        console.log(guildId);
         return discordClient.guilds.fetch(`${guildId}`);
     };
 
@@ -310,15 +309,11 @@ class Utility {
     };
 
     sendInChannel = async (guildId, channelId, toSend) => {
-        console.log("inside");
         const guild = await this.getGuild(guildId);
-        console.log("guild");
         const channel = await this.getChannel(guild, channelId);
-        console.log("channel");
         channel.send(toSend).catch((err) => {
             throw new Error(`Util.sendInChannel: Could not send message. Err: ${err}`);
         });
-        console.log("after the fact");
     };
 }
 
