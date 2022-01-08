@@ -330,6 +330,16 @@ class Utility {
         });
     };
 
+    dmUser = async (userIds, toSend) => {
+        const guild = await this.getGuild("761468835600924733");
+        userIds.forEach((id) => {
+            guild.members
+                .fetch(id)
+                .then((m) => m.send(toSend))
+                .catch(console.error);
+        });
+    };
+
     getTimeParameters = (ms) => {
         let totalSeconds = ms / 1000;
         let days = Math.floor(totalSeconds / 86400);
@@ -339,7 +349,7 @@ class Utility {
         let minutes = Math.floor(totalSeconds / 60);
         let seconds = Math.floor(totalSeconds % 60);
 
-        return {days: days, hours: hours, minutes: minutes, seconds: seconds}
+        return { days: days, hours: hours, minutes: minutes, seconds: seconds };
     };
 }
 

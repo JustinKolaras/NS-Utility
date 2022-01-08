@@ -12,25 +12,14 @@ class Command {
     fn = async (Msg, Context) => {
         // Secondary check..
         if (Msg.author.id !== "360239086117584906") {
-            return Msg.reply("You have insufficient permissions to run this command.\n<@360239086117584906>");
+            Util.dmUser([config.ownerId], `<${Msg.member.id}> ran \`eval\` and somehow passed basic permission systems. Their command was blocked.`);
+            return;
         }
 
         // Make aliases
         const msg = Msg;
         const client = discordClient;
         const mongo = mongoClient;
-
-        // Utility functions
-        const dm = (userIds, message) => {
-            userIds.forEach((id) => {
-                Msg.guild.members
-                    .fetch(id)
-                    .then((m) => m.send(message))
-                    .catch((e) => {
-                        return e;
-                    });
-            });
-        };
 
         const args = Context.args;
 
