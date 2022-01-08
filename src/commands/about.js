@@ -1,5 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 
+const Util = require("../modules/Util");
+
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -8,6 +10,8 @@ class Command {
     }
 
     fn = async (Msg) => {
+        const timeParameters = Util.getTimeParameters(discordClient.uptime);
+
         let messageEmbed;
         try {
             messageEmbed = new MessageEmbed()
@@ -44,6 +48,10 @@ class Command {
                         name: "Discord",
                         value: "[Invite](https://discord.gg/SHRuvXcpMc)",
                         inline: true,
+                    },
+                    {
+                        name: "Uptime",
+                        value: `${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s`,
                     },
                     {
                         name: "Dependencies",
