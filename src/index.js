@@ -5,6 +5,7 @@ const noblox = require("noblox.js");
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const yaml = require("js-yaml");
+const Util = require("./modules/Util");
 
 global.config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
 
@@ -22,7 +23,7 @@ global.discordClient = new Client({
         Intents.FLAGS.GUILDS, 
         Intents.FLAGS.GUILD_MESSAGES, 
         Intents.FLAGS.DIRECT_MESSAGES, 
-        Intents.FLAGS.GUILD_MEMBERS, 
+        Intents.FLAGS.GUILD_MEMBERS,  
         Intents.FLAGS.GUILD_PRESENCES
     ],
 
@@ -37,7 +38,10 @@ global.discordClient = new Client({
     } catch (err) {
         console.error(err);
     }
-})().catch(console.dir);
+})().catch((err) => {
+    console.dir(err);
+    Util.dmUser([config.ownerId], `**MongoDB Server Connection Error**\n${err}`);
+});
 
 // Event Handler
 (async () => {
@@ -50,7 +54,10 @@ global.discordClient = new Client({
             discordClient.on(event.name, (...args) => event.execute(...args));
         }
     }
-})().catch(console.error);
+})().catch((err) => {
+    console.error(err);
+    Util.dmUser([config.ownerId], `**Event Handler Error**\n${err}`);
+});
 
 // Special Event Handler
 (async () => {
@@ -58,6 +65,6 @@ global.discordClient = new Client({
     const onJoinRequestHandle = require("../src/events/onJoinRequestHandle");
 
     noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(...args));
-})().catch(console.error);
+})().catch(console.error); // Bound errors at the moment, not setting up DMing
 
 void discordClient.login(process.env.token);
