@@ -68,6 +68,13 @@ class Command {
             }
         }
 
+        try {
+            playerName = await noblox.getUsernameFromId(playerId);
+        } catch (err) {
+            console.error(err);
+            return Msg.reply(errMessage);
+        }
+
         const row = new MessageActionRow().addComponents(
             new MessageButton().setCustomId("confirm").setLabel("Confirm").setStyle("PRIMARY"),
             new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER")
