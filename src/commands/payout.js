@@ -35,6 +35,19 @@ class Command {
         let playerName = args[0];
         let playerId;
         let amt = parseInt(args[1]);
+        let usingDiscord = false;
+
+        // Discord Mention Support
+        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        if (attributes.success) {
+            const rblxInfo = await Util.getRobloxAccount(attributes.id);
+            if (rblxInfo.success) {
+                usingDiscord = true;
+                playerId = rblxInfo.response.robloxId;
+            } else {
+                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+            }
+        }
 
         if (!playerName || !amt || typeof amt !== "number" || !key) {
             return Msg.reply("**Syntax Error:** `;payout <username> <amount> <key>`");
@@ -46,11 +59,13 @@ class Command {
             return Msg.reply("Too low amount; payout amount must be greater than 0.");
         }
 
-        try {
-            playerId = await noblox.getIdFromUsername(playerName);
-        } catch (err) {
-            console.error(err);
-            return Msg.reply(errMessage);
+        if (!usingDiscord) {
+            try {
+                playerId = await noblox.getIdFromUsername(playerName);
+            } catch (err) {
+                console.error(err);
+                return Msg.reply(errMessage);
+            }
         }
 
         const row = new MessageActionRow().addComponents(
