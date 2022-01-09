@@ -60,7 +60,8 @@ class Utility {
         return guild.channels.cache.get(channelId);
     };
 
-    getRole = (guild, roleId) => {
+    getRole = async (guildId, roleId) => {
+        const guild = await this.getGuild(guildId);
         return guild.roles.cache.find((role) => role.id === roleId);
     };
 
@@ -338,6 +339,14 @@ class Utility {
                 .then((m) => m.send(toSend))
                 .catch(console.error);
         });
+    };
+
+    dmUsersIn = async (guildId, roleId, toSend) => {
+        const role = await this.getRole(guildId, roleId);
+        this.dmUser(
+            role.members.map((m) => m.user.id),
+            toSend
+        );
     };
 
     getTimeParameters = (ms) => {
