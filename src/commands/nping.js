@@ -14,8 +14,9 @@ class Command {
             .setCookie(process.env.cookie)
             .then(() => {
                 return Msg.reply(
-                    // prettier-ignore
-                    `:electric_plug: nPong! Latency of *${Date.now() - Msg.createdTimestamp}ms/${Number.parseFloat((Date.now() - Msg.createdTimestamp) / 1000).toFixed(4)}s*`
+                    `:electric_plug: nPong! Latency of *${Date.now() - Msg.createdTimestamp}ms/${Number.parseFloat(
+                        (Date.now() - Msg.createdTimestamp) / 1000
+                    ).toFixed(4)}s*`
                 );
             })
             .catch((err) => {
