@@ -85,13 +85,12 @@ module.exports = {
                             })
                             .catch((err) => {
                                 console.error(err);
+                                Util.dmUser([config.ownerId], `**Command Script Error \`${command}\`**\n\`\`\`\n${err}\n\`\`\``);
                                 return Msg.reply(
                                     `There was a script error running this command.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
                                 );
                             });
                     }
-                } else {
-                    return Msg.reply("You have insufficient permissions to run this command.");
                 }
             }
         } else {

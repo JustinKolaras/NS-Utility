@@ -9,6 +9,9 @@ module.exports = async (data) => {
     const isGroupBanned = await groupBans.findOne({ id: requesterId });
 
     if (!isGroupBanned) {
-        noblox.handleJoinRequest(config.group, requesterId, true).catch(console.error);
+        noblox.handleJoinRequest(config.group, requesterId, true).catch((err) => {
+            console.error(err);
+            Util.dmUser([config.ownerId], `I could not accept a join request from ID \`${requesterId}\`\n\`\`\`\n${err}\n\`\`\``);
+        });
     }
 };

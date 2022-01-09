@@ -32,15 +32,11 @@ global.discordClient = new Client({
 
 // MongoDB Server Connection
 (async () => {
-    try {
-        await mongoClient.connect();
-        console.log("MongoDB - Successful connection");
-    } catch (err) {
-        console.error(err);
-    }
+    await mongoClient.connect();
+    console.log("MongoDB - Successful connection");
 })().catch((err) => {
     console.dir(err);
-    Util.dmUser([config.ownerId], `**MongoDB Server Connection Error**\n${err}`);
+    Util.dmUser([config.ownerId], `**MongoDB Server Connection Error**\n\`\`\`\n${err}\n\`\`\``);
 });
 
 // Event Handler
