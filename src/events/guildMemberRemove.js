@@ -25,13 +25,13 @@ module.exports = {
         }
 
         if (Util.getPerm(member) >= moderatorConfig.onPermission) {
-            Util.getChannel(member.guild, moderatorConfig.channelId).send(
-                `<@&788877981874389014>, **${member.displayName} (${member.user.tag}) (Mod Team)** has left the server. They could have been kicked or banned.`
-            );
+            const messageToSend = `<@&788877981874389014>, **${member.displayName} (${member.user.tag}) (Mod Team)** has left the server. They could have been kicked or banned.`;
+            Util.getChannel(member.guild, moderatorConfig.channelId).send(messageToSend);
+            Util.dmUsersIn(member.guild.id, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`);
         } else if (Util.hasRole(member, designerConfig.roleId)) {
-            Util.getChannel(member.guild, designerConfig.channelId).send(
-                `@everyone, **${member.displayName} (${member.user.tag}) (Design Team)** has left the server. They could have been kicked or banned.`
-            );
+            const messageToSend = `@everyone, **${member.displayName} (${member.user.tag}) (Design Team)** has left the server. They could have been kicked or banned.`;
+            Util.getChannel(member.guild, designerConfig.channelId).send(messageToSend);
+            Util.dmUsersIn(member.guild.id, "851082141235937300", `An important server action may need your attention.\n\n${messageToSend}`);
         }
     },
 };
