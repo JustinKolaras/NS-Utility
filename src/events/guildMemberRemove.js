@@ -20,7 +20,7 @@ module.exports = {
         if (hasReputation) {
             mongoClient.deleteOne(currentStat).catch((err) => {
                 console.error(err);
-                Util.dmUser([config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.tag}**\n\`\`\`${err}\n\`\`\``);
+                Util.dmUser([config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
             });
         }
 
