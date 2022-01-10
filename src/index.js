@@ -5,6 +5,7 @@ const noblox = require("noblox.js");
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const yaml = require("js-yaml");
+const chalk = require("chalk");
 const Util = require("./modules/Util");
 
 global.config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
@@ -33,7 +34,7 @@ global.discordClient = new Client({
 // MongoDB Server Connection
 (async () => {
     await mongoClient.connect();
-    console.log("MongoDB - Successful connection");
+    console.log(chalk.purple("MongoDB - Successful connection"));
 })().catch((err) => {
     console.dir(err);
     Util.dmUser([config.ownerId], `**MongoDB Server Connection Error**\n\`\`\`\n${err}\n\`\`\``);

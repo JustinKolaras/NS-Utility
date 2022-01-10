@@ -55,7 +55,7 @@ class Command {
                     },
                     {
                         name: "Dependencies",
-                        value: "noblox.js, MongoDB, dotenv, axios, js-yaml",
+                        value: "noblox.js, MongoDB, dotenv, axios, js-yaml, chalk",
                     },
                     {
                         name: "Contributors",
