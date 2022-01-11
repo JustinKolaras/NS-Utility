@@ -77,9 +77,9 @@ class Command {
             time: 8.64e7,
         });
 
-        const msgContent = `@everyone, New payout request from **${playerName}** (${Msg.member.user.tag} :: ${Msg.author.id}):\n**R$:** ${Util.sep(
+        const msgContent = `@everyone, New payout request from **${playerName}** (${Msg.member.user.tag} :: ${Msg.author.id}):\n\n**R$:** ${Util.sep(
             amt
-        )}\n**Reason:** ${reason}\n**Accepting this request is stricly irreversible.**\nThis request will expire in 24 hours if no option is selected.`;
+        )}\n**Reason:** ${reason}\n\n**Accepting this request is stricly irreversible.**\nThis request will expire in 24 hours if no option is selected.`;
 
         const main = await logChannel.send({
             content: msgContent,
@@ -92,7 +92,9 @@ class Command {
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
                         collector.stop();
-                        Msg.author.send(`Your payout request was accepted. **R$${Util.sep(amt)}** has been credited into your account.`).catch(() => {});
+                        Msg.author
+                            .send(`Your payout request was accepted by ${i.member.user.tag}. **R$${Util.sep(amt)}** has been credited into your account.`)
+                            .catch(() => {});
                         return main.edit({
                             content: `@everyone, Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`,
                             components: [],
@@ -108,7 +110,7 @@ class Command {
                     });
             } else if (i.customId === "decline") {
                 collector.stop();
-                Msg.author.send("Your payout request was declined. No robux have been credited into your account.").catch(() => {});
+                Msg.author.send(`Your payout request was declined by ${i.member.user.tag}. No robux have been credited into your account.`).catch(() => {});
                 return main.edit({
                     content: `@everyone, Payout request from **${playerName}** declined by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`,
                     components: [],
@@ -118,9 +120,9 @@ class Command {
 
         collector.on("end", (_, reason) => {
             if (reason === "time") {
-                Msg.author.send("Your payout request has expired (no one accepted/declined). No robux have been credited into your account.").catch(() => {});
+                Msg.author.send("Your payout request has expired! (no one accepted/declined) No robux have been credited into your account.").catch(() => {});
                 return main.edit({
-                    content: `@everyone, Payout request from **${playerName}** expired (24 hours).`,
+                    content: `@everyone, Payout request from **${playerName}** expired! (24 hours)`,
                     components: [],
                 });
             }
