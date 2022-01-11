@@ -62,6 +62,6 @@ global.discordClient = new Client({
     const onJoinRequestHandle = require("../src/events/onJoinRequestHandle");
 
     noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(...args));
-})().catch(console.error); // Bound errors at the moment, not setting up DMing
+})().catch(console.error); // Inevitable errors at the moment, not enabling further error notification as of now
 
 void discordClient.login(process.env.token);
