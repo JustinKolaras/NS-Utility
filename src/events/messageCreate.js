@@ -68,29 +68,73 @@ module.exports = {
                 }
 
                 if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= userPermission) {
+                    if (result.class.Restriction) {
+                        const restrictionObject = result.class.Restriction;
+
+                        if (restrictionObject.byChannel) {
+                            const whitelistedChannels = restrictionObject.byChannel?.whitelisted;
+                            const errorMessage = restrictionObject.byChannel?.errorMessage;
+
+                            if (!whitelistedChannels || !errorMessage) {
+                                return Msg.reply(
+                                    `Improper restriction form.\n\`\`\`\nwhitelistedChannels: ${whitelistedChannels.toString()}\nerrorMessage: ${errorMessage.toString()}\n\`\`\``
+                                );
+                            }
+
+                            let isValidChannel = false;
+                            for (const channelId in whitelistedChannels) {
+                                if (Msg.channel.id === channelId) isValidChannel = true;
+                            }
+
+                            if (!isValidChannel) {
+                                return Msg.reply(errorMessage);
+                            }
+                        }
+
+                        if (restrictionObject.byCategory) {
+                            const whitelistedCategories = restrictionObject.byCategory?.whitelisted;
+                            const errorMessage = restrictionObject.byCategory?.errorMessage;
+
+                            if (!whitelistedCategories || !errorMessage) {
+                                return Msg.reply(
+                                    `Improper restriction form.\n\`\`\`\nwhitelistedCategories: ${whitelistedCategories.toString()}\nerrorMessage: ${errorMessage.toString()}\n\`\`\``
+                                );
+                            }
+
+                            let isValidCategory = false;
+                            for (const categoryId of whitelistedCategories) {
+                                if (Msg.channel.parent.id === categoryId) isValidCategory = true;
+                            }
+
+                            if (!isValidCategory) {
+                                return Msg.reply(errorMessage);
+                            }
+                        }
+                    }
+
                     if (result.class.autoResponse?.active) {
                         return Msg.delete()
                             .catch(console.error)
                             .finally(() => Msg.channel.send(result.class.autoResponse.result));
-                    } else {
-                        return result.class
-                            .fn(Msg, { args: args, clientPerm: userPermission }, mongoClient)
-                            .then(() => {
-                                if (Msg.guild.id != config.testServer) {
-                                    Msg.content = Util.omitKeys(Msg.content);
-                                    const embed = makeEmbed(Msg, command);
-
-                                    Util.sendInChannel("761468835600924733", config.logChannel, { embeds: [embed] });
-                                }
-                            })
-                            .catch((err) => {
-                                console.error(err);
-                                Util.dmUser([config.ownerId], `**Command Script Error \`${command}\`**\n\`\`\`\n${err}\n\`\`\``);
-                                return Msg.reply(
-                                    `There was a script error running this command.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
-                                );
-                            });
                     }
+
+                    return result.class
+                        .fn(Msg, { args: args, clientPerm: userPermission }, mongoClient)
+                        .then(() => {
+                            if (Msg.guild.id != config.testServer) {
+                                Msg.content = Util.omitKeys(Msg.content);
+                                const embed = makeEmbed(Msg, command);
+
+                                Util.sendInChannel("761468835600924733", config.logChannel, { embeds: [embed] });
+                            }
+                        })
+                        .catch((err) => {
+                            console.error(err);
+                            Util.dmUser([config.ownerId], `**Command Script Error \`${command}\`**\n\`\`\`\n${err}\n\`\`\``);
+                            return Msg.reply(
+                                `There was a script error running this command.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
+                            );
+                        });
                 }
             }
         } else {
