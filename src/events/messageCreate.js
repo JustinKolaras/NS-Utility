@@ -119,7 +119,7 @@ module.exports = {
                     }
 
                     return result.class
-                        .fn(Msg, { args: args, clientPerm: userPermission }, mongoClient)
+                        .fn(Msg, { args: args, clientPerm: userPermission })
                         .then(() => {
                             if (Msg.guild.id != config.testServer) {
                                 Msg.content = Util.omitKeys(Msg.content);
