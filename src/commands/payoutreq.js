@@ -94,7 +94,7 @@ class Command {
                         collector.stop();
                         Msg.author.send(`Your payout request was accepted. **R$${Util.sep(amt)}** has been credited into your account.`).catch(() => {});
                         return main.edit({
-                            content: `<@&851082141235937300>, Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`,
+                            content: `@everyone, Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`,
                             components: [],
                         });
                     })
