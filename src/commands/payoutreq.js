@@ -61,8 +61,8 @@ class Command {
             return Msg.reply(errMessage);
         }
 
-        const ownersChat = await Util.getChannel(Msg.guild, "836839078469042177");
-        if (!ownersChat) {
+        const logChannel = await Util.getChannel(Msg.guild, "930350546232147998");
+        if (!logChannel) {
             return Msg.reply("I couldn't retrieve proper configuration channels.");
         }
 
@@ -72,7 +72,7 @@ class Command {
         );
 
         const filter = (i) => Util.hasRole(i.member, "851082141235937300");
-        const collector = ownersChat.createMessageComponentCollector({
+        const collector = logChannel.createMessageComponentCollector({
             filter,
             time: 8.64e7,
         });
@@ -81,7 +81,7 @@ class Command {
             amt
         )}\n**Reason:** ${reason}\n**Accepting this request is stricly irreversible.**\nThis request will expire in 24 hours if no option is selected.`;
 
-        const main = await ownersChat.send({
+        const main = await logChannel.send({
             content: msgContent,
             components: [row],
         });
