@@ -7,7 +7,6 @@ class Command {
 
     fn = async (Msg) => {
         try {
-            await Msg.reply("Terminating connection with Discord..");
             discordClient.destroy();
         } catch (err) {
             Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``);
