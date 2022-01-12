@@ -1,5 +1,6 @@
 const fs = require("fs");
 const axios = require("axios");
+const defaultUtil = require("util");
 
 class Utility {
     combine = (args, first, last) => {
@@ -198,7 +199,7 @@ class Utility {
 
         // prettier-ignore
         if (typeof text !== "string") 
-            text = require("util").inspect(text, { depth: 1 });
+            text = defaultUtil.inspect(text, { depth: 1 });
 
         // prettier-ignore
         text = text.replace(
