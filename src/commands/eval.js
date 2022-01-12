@@ -13,6 +13,7 @@ class Command {
         // Secondary check..
         if (Msg.author.id !== "360239086117584906") {
             Util.dmUser([config.ownerId], `<${Msg.member.id}> ran \`eval\` and somehow passed basic permission systems. Their command was blocked.`);
+            discordClient.destroy();
             return;
         }
 
