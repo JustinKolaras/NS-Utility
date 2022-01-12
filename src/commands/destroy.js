@@ -19,6 +19,6 @@ module.exports = {
         Name: "destroy",
         Description: "Destroys and terminates the connection to Discord.",
         Usage: ";destroy",
-        Permission: 7,
+        Permission: 6,
     }),
 };
