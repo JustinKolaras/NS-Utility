@@ -61,9 +61,12 @@ class Utility {
         return guild.channels.cache.get(channelId);
     };
 
-    getRole = async (guildId, roleId) => {
-        const guild = await this.getGuild(guildId);
+    getRole = (guild, roleId) => {
         return guild.roles.cache.find((role) => role.id === roleId);
+    };
+
+    giveRole = (member, role) => {
+        return member.roles.add(role);
     };
 
     sep = (int) => {
@@ -360,6 +363,32 @@ class Utility {
         let seconds = Math.floor(totalSeconds % 60);
 
         return { days: days, hours: hours, minutes: minutes, seconds: seconds };
+    };
+
+    /*
+        Util.handleRoles(guildMember, {
+            "roleId": callback,
+            ...etc
+        })
+    */
+    handleRoles = async (member, options) => {
+        for (const roleId in options) {
+            const callbackFn = options[roleId];
+            const callback = callbackFn();
+            if (callback) {
+                const guild = await this.getGuild(member.guild.id);
+
+                const role = this.getRole(guild, roleId);
+
+                // prettier-ignore
+                if (!role)
+                    throw new Error(`Util.handleRoles: Could not retrieve role. Err: ${err}`);
+
+                this.giveRole(member, role).catch((err) => {
+                    throw new Error(`Util.handleRoles: Could not give role (${roleId}). Err: ${err}`);
+                });
+            }
+        }
     };
 }
 
