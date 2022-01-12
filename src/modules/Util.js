@@ -390,6 +390,13 @@ class Utility {
             }
         }
     };
+
+    getRep = async (memberId) => {
+        const database = mongoClient.db("main");
+        const reputation = database.collection("reputation");
+        const currentData = await reputation.findOne({ id: memberId });
+        return currentData.reputationNum;
+    };
 }
 
 module.exports = new Utility();
