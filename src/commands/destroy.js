@@ -9,7 +9,7 @@ class Command {
 
     fn = async (Msg) => {
         try {
-            Msg.guild.leave().catch((err) => {
+            await Msg.guild.leave().catch((err) => {
                 console.error(err);
                 Util.dmUser([config.ownerId], `**Guild Leave Error On \`destroy\`**\n\`\`\`\n${err}\n\`\`\``);
             });
