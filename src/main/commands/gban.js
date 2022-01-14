@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../modules/Util");
+const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -20,18 +20,19 @@ class Command {
 
         const args = Context.args;
         const playerName = args[0];
-        const errMessage = Util.makeError("There was an issue while trying to exile that user.", [
+        const reason = Util.verify(Util.combine(args, 1), (self) => {
+            return typeof self === "string";
+        });
+        const errMessage = Util.makeError("There was an issue while trying to gban that user.", [
             "Your argument does not match a valid username.",
             "You mistyped the username.",
-            "The user is not in the group.",
         ]);
+
+        const database = mongoClient.db("main");
+        const groupBans = database.collection("groupBans");
 
         let playerId;
         let usingDiscord = false;
-
-        if (!playerName || args.length > 1) {
-            return Msg.reply("**Syntax Error:** `;exile <username | @user | userId>`");
-        }
 
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
@@ -43,6 +44,10 @@ class Command {
             } else {
                 return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
+        }
+
+        if (!playerName || !reason) {
+            return Msg.reply("**Syntax Error:** `;gban <username | @user | userId> <reason>`");
         }
 
         if (!usingDiscord) {
@@ -63,21 +68,42 @@ class Command {
         }
 
         if (rankId >= 252) {
-            return Msg.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
+            return Msg.reply("Invalid rank! You can only group-ban members ranked below **Moderator**.");
         }
 
-        noblox
-            .exile(config.group, playerId)
-            .then(() => Msg.reply(`Exiled user from group successfully.`))
-            .catch(() => Msg.reply(errMessage));
+        const currentStat = await groupBans.findOne({ id: playerId });
+
+        if (currentStat) {
+            const gbReason = currentStat.reason;
+            return Msg.reply(`This user is already banned: **${gbReason}**`);
+        }
+
+        let couldExile = true;
+
+        noblox.exile(config.group, playerId).catch(() => {
+            couldExile = false;
+        });
+
+        groupBans
+            .insertOne({
+                id: playerId,
+                reason: reason,
+            })
+            .then(() =>
+                Msg.reply(
+                    // prettier-ignore
+                    `Successfully group banned user. ${couldExile ? "" : "\nBy the way, I couldn't exile them. If they weren't in the group originally, this doesn't matter."}`
+                )
+            )
+            .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
     };
 }
 
 module.exports = {
     class: new Command({
-        Name: "exile",
-        Description: "Exiles a user from the Roblox group.",
-        Usage: ";exile <username | @user | userId>",
+        Name: "gban",
+        Description: "Bans a user from joining the group.",
+        Usage: ";gban <username | @user | userId> <reason>",
         Permission: 5,
     }),
 };

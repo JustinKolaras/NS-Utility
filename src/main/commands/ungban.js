@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../modules/Util");
+const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {

@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-const Util = require("../modules/Util");
+const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -55,7 +55,7 @@ class Command {
                     },
                     {
                         name: "Dependencies",
-                        value: "noblox.js, MongoDB, dotenv, axios, js-yaml, chalk",
+                        value: "noblox.js, MongoDB, dotenv, axios, js-yaml",
                     },
                     {
                         name: "Contributors",

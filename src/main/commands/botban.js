@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const Util = require("../modules/Util");
+const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -18,31 +18,31 @@ class Command {
         const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
 
         if (!banType || !attributes.success) {
-            return Msg.reply('**Syntax Error:** `;repban <"add" | "remove"> <@user | userId>`');
+            return Msg.reply('**Syntax Error:** `;botban <"add" | "remove"> <@user | userId>`');
         }
 
         const database = mongoClient.db("main");
-        const repBans = database.collection("repBans");
+        const botBans = database.collection("botBans");
 
-        const currentStat = await repBans.findOne({ id: attributes.id });
+        const currentStat = await botBans.findOne({ id: attributes.id });
 
         if (banType === "add") {
             if (currentStat) {
-                return Msg.reply(`This user is already banned from gaining reputation.`);
+                return Msg.reply(`This user is already banned from using NS Utility.`);
             }
 
-            repBans
+            botBans
                 .insertOne({
                     id: attributes.id,
                 })
-                .then(() => Msg.reply(`Successfully banned user from gaining reputation.`))
+                .then(() => Msg.reply(`Successfully banned user from using NS Utility.`))
                 .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else if (banType === "remove") {
             if (!currentStat) {
-                return Msg.reply(`This user is not already banned from gaining reputation.`);
+                return Msg.reply(`This user is not already banned from using NS Utility.`);
             }
 
-            repBans
+            botBans
                 .deleteOne(currentStat)
                 .then(() => Msg.reply(`Successfully removed ban.`))
                 .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
@@ -52,9 +52,9 @@ class Command {
 
 module.exports = {
     class: new Command({
-        Name: "repban",
-        Description: "Bans and prohibits a user from attaining reputation.",
-        Usage: `;repban <"add" | "remove"> <@user | userId>`,
-        Permission: 5,
+        Name: "botban",
+        Description: "Bans a user from running commands on NS Utility.",
+        Usage: `;botban <"add" | "remove"> <@user | userId>`,
+        Permission: 7,
     }),
 };

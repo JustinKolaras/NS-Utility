@@ -1,3 +1,5 @@
+// @entry-point
+
 require("dotenv").config({ path: "src/.env" });
 
 const { Client, Intents } = require("discord.js");
@@ -5,8 +7,7 @@ const noblox = require("noblox.js");
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const yaml = require("js-yaml");
-const chalk = require("chalk");
-const Util = require("./modules/Util");
+const Util = require("./main/externals/Util");
 
 global.config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
 
@@ -34,7 +35,7 @@ global.discordClient = new Client({
 // MongoDB Server Connection
 (async () => {
     await mongoClient.connect();
-    console.log(chalk.hex("#834ffc").bold("MongoDB - Successful connection"));
+    console.log("MongoDB - Successful connection");
 })().catch((err) => {
     console.error(err);
     Util.dmUser([config.ownerId], `**MongoDB Server Connection Error**\n\`\`\`\n${err}\n\`\`\``);
@@ -42,9 +43,10 @@ global.discordClient = new Client({
 
 // Event Handler
 (async () => {
-    const files = fs.readdirSync("./src/listeners/").filter((file) => file.endsWith(".js"));
+    const files = fs.readdirSync("./src/main/listeners/").filter((file) => file.endsWith(".js"));
     for (const file of files) {
-        const event = require(`../src/listeners/${file}`);
+        console.log("reading file");
+        const event = require(`../src/main/listeners/${file}`);
         if (event.once) {
             discordClient.once(event.name, (...args) => event.execute(...args));
         } else {
@@ -59,7 +61,7 @@ global.discordClient = new Client({
 // Special Event Handler
 (async () => {
     await noblox.setCookie(process.env.cookie).catch(console.error);
-    const onJoinRequestHandle = require("../src/listeners/onJoinRequestHandle");
+    const onJoinRequestHandle = require("../src/main/listeners/onJoinRequestHandle");
 
     noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(...args));
 })().catch(console.error); // Inevitable errors at the moment, not enabling further error notification as of now

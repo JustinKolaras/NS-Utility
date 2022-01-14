@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const Util = require("../modules/Util");
+const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {

@@ -1,4 +1,4 @@
-const Util = require("../modules/Util");
+const Util = require("../externals/Util");
 
 module.exports = {
     name: "guildCreate",
