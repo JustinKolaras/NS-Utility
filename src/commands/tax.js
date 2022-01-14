@@ -27,7 +27,7 @@ class Command {
             messageEmbed = new MessageEmbed()
                 .setColor("#2f3136")
                 .setTitle("Tax Calculator")
-                .setDescription("Calculations of **%30** tax rate:")
+                .setDescription("Calculations of **30%** tax rate:")
                 .addFields(
                     {
                         name: "Gross",
