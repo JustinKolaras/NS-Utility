@@ -61,6 +61,47 @@ class Command {
             return Msg.reply(errMessage);
         }
 
+        let continuing = false;
+
+        const confFilter = (i) => i.member.id === Msg.author.id;
+        const confCollector = Msg.channel.createMessageComponentCollector({
+            confFilter,
+            time: 30000,
+        });
+
+        const confRow = new MessageActionRow().addComponents(
+            new MessageButton().setCustomId("confirm").setLabel("Confirm").setStyle("PRIMARY"),
+            new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER")
+        );
+
+        const confMsg = await Msg.reply({
+            content: `You are requesting a payout for your account **${playerName}**. Is this correct?`,
+            components: [confRow],
+        });
+
+        confCollector.on("collect", (i) => {
+            if (i.customId === "confirm") {
+                confCollector.stop();
+                confMsg.delete().catch(() => {});
+                continuing = true;
+            } else if (i.customId === "reject") {
+                confCollector.stop();
+                confMsg.delete().catch(() => {});
+                Msg.delete().catch(() => {});
+            }
+        });
+
+        confCollector.on("end", (_, reason) => {
+            if (reason === "time") {
+                confMsg.delete().catch(() => {});
+                Msg.delete().catch(() => {});
+            }
+        });
+
+        await Util.waitUntil(() => {
+            return continuing === true;
+        });
+
         const logChannel = await Util.getChannel(Msg.guild, "930350546232147998");
         if (!logChannel) {
             return Msg.reply("I couldn't retrieve proper configuration channels.");
@@ -77,7 +118,7 @@ class Command {
             time: 8.64e7,
         });
 
-        const msgContent = `@everyone, New payout request from **${playerName}** (${Msg.member.user.tag} :: ${Msg.author.id}):\n\n**R$:** ${Util.sep(
+        const msgContent = `@/everyone, New payout request from **${playerName}** (${Msg.member.user.tag} :: ${Msg.author.id}):\n\n**R$:** ${Util.sep(
             amt
         )}\n**Reason:** ${reason}\n\n**Accepting this request is stricly irreversible.**\nThis request will expire in 24 hours if no option is selected.`;
 
@@ -140,8 +181,8 @@ module.exports = {
         Permission: 0,
         Restriction: {
             byCategory: {
-                whitelisted: ["796084853480357940", "922693863540404274"],
-                errorMessage: "Sorry! This command can only be ran in either the **Design Team** or **Development** categories.",
+                whitelisted: ["796084853480357940"],
+                errorMessage: "Please run this command in the **Design Team** category.",
             },
         },
     }),

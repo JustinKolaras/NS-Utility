@@ -397,6 +397,19 @@ class Utility {
         const currentData = await reputation.findOne({ id: memberId });
         return currentData.reputationNum;
     };
+
+    waitUntil = (callbackFn) => {
+        return new Promise((resolve) => {
+            let id;
+            id = setInterval(() => {
+                const cb = callbackFn();
+                if (cb) {
+                    clearInterval(id);
+                    resolve();
+                }
+            }, 1000);
+        });
+    };
 }
 
 module.exports = new Utility();
