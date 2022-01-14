@@ -27,7 +27,7 @@ class Command {
             messageEmbed = new MessageEmbed()
                 .setColor("#2f3136")
                 .setTitle("Tax Calculator")
-                .setDescription("Calculations of **30%** tax rate:")
+                .setDescription("Calculations of a **30%** tax rate:")
                 .addFields(
                     {
                         name: "Gross",
@@ -43,7 +43,7 @@ class Command {
                     },
                     {
                         name: "To Cover Tax",
-                        value: Util.sep(Math.round(sepAmt / 0.7)),
+                        value: Util.sep(Math.round(amt / 0.7)),
                     }
                 )
                 .setTimestamp()
