@@ -128,16 +128,17 @@ class Command {
         });
 
         collector.on("collect", (i) => {
+            const sepAmt = Util.sep(amt);
             if (i.customId === "accept") {
                 noblox
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
                         collector.stop();
                         Msg.author
-                            .send(`Your payout request was accepted by ${i.member.user.tag}. **R$${Util.sep(amt)}** has been credited into your account.`)
+                            .send(`Your payout request was accepted by ${i.member.user.tag}. **R$${sepAmt}** has been credited into your account.`)
                             .catch(() => {});
                         return main.edit({
-                            content: `@everyone, Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`,
+                            content: `@everyone, Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})\n**R$${sepAmt}**`,
                             components: [],
                         });
                     })
@@ -181,7 +182,7 @@ module.exports = {
         Permission: 0,
         Restriction: {
             byCategory: {
-                whitelisted: ["796084853480357940"],
+                whitelisted: ["796084853480357940", "762726634104553492"],
                 errorMessage: "Please run this command in the **Design Team** category.",
             },
         },
