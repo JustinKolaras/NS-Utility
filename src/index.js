@@ -42,9 +42,9 @@ global.discordClient = new Client({
 
 // Event Handler
 (async () => {
-    const files = fs.readdirSync("./src/events/").filter((file) => file.endsWith(".js"));
+    const files = fs.readdirSync("./src/listeners/").filter((file) => file.endsWith(".js"));
     for (const file of files) {
-        const event = require(`../src/events/${file}`);
+        const event = require(`../src/listeners/${file}`);
         if (event.once) {
             discordClient.once(event.name, (...args) => event.execute(...args));
         } else {
@@ -59,7 +59,7 @@ global.discordClient = new Client({
 // Special Event Handler
 (async () => {
     await noblox.setCookie(process.env.cookie).catch(console.error);
-    const onJoinRequestHandle = require("../src/events/onJoinRequestHandle");
+    const onJoinRequestHandle = require("../src/listeners/onJoinRequestHandle");
 
     noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(...args));
 })().catch(console.error); // Inevitable errors at the moment, not enabling further error notification as of now
