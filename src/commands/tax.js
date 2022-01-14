@@ -34,7 +34,7 @@ class Command {
                         value: sepAmt,
                     },
                     {
-                        name: "Net (Taxed)",
+                        name: "Net",
                         value: Util.sep(percent70),
                     },
                     {
