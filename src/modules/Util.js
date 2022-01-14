@@ -345,8 +345,8 @@ class Utility {
         });
     };
 
-    dmUsersIn = async (guildId, roleId, toSend) => {
-        const role = await this.getRole(guildId, roleId);
+    dmUsersIn = async (guild, roleId, toSend) => {
+        const role = await this.getRole(guild, roleId);
         this.dmUser(
             role.members.map((m) => m.user.id),
             toSend

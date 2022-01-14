@@ -28,14 +28,14 @@ module.exports = {
             const prefix = `<@&788877981874389014>, `;
             const messageToSend = `<@${member.id}> (${member.user.tag} :: ${member.id}) has left the server. They could have been kicked or banned.`;
 
-            Util.dmUsersIn(member.guild.id, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`);
             Util.getChannel(member.guild, moderatorConfig.channelId).send(prefix + messageToSend);
+            Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
         } else if (Util.hasRole(member, designerConfig.roleId)) {
             const prefix = `@everyone, `;
             const messageToSend = `<@${member.id}> (${member.user.tag} :: ${member.id}) has left the server. They could have been kicked or banned.`;
 
-            Util.dmUsersIn(member.guild.id, "851082141235937300", `An important server action may need your attention.\n\n${messageToSend}`);
             Util.getChannel(member.guild, designerConfig.channelId).send(prefix + messageToSend);
+            Util.dmUsersIn(member.guild, "851082141235937300", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
         }
     },
 };
