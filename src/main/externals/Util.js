@@ -228,7 +228,7 @@ class Utility {
     */
     getCommandList = async (src, format, usableOnly) => {
         const cmdArray = [];
-        const commandFiles = fs.readdirSync("./src/commands").filter((file) => file.endsWith(".js"));
+        const commandFiles = fs.readdirSync("./src/main/commands").filter((file) => file.endsWith(".js"));
 
         const parseString = (str, context) => {
             str = str.replaceAll("%c", context.Name);
