@@ -21,6 +21,7 @@ class Command {
 
         const percent70 = amt * 0.7;
         const percent30 = amt * 0.3;
+        const toCoverTax = Math.round(amt / 0.7);
 
         let messageEmbed;
         try {
@@ -43,7 +44,7 @@ class Command {
                     },
                     {
                         name: "To Cover Tax",
-                        value: Util.sep(Math.round(amt / 0.7)),
+                        value: `${Util.sep(toCoverTax)} (+${Util.sep(toCoverTax - amt)})`,
                     }
                 )
                 .setTimestamp()
