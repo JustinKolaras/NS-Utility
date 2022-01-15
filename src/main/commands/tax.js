@@ -17,10 +17,8 @@ class Command {
             return Msg.reply("**Syntax Error:** `;tax <amount>`");
         }
 
-        const sepAmt = Util.sep(amt);
-
-        const percent70 = amt * 0.7;
-        const percent30 = amt * 0.3;
+        const percent70 = Math.round(amt * 0.7);
+        const percent30 = Math.round(amt * 0.3);
         const toCoverTax = Math.round(amt / 0.7);
 
         let messageEmbed;
@@ -32,7 +30,7 @@ class Command {
                 .addFields(
                     {
                         name: "Gross",
-                        value: sepAmt,
+                        value: Util.sep(amt),
                     },
                     {
                         name: "Net",
