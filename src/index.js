@@ -45,7 +45,6 @@ global.discordClient = new Client({
 (async () => {
     const files = fs.readdirSync("./src/main/listeners/").filter((file) => file.endsWith(".js"));
     for (const file of files) {
-        console.log("reading file");
         const event = require(`../src/main/listeners/${file}`);
         if (event.once) {
             discordClient.once(event.name, (...args) => event.execute(...args));
