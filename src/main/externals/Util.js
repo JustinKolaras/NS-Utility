@@ -410,6 +410,23 @@ class Utility {
             }, 1000);
         });
     };
+
+    // Splits a string into multiples based on character count.
+    // Returns an array of the split strings.
+    splitString = (string, charLimit) => {
+        const arr = [];
+        let newStr = string;
+
+        while (newStr.length >= charLimit) {
+            const subStr = newStr.substring(0, charLimit);
+            newStr = newStr.substring(charLimit, newStr.length);
+            arr.push(subStr);
+        }
+
+        arr.push(newStr);
+
+        return arr;
+    };
 }
 
 module.exports = new Utility();
