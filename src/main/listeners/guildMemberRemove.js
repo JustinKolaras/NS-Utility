@@ -26,7 +26,7 @@ module.exports = {
         const hasReputation = await reputation.findOne({ id: member.id });
 
         if (hasReputation) {
-            mongoClient.deleteOne(currentStat).catch((err) => {
+            mongoClient.deleteOne(hasReputation).catch((err) => {
                 console.error(err);
                 Util.dmUser([config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
             });
