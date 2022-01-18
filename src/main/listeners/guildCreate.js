@@ -3,7 +3,7 @@ const Util = require("../externals/Util");
 module.exports = {
     name: "guildCreate",
     execute(guild) {
-        const messageToSend = `<@&907752877798330489>, I was added to a guild.\n**Name:** ${guild.name}\n**Id:** ${guild.id}`;
+        let messageToSend = `<@&907752877798330489>, I was added to a guild.\n**Name:** ${guild.name}\n**Id:** ${guild.id}`;
 
         guild.leave().catch((err) => {
             console.error(err);
