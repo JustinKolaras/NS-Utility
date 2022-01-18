@@ -3,6 +3,8 @@ const { MessageEmbed } = require("discord.js");
 const Util = require("../externals/Util");
 const repAlg = require(`../externals/reputation/algorithm`);
 
+let commandInvocations = [];
+
 const makeEmbed = (Msg, command) => {
     const User = Msg.member.user;
     const Tag = User.tag;
@@ -29,6 +31,9 @@ module.exports = {
     name: "messageCreate",
     async execute(Msg) {
         if (!Msg.guild) return;
+        if (typeof commandInvocations[Msg.member.id] !== "number") {
+            commandInvocations[Msg.member.id] = 0;
+        }
 
         const database = mongoClient.db("main");
         const botBans = database.collection("botBans");
@@ -50,6 +55,12 @@ module.exports = {
                         `You cannot run commands here at this time.\nThis is usually due to heavy maintenance. If you see this warning for an extended period of time, contact **${config.developerTag}**.`
                     );
                 }
+
+                commandInvocations[Msg.member.id]++;
+                setTimeout(() => {
+                    commandInvocations[Msg.member.id]--;
+                }, 5000);
+                if (commandInvocations[Msg.member.id] > 3) return;
 
                 const isBanned = await botBans.findOne({ id: Msg.author.id });
                 if (isBanned) return;
