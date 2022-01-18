@@ -22,7 +22,7 @@ class Command {
             return Msg.channel.send(`**${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s**`);
         }
 
-        return Msg.channel.send({ embeds: [messageEmbed] });
+        return Msg.reply({ embeds: [messageEmbed] });
     };
 }
 
