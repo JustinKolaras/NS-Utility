@@ -171,30 +171,6 @@ class Utility {
         });
     };
 
-    getKey = (memberId) => {
-        const t = config.privateKeys;
-        for (const k in t) {
-            if (memberId === k) {
-                return [true, t[k]];
-            }
-        }
-        return [false, undefined];
-    };
-
-    omitKeys = (str) => {
-        for (const key of Object.values(config.privateKeys)) {
-            str = str.replaceAll(key, "");
-        }
-        return str;
-    };
-
-    hasKey = (str) => {
-        for (const key of Object.values(config.privateKeys)) {
-            if (str.includes(key)) return true;
-        }
-        return false;
-    };
-
     clean = async (text) => {
         // prettier-ignore
         if (text && text.constructor.name == "Promise") 

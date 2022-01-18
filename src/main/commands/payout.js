@@ -21,12 +21,8 @@ class Command {
         }
 
         const args = Context.args;
-        const authorKey = Util.getKey(Msg.member.id);
-        const key = Util.verify(args[2], (self) => {
-            return authorKey[0] === true && self === authorKey[1];
-        });
         const errMessage = Util.makeError("There was an issue while trying to payout this user.", [
-            "Your argument does not match a valid username, amount, or encryption key.",
+            "Your argument does not match a valid username or amount.",
             "The user is not in the group.",
             "The user does not meet the minimum age requirement. (you cannot payout new users!)",
             "The group does not have enough funds.",
@@ -49,8 +45,8 @@ class Command {
             }
         }
 
-        if (!playerName || !amt || typeof amt !== "number" || !key) {
-            return Msg.reply("**Syntax Error:** `;payout <username> <amount> <key>`");
+        if (!playerName || !amt || typeof amt !== "number") {
+            return Msg.reply("**Syntax Error:** `;payout <username> <amount>`");
         }
 
         if (amt > 3000) {
@@ -79,8 +75,6 @@ class Command {
             new MessageButton().setCustomId("confirm").setLabel("Confirm").setStyle("PRIMARY"),
             new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER")
         );
-
-        Msg.delete().catch(() => {});
 
         const filter = (i) => i.member.id === Msg.author.id;
         const collector = Msg.channel.createMessageComponentCollector({
@@ -141,7 +135,7 @@ module.exports = {
     class: new Command({
         Name: "payout",
         Description: "Pays robux out from the group to a specific user.",
-        Usage: ";payout <username> <amount> <key>",
+        Usage: ";payout <username> <amount>",
         Permission: 6,
     }),
 };

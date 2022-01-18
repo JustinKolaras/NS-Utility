@@ -132,8 +132,7 @@ module.exports = {
                     return result.class
                         .fn(Msg, { args: args, clientPerm: userPermission })
                         .then(() => {
-                            if (Msg.guild.id != config.testServer) {
-                                Msg.content = Util.omitKeys(Msg.content);
+                            if (Msg.guild.id !== config.testServer) {
                                 const embed = makeEmbed(Msg, command);
 
                                 Util.sendInChannel("761468835600924733", config.logChannel, { embeds: [embed] });
@@ -147,11 +146,6 @@ module.exports = {
                             );
                         });
                 }
-            }
-        } else {
-            if (Util.hasKey(Msg.content)) {
-                Msg.delete().catch(() => {});
-                Msg.author.send("Looks like you sent your private key. I deleted it for you - be careful!").catch(() => {});
             }
         }
     },
