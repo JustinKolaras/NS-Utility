@@ -60,7 +60,7 @@ module.exports = {
                 setTimeout(() => {
                     commandInvocations[Msg.member.id]--;
                 }, 5000);
-                if (commandInvocations[Msg.member.id] > 3) return;
+                if (commandInvocations[Msg.member.id] > 2) return;
 
                 const isBanned = await botBans.findOne({ id: Msg.author.id });
                 if (isBanned) return;
