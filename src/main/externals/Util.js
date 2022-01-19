@@ -403,6 +403,11 @@ class Utility {
 
         return arr;
     };
+
+    getDateNow = () => {
+        const date = new Date();
+        return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    };
 }
 
 module.exports = new Utility();

@@ -30,6 +30,7 @@ class Command {
 
         const database = mongoClient.db("main");
         const groupBans = database.collection("groupBans");
+        const modLogs = database.collection("modLogs");
 
         let playerId;
         let usingDiscord = false;
@@ -72,6 +73,7 @@ class Command {
         }
 
         const currentStat = await groupBans.findOne({ id: playerId });
+        const hasModLogs = await modLogs.findOne({ id: playerId });
 
         if (currentStat) {
             const gbReason = currentStat.reason;
@@ -83,6 +85,24 @@ class Command {
         noblox.exile(config.group, playerId).catch(() => {
             couldExile = false;
         });
+
+        const dataForm = {
+            head: "Group Banned",
+            body: `**Executor:** ${Msg.member.user.tag}, **Reason:** ${reason} **@ ${Util.getDateNow()}**`,
+        };
+
+        if (hasModLogs) {
+            const modLogData = hasModLogs.data;
+            modLogData.push(dataForm);
+            await modLogs.updateOne(hasModLogs, { $set: { data: modLogData } }).catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+        } else {
+            await modLogs
+                .insertOne({
+                    id: playerId,
+                    data: [dataForm],
+                })
+                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+        }
 
         groupBans
             .insertOne({

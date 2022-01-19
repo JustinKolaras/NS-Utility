@@ -135,7 +135,7 @@ module.exports = {
     class: new Command({
         Name: "payout",
         Description: "Pays robux out from the group to a specific user.",
-        Usage: ";payout <username> <amount>",
+        Usage: ";payout <username | @user | userId> <amount>",
         Permission: 6,
     }),
 };
