@@ -97,6 +97,6 @@ module.exports = {
         Name: "logs",
         Description: "Fetches NS Utility moderation logs on a user.",
         Usage: ";logs <username | @user | userId>",
-        Permission: 6,
+        Permission: 5,
     }),
 };
