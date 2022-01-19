@@ -87,7 +87,7 @@ class Command {
         });
 
         const dataForm = {
-            head: "Group Banned",
+            head: "Group Ban",
             body: `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`,
         };
 
