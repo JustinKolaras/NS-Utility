@@ -15,7 +15,21 @@ class Command {
         const banType = Util.verify(args[0], (self) => {
             return Util.isValid(self || ".", false, "add", "remove")[0];
         });
+
+        let playerId;
+        let logging = true;
+
+        // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
+        if (attributes.success) {
+            const rblxInfo = await Util.getRobloxAccount(attributes.id);
+            if (rblxInfo.success) {
+                playerId = rblxInfo.response.robloxId;
+            } else {
+                logging = false;
+                Msg.channel.send(`Could not get Roblox account via Discord syntax - this action won't be logged in moderation logs.`);
+            }
+        }
 
         if (!banType || !attributes.success) {
             return Msg.reply('**Syntax Error:** `;botban <"add" | "remove"> <@user | userId>`');
@@ -42,24 +56,26 @@ class Command {
                 return Msg.reply(`This user is already banned from using NS Utility.`);
             }
 
-            if (hasModLogs) {
-                const modLogData = hasModLogs.data;
-                modLogData.push(dataFormAdd);
-                await modLogs
-                    .updateOne(
-                        {
+            if (logging) {
+                if (hasModLogs) {
+                    const modLogData = hasModLogs.data;
+                    modLogData.push(dataFormAdd);
+                    await modLogs
+                        .updateOne(
+                            {
+                                id: playerId,
+                            },
+                            { $set: { data: dataFormAdd } }
+                        )
+                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                } else {
+                    await modLogs
+                        .insertOne({
                             id: playerId,
-                        },
-                        { $set: { data: dataFormAdd } }
-                    )
-                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
-            } else {
-                await modLogs
-                    .insertOne({
-                        id: playerId,
-                        data: [dataFormAdd],
-                    })
-                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                            data: [dataFormAdd],
+                        })
+                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                }
             }
 
             botBans
@@ -73,24 +89,26 @@ class Command {
                 return Msg.reply(`This user is not already banned from using NS Utility.`);
             }
 
-            if (hasModLogs) {
-                const modLogData = hasModLogs.data;
-                modLogData.push(dataFormRemove);
-                await modLogs
-                    .updateOne(
-                        {
+            if (logging) {
+                if (hasModLogs) {
+                    const modLogData = hasModLogs.data;
+                    modLogData.push(dataFormRemove);
+                    await modLogs
+                        .updateOne(
+                            {
+                                id: playerId,
+                            },
+                            { $set: { data: dataFormRemove } }
+                        )
+                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                } else {
+                    await modLogs
+                        .insertOne({
                             id: playerId,
-                        },
-                        { $set: { data: dataFormRemove } }
-                    )
-                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
-            } else {
-                await modLogs
-                    .insertOne({
-                        id: playerId,
-                        data: [dataFormRemove],
-                    })
-                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                            data: [dataFormRemove],
+                        })
+                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                }
             }
 
             botBans
