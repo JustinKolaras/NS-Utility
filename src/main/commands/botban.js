@@ -23,12 +23,43 @@ class Command {
 
         const database = mongoClient.db("main");
         const botBans = database.collection("botBans");
+        const modLogs = database.collection("modLogs");
 
         const currentStat = await botBans.findOne({ id: attributes.id });
+        const hasModLogs = await modLogs.findOne({ id: playerId });
+
+        const dataFormAdd = {
+            head: "Bot Ban",
+            body: `**Executor:** ${Msg.member.user.tag} **@ ${Util.getDateNow()}**`,
+        };
+        const dataFormRemove = {
+            head: "Bot Ban Removal",
+            body: `**Executor:** ${Msg.member.user.tag} **@ ${Util.getDateNow()}**`,
+        };
 
         if (banType === "add") {
             if (currentStat) {
                 return Msg.reply(`This user is already banned from using NS Utility.`);
+            }
+
+            if (hasModLogs) {
+                const modLogData = hasModLogs.data;
+                modLogData.push(dataFormAdd);
+                await modLogs
+                    .updateOne(
+                        {
+                            id: playerId,
+                        },
+                        { $set: { data: dataFormAdd } }
+                    )
+                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+            } else {
+                await modLogs
+                    .insertOne({
+                        id: playerId,
+                        data: [dataFormAdd],
+                    })
+                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
             }
 
             botBans
@@ -40,6 +71,26 @@ class Command {
         } else if (banType === "remove") {
             if (!currentStat) {
                 return Msg.reply(`This user is not already banned from using NS Utility.`);
+            }
+
+            if (hasModLogs) {
+                const modLogData = hasModLogs.data;
+                modLogData.push(dataFormRemove);
+                await modLogs
+                    .updateOne(
+                        {
+                            id: playerId,
+                        },
+                        { $set: { data: dataFormRemove } }
+                    )
+                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+            } else {
+                await modLogs
+                    .insertOne({
+                        id: playerId,
+                        data: [dataFormRemove],
+                    })
+                    .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
             }
 
             botBans

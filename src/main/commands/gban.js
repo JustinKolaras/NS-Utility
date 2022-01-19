@@ -88,13 +88,20 @@ class Command {
 
         const dataForm = {
             head: "Group Banned",
-            body: `**Executor:** ${Msg.member.user.tag}, **Reason:** ${reason} **@ ${Util.getDateNow()}**`,
+            body: `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`,
         };
 
         if (hasModLogs) {
             const modLogData = hasModLogs.data;
             modLogData.push(dataForm);
-            await modLogs.updateOne(hasModLogs, { $set: { data: modLogData } }).catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+            await modLogs
+                .updateOne(
+                    {
+                        id: playerId,
+                    },
+                    { $set: { data: modLogData } }
+                )
+                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else {
             await modLogs
                 .insertOne({
