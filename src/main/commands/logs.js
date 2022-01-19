@@ -36,7 +36,7 @@ class Command {
         }
 
         if (!playerName) {
-            return Msg.reply("**Syntax Error:** `;logs <username | @user | userId>");
+            return Msg.reply("**Syntax Error:** `;logs <username | @user | userId>`");
         }
 
         if (!usingDiscord) {
