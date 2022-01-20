@@ -51,7 +51,7 @@ class Command {
         if (amt > 3000) {
             return Msg.reply("Too high amount to request.");
         } else if (amt < 1) {
-            return Msg.reply("Too low amount; payout amount must be greateDr than 0.");
+            return Msg.reply("Too low amount; payout amount must be greater than 0.");
         }
 
         try {
@@ -108,8 +108,8 @@ class Command {
         }
 
         const row = new MessageActionRow().addComponents(
-            new MessageButton().setCustomId("accept").setLabel("Accept").setStyle("SUCCESS"),
-            new MessageButton().setCustomId("decline").setLabel("Decline").setStyle("DANGER")
+            new MessageButton().setCustomId(`accept-${playerId}`).setLabel("Accept").setStyle("SUCCESS"),
+            new MessageButton().setCustomId(`decline-${playerId}`).setLabel("Decline").setStyle("DANGER")
         );
 
         const filter = (i) => Util.hasRole(i.member, "851082141235937300");
@@ -129,7 +129,7 @@ class Command {
 
         collector.on("collect", (i) => {
             const sepAmt = Util.sep(amt);
-            if (i.customId === "accept") {
+            if (i.customId === `accept-${playerId}`) {
                 noblox
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
@@ -150,7 +150,7 @@ class Command {
                             components: [],
                         });
                     });
-            } else if (i.customId === "decline") {
+            } else if (i.customId === `decline-${playerId}`) {
                 collector.stop();
                 Msg.author.send(`Your payout request was declined by ${i.member.user.tag}. No robux have been credited into your account.`).catch(() => {});
                 return main.edit({
