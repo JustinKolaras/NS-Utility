@@ -48,12 +48,14 @@ class Command {
             return Msg.reply("**Syntax Error:** `;info <username | @user | userId>`");
         }
 
+        const main = await Msg.reply(":mag_right: Searching..");
+
         if (!usingDiscord) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return Msg.reply(errMessage);
+                return main.edit(errMessage);
             }
         }
 
@@ -61,14 +63,14 @@ class Command {
             info = await noblox.getPlayerInfo({ userId: playerId });
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return main.edit(errMessage);
         }
 
         try {
             info["premium"] = await noblox.getPremium(playerId);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return main.edit(errMessage);
         }
 
         try {
@@ -76,7 +78,7 @@ class Command {
             info["ns_rank"] = await noblox.getRole(config.group, rank);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return main.edit(errMessage);
         }
 
         let messageEmbed;
@@ -145,14 +147,14 @@ class Command {
                 .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
-            return Msg.reply("There was an issue generating the info embed; this user might not exist.");
+            return main.edit("There was an issue generating the info embed; this user might not exist.");
         }
 
         const row = new MessageActionRow().addComponents(
             new MessageButton().setLabel("Profile").setStyle("LINK").setURL(`https://roblox.com/users/${playerId}/profile`)
         );
 
-        return Msg.reply({ embeds: [messageEmbed], components: [row] });
+        return main.edit({ content: `\`${Date.now() - Msg.createdTimestamp}ms\``, embeds: [messageEmbed], components: [row] });
     };
 }
 
