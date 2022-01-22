@@ -4,6 +4,7 @@ const { MessageActionRow, MessageButton } = require("discord.js");
 
 const noblox = require("noblox.js");
 const Util = require("../externals/Util");
+const uuid = require("uuid");
 
 class Command {
     constructor(options) {
@@ -107,9 +108,11 @@ class Command {
             return Msg.reply("I couldn't retrieve proper configuration channels.");
         }
 
+        const id = uuid.v4();
+
         const row = new MessageActionRow().addComponents(
-            new MessageButton().setCustomId(`accept-${playerId}`).setLabel("Accept").setStyle("SUCCESS"),
-            new MessageButton().setCustomId(`decline-${playerId}`).setLabel("Decline").setStyle("DANGER")
+            new MessageButton().setCustomId(`accept-${playerId}-${id}`).setLabel("Accept").setStyle("SUCCESS"),
+            new MessageButton().setCustomId(`decline-${playerId}-${id}`).setLabel("Decline").setStyle("DANGER")
         );
 
         const filter = (i) => Util.hasRole(i.member, "851082141235937300");
@@ -129,7 +132,7 @@ class Command {
 
         collector.on("collect", (i) => {
             const sepAmt = Util.sep(amt);
-            if (i.customId === `accept-${playerId}`) {
+            if (i.customId === `accept-${playerId}-${id}`) {
                 noblox
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
@@ -150,7 +153,7 @@ class Command {
                             components: [],
                         });
                     });
-            } else if (i.customId === `decline-${playerId}`) {
+            } else if (i.customId === `decline-${playerId}-${id}`) {
                 collector.stop();
                 Msg.author.send(`Your payout request was declined by ${i.member.user.tag}. No robux have been credited into your account.`).catch(() => {});
                 return main.edit({

@@ -54,10 +54,6 @@ class Command {
                         value: `${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s`,
                     },
                     {
-                        name: "Dependencies",
-                        value: "noblox.js, MongoDB, dotenv, axios, js-yaml",
-                    },
-                    {
                         name: "Contributors",
                         value: "<@478849686267232256>, <@816041207113187348>, <@310879289786761216>, <@113691352327389188>",
                     }
