@@ -10,6 +10,7 @@ const moderatorConfig = {
     };
 
 let users = 0;
+let MASTER_COOLDOWN = false;
 
 module.exports = {
     name: "guildMemberRemove",
@@ -48,6 +49,10 @@ module.exports = {
 
         if (users >= 6) {
             users = 0;
+            MASTER_COOLDOWN = true;
+            setTimeout(() => {
+                MASTER_COOLDOWN = false;
+            }, 500000);
 
             const prefix = `@everyone, `;
             const messageToSend = `**Member Remove Influx Warning:** An increased amount of members have been leaving recently. Please check audit and <#788872173359071272> for more details.`;

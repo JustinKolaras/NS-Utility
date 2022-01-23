@@ -1,6 +1,7 @@
 const Util = require("../externals/Util");
 
 let users = 0;
+let MASTER_COOLDOWN = false;
 
 const configuration = {
     channelId: "797589411381903380",
@@ -23,8 +24,12 @@ module.exports = {
             users--;
         }, 60000);
 
-        if (users >= 10) {
+        if (users >= 10 && !MASTER_COOLDOWN) {
             users = 0;
+            MASTER_COOLDOWN = true;
+            setTimeout(() => {
+                MASTER_COOLDOWN = false;
+            }, 500000);
 
             const prefix = `@everyone, `;
             const messageToSend = `**Member Add Influx Warning:** An increased amount of members have been joining recently. Please check audit and <#788872173359071272> for more details.\nThe <#797589411381903380> channel has been locked automatically.`;
