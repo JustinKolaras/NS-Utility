@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 
 const Util = require("../externals/Util");
-const repAlg = require(`../externals/reputation/algorithm`);
+const repAlg = require(`../externals/reputation/Algorithm`);
 
 let commandInvocations = [];
 
