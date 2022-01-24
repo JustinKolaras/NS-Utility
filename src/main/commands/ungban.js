@@ -64,10 +64,7 @@ class Command {
             return Msg.reply(`This user is not banned.`);
         }
 
-        const dataForm = {
-            head: "Group Ban Removal",
-            body: `**Executor:** ${Msg.member.user.tag} **@ ${Util.getDateNow()}**`,
-        };
+        const dataForm = Util.makeLogData("Group Ban Removal", `**Executor:** ${Msg.member.user.tag} **@ ${Util.getDateNow()}**`);
 
         if (hasModLogs) {
             const modLogData = hasModLogs.data;

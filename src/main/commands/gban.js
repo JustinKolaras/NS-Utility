@@ -86,10 +86,7 @@ class Command {
             couldExile = false;
         });
 
-        const dataForm = {
-            head: "Group Ban",
-            body: `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`,
-        };
+        const dataForm = Util.makeLogData("Group Ban", `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
 
         if (hasModLogs) {
             const modLogData = hasModLogs.data;

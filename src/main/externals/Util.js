@@ -1,6 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 const defaultUtil = require("util");
+const uuid = require("uuid");
 
 class Utility {
     combine = (args, first, last) => {
@@ -407,6 +408,15 @@ class Utility {
     getDateNow = () => {
         const date = new Date();
         return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    };
+
+    makeLogData = (head, body) => {
+        const generatedId = uuid.v4();
+        return {
+            head: head + ` - ${generatedId}`,
+            body: body,
+            modLogId: generatedId,
+        };
     };
 }
 

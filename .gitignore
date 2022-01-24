@@ -119,5 +119,6 @@ dist
 
 node_modules
 config.yaml
+config.json
 # Confidential algorithms
 reputation/
