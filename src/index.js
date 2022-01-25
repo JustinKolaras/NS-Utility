@@ -1,4 +1,4 @@
-// @entry-point
+// This is the entry point of the project.
 
 require("dotenv").config({ path: "src/.env" });
 
