@@ -18,9 +18,10 @@ class Command {
         const modLogs = database.collection("modLogs");
 
         if (!logId) {
-            return Msg.reply("**Syntax Error:** `;logs <logId>`");
+            return Msg.reply("**Syntax Error:** `;dellog <logId>`");
         }
 
+        return Msg.reply("In maintenance..");
         // to finish later..
     };
 }
