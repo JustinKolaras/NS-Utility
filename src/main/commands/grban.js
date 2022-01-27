@@ -20,7 +20,10 @@ class Command {
 
         const args = Context.args;
         const playerName = args[0];
-        const errMessage = Util.makeError("There was an issue while trying to ungban that user.", [
+        const reason = Util.verify(Util.combine(args, 1), (self) => {
+            return typeof self === "string";
+        });
+        const errMessage = Util.makeError("There was an issue while trying to grban that user.", [
             "Your argument does not match a valid username.",
             "You mistyped the username.",
         ]);
@@ -44,8 +47,8 @@ class Command {
             }
         }
 
-        if (!playerName) {
-            return Msg.reply("**Syntax Error:** `;ungban <username | @user | userId>`");
+        if (!playerName || !reason) {
+            return Msg.reply("**Syntax Error:** `;grban <username | @user | userId> <reason>`");
         }
 
         if (!usingDiscord) {
@@ -57,14 +60,33 @@ class Command {
             }
         }
 
+        let rankId;
+        try {
+            rankId = await noblox.getRankInGroup(config.group, playerId);
+        } catch (err) {
+            console.error(err);
+            return Msg.reply(errMessage);
+        }
+
+        if (rankId >= 252) {
+            return Msg.reply("Invalid rank! You can only group-ban members ranked below **Moderator**.");
+        }
+
         const currentStat = await groupBans.findOne({ id: playerId });
         const hasModLogs = await modLogs.findOne({ id: playerId });
 
-        if (!currentStat) {
-            return Msg.reply(`This user is not banned.`);
+        if (currentStat) {
+            const gbReason = currentStat.reason;
+            return Msg.reply(`This user is already banned: **${gbReason}**`);
         }
 
-        const dataForm = Util.makeLogData("Group Ban Removal", `**Executor:** ${Msg.member.user.tag} **@ ${Util.getDateNow()}**`);
+        let couldExile = true;
+
+        noblox.exile(config.group, playerId).catch(() => {
+            couldExile = false;
+        });
+
+        const dataForm = Util.makeLogData("Group Ban", `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
 
         if (hasModLogs) {
             const modLogData = hasModLogs.data;
@@ -87,17 +109,25 @@ class Command {
         }
 
         groupBans
-            .deleteOne(currentStat)
-            .then(() => Msg.reply(`Successfully removed the group ban from this user.`))
+            .insertOne({
+                id: playerId,
+                reason: reason,
+            })
+            .then(() =>
+                Msg.reply(
+                    // prettier-ignore
+                    `Successfully group banned user. ${couldExile ? "" : "\nBy the way, I couldn't exile them. If they weren't in the group originally, this doesn't matter."}`
+                )
+            )
             .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
     };
 }
 
 module.exports = {
     class: new Command({
-        Name: "ungban",
-        Description: "Unbans a previuosly group-banned user.",
-        Usage: ";ungban <username | @user | userId>",
+        Name: "grban",
+        Description: "Bans a user from joining the group.",
+        Usage: ";grban <username | @user | userId> <reason>",
         Permission: 5,
     }),
 };
