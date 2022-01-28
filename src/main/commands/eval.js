@@ -37,6 +37,10 @@ class Command {
             cleaned = cleaned.replaceAll(process.env.cookie, "%REDACTED_COOKIE%");
             cleaned = cleaned.replaceAll(process.env.mongoURI, "%REDACTED_MONGO-URI%");
 
+            if (cleaned.length > 1900) {
+                return Msg.channel.send(`<@${Msg.member.id}>, Message over 2000 characters.`);
+            }
+
             return Msg.channel.send(
                 `<@${Msg.member.id}>, *Evaluation callback..* **Success:** [${Date.now() - Msg.createdTimestamp}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
             );
