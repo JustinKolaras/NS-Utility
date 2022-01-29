@@ -14,6 +14,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -46,7 +50,7 @@ class Command {
         }
 
         if (!amt || typeof amt !== "number" || !reason) {
-            return Msg.reply("**Syntax Error:** `;payoutreq <amount> <reason>`");
+            return SyntaxErr();
         }
 
         if (amt > 3000) {

@@ -418,6 +418,10 @@ class Utility {
             modLogId: generatedId,
         };
     };
+
+    parseNumericalsAfterHash = (str) => {
+        return str.match(/(?<=#)\d+/);
+    };
 }
 
 module.exports = new Utility();

@@ -8,6 +8,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
         const perm = Context.clientPerm;
         const command = args[0];
@@ -22,7 +26,7 @@ class Command {
                 .then(() => Msg.reply("Sent you a DM with information."))
                 .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));
         } else if ((command && args.length > 1) || command.toString().toLowerCase() === "help") {
-            return Msg.reply("**Syntax Error:** `;help <?command>`");
+            return SyntaxErr();
         }
 
         let [success, result] = Util.getLibrary(command);

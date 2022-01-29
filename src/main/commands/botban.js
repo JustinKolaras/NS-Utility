@@ -10,6 +10,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
 
         const banType = Util.verify(args[0], (self) => {
@@ -18,6 +22,10 @@ class Command {
 
         let playerId;
         let logging = true;
+
+        if (!banType || !attributes.success) {
+            return SyntaxErr();
+        }
 
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
@@ -29,10 +37,6 @@ class Command {
                 logging = false;
                 Msg.channel.send(`Could not get Roblox account via Discord syntax - this action won't be logged in moderation logs.`);
             }
-        }
-
-        if (!banType || !attributes.success) {
-            return Msg.reply('**Syntax Error:** `;botban <"add" | "remove"> <@user | userId>`');
         }
 
         const database = mongoClient.db("main");
@@ -123,7 +127,7 @@ module.exports = {
     class: new Command({
         Name: "botban",
         Description: "Bans a user from running commands on NS Utility.",
-        Usage: `;botban <"add" | "remove"> <@user | userId>`,
+        Usage: `;botban <"add" | "remove"> <User>`,
         Permission: 7,
     }),
 };

@@ -11,6 +11,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -33,25 +37,23 @@ class Command {
         const modLogs = database.collection("modLogs");
 
         let playerId;
-        let usingDiscord = false;
+
+        if (!playerName || !reason) {
+            return SyntaxErr();
+        }
 
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
-                usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
                 return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
-        if (!playerName || !reason) {
-            return Msg.reply("**Syntax Error:** `;grban <username | @user | userId> <reason>`");
-        }
-
-        if (!usingDiscord) {
+        if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
@@ -127,7 +129,7 @@ module.exports = {
     class: new Command({
         Name: "grban",
         Description: "Bans a user from joining the group.",
-        Usage: ";grban <username | @user | userId> <reason>",
+        Usage: ";grban <User> <reason>",
         Permission: 5,
     }),
 };

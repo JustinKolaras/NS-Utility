@@ -13,6 +13,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -28,7 +32,7 @@ class Command {
         );
 
         if (!revType) {
-            return Msg.reply('**Syntax Error:** `;revenue <"day" | "week" | "month" | "year">`');
+            return SyntaxErr();
         }
 
         let revenueSummary;

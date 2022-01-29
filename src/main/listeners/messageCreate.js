@@ -60,7 +60,7 @@ module.exports = {
                 setTimeout(() => {
                     commandInvocations[Msg.member.id]--;
                 }, 5000);
-                if (commandInvocations[Msg.member.id] > 1) return;
+                if (commandInvocations[Msg.member.id] > 2) return;
 
                 const isBanned = await botBans.findOne({ id: Msg.author.id });
                 if (isBanned) return;
@@ -140,7 +140,9 @@ module.exports = {
                         })
                         .catch((err) => {
                             console.error(err);
-                            Util.dmUser([config.ownerId], `**Command Script Error \`${command}\`**\n\`\`\`\n${err}\n\`\`\``);
+                            if (Msg.author.id !== config.ownerId) {
+                                Util.dmUser([config.ownerId], `**Command Script Error \`${command}\`**\n\`\`\`\n${err}\n\`\`\``);
+                            }
                             return Msg.reply(
                                 `There was a script error running this command.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
                             );

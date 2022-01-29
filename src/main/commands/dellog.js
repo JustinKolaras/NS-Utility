@@ -9,6 +9,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
         const errMessage = Util.makeError("There was an issue while trying to delete this log.", ["Your argument does not match a valid log ID."]);
 
@@ -18,7 +22,7 @@ class Command {
         const modLogs = database.collection("modLogs");
 
         if (!logId) {
-            return Msg.reply("**Syntax Error:** `;dellog <logId>`");
+            return SyntaxErr();
         }
 
         return Msg.reply("In maintenance..");

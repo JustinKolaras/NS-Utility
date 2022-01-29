@@ -10,6 +10,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         // Secondary check..
         if (Msg.author.id !== "360239086117584906") {
             Util.dmUser([config.ownerId], `<${Msg.member.id}> ran \`eval\` and somehow passed basic permission systems. Their command was blocked.`);
@@ -25,7 +29,7 @@ class Command {
         const args = Context.args;
 
         if (!args[0]) {
-            return Msg.reply(`**Syntax Error:** \`;eval <code>\``);
+            return SyntaxErr();
         }
 
         try {

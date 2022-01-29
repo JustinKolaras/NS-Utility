@@ -13,6 +13,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -21,7 +25,6 @@ class Command {
         }
 
         const args = Context.args;
-        const executorPerm = Context.clientPerm;
         const playerName = args[0];
         const errMessage = Util.makeError("There was an issue while trying to gather information on that user.", [
             "Your argument does not match a valid username.",
@@ -30,27 +33,33 @@ class Command {
 
         let playerId;
         let info;
-        let usingDiscord = false;
+
+        if (!playerName || args.length > 1) {
+            return SyntaxErr();
+        }
 
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
-                usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
                 return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
-        if (!playerName || args.length > 1) {
-            return Msg.reply("**Syntax Error:** `;info <username | @user | userId>`");
+        // ID Support
+        if (args[0].includes("#")) {
+            playerId = Util.parseNumericalsAfterHash(args[0]);
+            if (isNaN(parseInt(playerId))) {
+                return SyntaxErr();
+            }
         }
 
         const main = await Msg.reply(":mag_right: Searching..");
 
-        if (!usingDiscord) {
+        if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
@@ -162,7 +171,7 @@ module.exports = {
     class: new Command({
         Name: "info",
         Description: "Gathers information on a Roblox user.",
-        Usage: ";info <username | @user | userId>",
+        Usage: ";info <User>",
         Permission: 0,
     }),
 };

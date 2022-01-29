@@ -10,6 +10,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
 
         const banType = Util.verify(args[0], (self) => {
@@ -18,7 +22,7 @@ class Command {
         const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
 
         if (!banType || !attributes.success) {
-            return Msg.reply('**Syntax Error:** `;repban <"add" | "remove"> <@user | userId>`');
+            return SyntaxErr();
         }
 
         const database = mongoClient.db("main");
@@ -54,7 +58,7 @@ module.exports = {
     class: new Command({
         Name: "repban",
         Description: "Bans and prohibits a user from attaining reputation.",
-        Usage: `;repban <"add" | "remove"> <@user | userId>`,
+        Usage: `;repban <"add" | "remove"> <User>`,
         Permission: 5,
     }),
 };

@@ -6,6 +6,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
 
         const results = [
@@ -40,7 +44,7 @@ class Command {
         ];
 
         if (!args[0]) {
-            return Msg.reply("**Syntax Error:** `;8ball <question>`");
+            return SyntaxErr();
         }
 
         return Msg.reply(`:8ball: ${results[Math.floor(Math.random() * results.length)]}`);

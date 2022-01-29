@@ -11,6 +11,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
         const errMessage = Util.makeError("There was an issue while trying to gather the logs of this user.", [
             "Your argument does not match a valid username.",
@@ -21,25 +25,23 @@ class Command {
 
         let playerName = args[0];
         let playerId;
-        let usingDiscord = false;
+
+        if (!playerName) {
+            return SyntaxErr();
+        }
 
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
-                usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
                 return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
-        if (!playerName) {
-            return Msg.reply("**Syntax Error:** `;logs <username | @user | userId>`");
-        }
-
-        if (!usingDiscord) {
+        if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
@@ -96,7 +98,7 @@ module.exports = {
     class: new Command({
         Name: "logs",
         Description: "Fetches NS Utility moderation logs on a user.",
-        Usage: ";logs <username | @user | userId>",
+        Usage: ";logs <User>",
         Permission: 5,
     }),
 };

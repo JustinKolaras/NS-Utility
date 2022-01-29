@@ -10,13 +10,17 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
 
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         const amt = parseInt(args[1]);
 
         if (!attributes.success || !amt || typeof amt !== "number") {
-            return Msg.reply("**Syntax Error:** `;repedit <@user | userId> <amt>`");
+            return SyntaxErr();
         }
 
         const database = mongoClient.db("main");
@@ -48,7 +52,7 @@ module.exports = {
     class: new Command({
         Name: "repedit",
         Description: "Edits a user's reputation.",
-        Usage: `;repedit <@user | userId> <amt>`,
+        Usage: `;repedit <User> <amt>`,
         Permission: 6,
     }),
 };

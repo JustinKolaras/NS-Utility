@@ -11,6 +11,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -27,10 +31,9 @@ class Command {
         ]);
 
         let playerId;
-        let usingDiscord = false;
 
         if (!playerName || args.length > 1) {
-            return Msg.reply("**Syntax Error:** `;exile <username | @user | userId>`");
+            return SyntaxErr();
         }
 
         // Discord Mention Support
@@ -38,14 +41,13 @@ class Command {
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
-                usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
                 return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
-        if (!usingDiscord) {
+        if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
@@ -77,7 +79,7 @@ module.exports = {
     class: new Command({
         Name: "exile",
         Description: "Exiles a user from the Roblox group.",
-        Usage: ";exile <username | @user | userId>",
+        Usage: ";exile <User>",
         Permission: 5,
     }),
 };

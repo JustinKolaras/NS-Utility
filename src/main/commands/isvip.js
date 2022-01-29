@@ -11,6 +11,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -26,25 +30,23 @@ class Command {
         ]);
 
         let playerId;
-        let usingDiscord = false;
+
+        if (!playerName || args.length > 1) {
+            return SyntaxErr();
+        }
 
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
-                usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
                 return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
-        if (!playerName || args.length > 1) {
-            return Msg.reply("**Syntax Error:** `;isvip <username | @user | userId>`");
-        }
-
-        if (!usingDiscord) {
+        if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
@@ -69,7 +71,7 @@ module.exports = {
     class: new Command({
         Name: "isvip",
         Description: "Returns a yes/no answer on if the user provided has the NS VIP gamepass or not.",
-        Usage: ";isvip <username | @user | userId>",
+        Usage: ";isvip <User>",
         Permission: 2,
     }),
 };

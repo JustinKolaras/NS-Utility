@@ -10,11 +10,15 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
         const amt = parseInt(args[0]);
 
         if (!amt || typeof amt !== "number") {
-            return Msg.reply("**Syntax Error:** `;tax <amount>`");
+            return SyntaxErr();
         }
 
         const percent70 = Math.round(amt * 0.7);

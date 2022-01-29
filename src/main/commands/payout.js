@@ -13,6 +13,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -31,22 +35,20 @@ class Command {
         let playerName = args[0];
         let playerId;
         let amt = parseInt(args[1]);
-        let usingDiscord = false;
+
+        if (!playerName || !amt || typeof amt !== "number") {
+            return SyntaxErr();
+        }
 
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
-                usingDiscord = true;
                 playerId = rblxInfo.response.robloxId;
             } else {
                 return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
-        }
-
-        if (!playerName || !amt || typeof amt !== "number") {
-            return Msg.reply("**Syntax Error:** `;payout <username> <amount>`");
         }
 
         if (amt > 3000) {
@@ -55,7 +57,7 @@ class Command {
             return Msg.reply("Too low amount; payout amount must be greater than 0.");
         }
 
-        if (!usingDiscord) {
+        if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
@@ -135,7 +137,7 @@ module.exports = {
     class: new Command({
         Name: "payout",
         Description: "Pays robux out from the group to a specific user.",
-        Usage: ";payout <username | @user | userId> <amount>",
+        Usage: ";payout <User> <amount>",
         Permission: 6,
     }),
 };
