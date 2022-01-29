@@ -51,6 +51,14 @@ class Command {
             }
         }
 
+        // ID Support
+        if (args[0].includes("#")) {
+            playerId = Util.parseNumericalsAfterHash(args[0]);
+            if (isNaN(parseInt(playerId))) {
+                return SyntaxErr();
+            }
+        }
+
         if (amt > 3000) {
             return Msg.reply("Too high amount; please do this manually.");
         } else if (amt < 1) {

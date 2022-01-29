@@ -39,6 +39,14 @@ class Command {
             }
         }
 
+        // ID Support
+        if (args[0].includes("#")) {
+            playerId = Util.parseNumericalsAfterHash(args[0]);
+            if (isNaN(parseInt(playerId))) {
+                return SyntaxErr();
+            }
+        }
+
         const database = mongoClient.db("main");
         const botBans = database.collection("botBans");
         const modLogs = database.collection("modLogs");
