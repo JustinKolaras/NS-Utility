@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const fs = require("fs");
 const axios = require("axios");
 const defaultUtil = require("util");
@@ -421,6 +423,23 @@ class Utility {
 
     parseNumericalsAfterHash = (str) => {
         return str.match(/(?<=#)\d+/);
+    };
+
+    banInGame = async (payload) => {
+        let endpointResponse = await axios
+            .post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/bans`, payload, {
+                headers: {
+                    Authorization: process.env.nsAPIAuth,
+                },
+            })
+            .catch(() => {});
+
+        if (endpointResponse) {
+            endpointResponse = endpointResponse.data;
+            return { success: endpointResponse.status === "ok" };
+        } else {
+            return { success: false };
+        }
     };
 }
 
