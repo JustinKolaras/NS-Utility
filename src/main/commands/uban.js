@@ -59,7 +59,7 @@ class Command {
 
         // ID Support
         if (args[0].includes("#") && !attributes.success) {
-            playerId = Util.parseNumericalsAfterHash(args[0]);
+            playerId = Util.parseNumericalsAfterHash(args[0])[0];
             if (isNaN(parseInt(playerId))) {
                 return SyntaxErr();
             }
