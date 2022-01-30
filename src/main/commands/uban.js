@@ -35,7 +35,9 @@ class Command {
         const modLogs = database.collection("modLogs");
 
         let playerId;
-        let allowRobloxRelatedBans = true;
+        let executorPlayerId;
+        let allowGroupBans = true;
+        let allowGameBans = true;
         let allowGuildBans = true;
 
         if (!playerName || !reason) {
@@ -49,7 +51,8 @@ class Command {
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                allowRobloxRelatedBans = false;
+                allowGroupBans = false;
+                allowGameBans = false;
                 Msg.reply(`Could not get Roblox account via Discord syntax. This user won't be group/game banned.`);
             }
         } else {
@@ -63,6 +66,13 @@ class Command {
             if (isNaN(parseInt(playerId))) {
                 return SyntaxErr();
             }
+        }
+
+        const executorRblxInfo = await Util.getRobloxAccount(Msg.author.id);
+        if (executorRblxInfo.success) {
+            executorPlayerId = executorRblxInfo.response.robloxId;
+        } else {
+            return Msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
         }
 
         if (!playerId) {
@@ -92,27 +102,24 @@ class Command {
         // Ban user in all guilds
         if (allowGuildBans) {
             for (const guild of discordClient.guilds.cache) {
-                const fetchedMember = await guild[1].members.fetch(attributes.id).catch(() => {});
-                if (fetchedMember) {
-                    fetchedMember
-                        .ban({
-                            reason: `ULTRA BAN BY ${Msg.member.user.tag}: ${reason}`,
-                        })
-                        .then(() => {
-                            addLog(`Banned in guild: ${guild[1].name}`);
-                        })
-                        .catch((err) => {
-                            console.error(err);
-                            addLog(`Could not ban in guild ${guild[1].name}: ${err}`);
-                        });
-                }
+                guild[1].members
+                    .ban(attributes.id, {
+                        reason: `Ultra Ban By ${Msg.member.user.tag}: ${reason}`,
+                    })
+                    .then(() => {
+                        addLog(`Banned in guild: ${guild[1].name}`);
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        addLog(`Could not ban in guild ${guild[1].name}: ${err}`);
+                    });
             }
         }
 
         const currentStat = await groupBans.findOne({ id: playerId });
         const hasModLogs = await modLogs.findOne({ id: playerId });
 
-        if (allowRobloxRelatedBans) {
+        if (allowGroupBans) {
             if (currentStat) {
                 const gbReason = currentStat.reason;
                 addLog(`Couldn't group ban: already exists: ${gbReason}`);
@@ -142,6 +149,20 @@ class Command {
             }
         } else {
             return Msg.channel.send(`<@${Msg.author.id}>, :pray: All done! :face_exhaling: :hugging: :innocent:`);
+        }
+
+        if (allowGameBans) {
+            const response = await Util.banInGame({
+                toBanID: playerId,
+                reason: reason,
+                executor: executorPlayerId,
+            });
+
+            if (response.success) {
+                addLog("Banned remotely in-game.");
+            } else {
+                addLog("Could not ban remotely due to internal error.");
+            }
         }
 
         const dataForm = Util.makeLogData("ULTRA BAN", `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
