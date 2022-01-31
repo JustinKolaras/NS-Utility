@@ -24,9 +24,7 @@ class Command {
 
         const args = Context.args;
         const playerName = args[0];
-        const reason = Util.verify(Util.combine(args, 1), (self) => {
-            return typeof self === "string";
-        });
+        const reason = Util.combine(args, 1);
         const errMessage = Util.makeError("There was an issue while trying to grban that user.", [
             "Your argument does not match a valid username.",
             "You mistyped the username.",
