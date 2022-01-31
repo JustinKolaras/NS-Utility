@@ -21,7 +21,7 @@ class Command {
             return Msg.author
                 .send(
                     // prettier-ignore
-                    `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\nCommands above your permission level are hidden.\n\n${config.permissionIndex.join("\n")}\n\n${commandList}`
+                    `Bot prefix: \`${config.prefix}\`\nYour permission level: **${perm.toString()}**\n\nCommands above your permission level are hidden.\n\n${commandList}`
                 )
                 .then(() => Msg.reply("Sent you a DM with information."))
                 .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));

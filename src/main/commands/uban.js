@@ -142,7 +142,7 @@ class Command {
                     });
 
                 if (!grbanError) {
-                    addLog(`Banned from group. ${!couldExile ? "Could not exile." : ""}`);
+                    addLog(`Banned from group. ${couldExile ? "" : "Couldn't exile."}`);
                 } else {
                     addLog(`Couldn't group ban: error: ${grbanError}`);
                 }
