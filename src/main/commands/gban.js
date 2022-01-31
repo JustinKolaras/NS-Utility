@@ -31,7 +31,6 @@ class Command {
         ]);
 
         const database = mongoClient.db("main");
-        const groupBans = database.collection("groupBans");
         const modLogs = database.collection("modLogs");
 
         let playerId;
