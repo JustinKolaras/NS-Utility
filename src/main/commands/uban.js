@@ -147,8 +147,6 @@ class Command {
                     addLog(`Couldn't group ban: error: ${grbanError}`);
                 }
             }
-        } else {
-            return Msg.channel.send(`<@${Msg.author.id}>, :pray: All done! :face_exhaling: :hugging: :innocent:`);
         }
 
         if (allowGameBans) {
