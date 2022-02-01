@@ -441,6 +441,40 @@ class Utility {
             return { success: false };
         }
     };
+
+    unbanInGame = async (payload) => {
+        let endpointResponse = await axios
+            .post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/unbans`, payload, {
+                headers: {
+                    Authorization: process.env.nsAPIAuth,
+                },
+            })
+            .catch(() => {});
+
+        if (endpointResponse) {
+            endpointResponse = endpointResponse.data;
+            return { success: endpointResponse.status === "ok" };
+        } else {
+            return { success: false };
+        }
+    };
+
+    kickInGame = async (payload) => {
+        let endpointResponse = await axios
+            .post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/kicks`, payload, {
+                headers: {
+                    Authorization: process.env.nsAPIAuth,
+                },
+            })
+            .catch(() => {});
+
+        if (endpointResponse) {
+            endpointResponse = endpointResponse.data;
+            return { success: endpointResponse.status === "ok" };
+        } else {
+            return { success: false };
+        }
+    };
 }
 
 module.exports = new Utility();
