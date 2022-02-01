@@ -63,6 +63,9 @@ global.discordClient = new Client({
     const onJoinRequestHandle = require("../src/main/listeners/onJoinRequestHandle");
 
     noblox.onJoinRequestHandle(config.group).on("data", (...args) => onJoinRequestHandle(...args));
-})().catch(console.error); // Inevitable errors at the moment, not enabling further error notification as of now
+})().catch((err) => {
+    console.error(err);
+    Util.dmUser([config.ownerId], `**Special Event Handler Error**\n${err}`);
+});
 
 void discordClient.login(process.env.token);
