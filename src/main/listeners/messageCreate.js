@@ -31,6 +31,7 @@ module.exports = {
     name: "messageCreate",
     async execute(Msg) {
         if (!Msg.guild) return;
+        if (Msg.webhookId) return;
         if (typeof commandInvocations[Msg.member.id] !== "number") {
             commandInvocations[Msg.member.id] = 0;
         }
