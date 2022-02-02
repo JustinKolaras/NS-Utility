@@ -61,8 +61,10 @@ global.discordClient = new Client({
 (async () => {
     await noblox.setCookie(process.env.cookie).catch(console.error);
     const onJoinRequestHandle = require("../src/main/listeners/onJoinRequestHandle");
+    //const onGroupTransaction = require("../src/main/listeners/onGroupTransaction");
 
     noblox.onJoinRequestHandle(config.group).on("data", onJoinRequestHandle);
+    //noblox.onGroupTransaction(config.group, "Sale").on("data", onGroupTransaction);
 })().catch((err) => {
     console.error(err);
     Util.dmUser([config.ownerId], `**Special Event Handler Error**\n${err}`);
