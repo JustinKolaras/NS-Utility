@@ -60,10 +60,10 @@ global.discordClient = new Client({
 // Special Event Handler
 (async () => {
     await noblox.setCookie(process.env.cookie).catch(console.error);
-    const onJoinRequestHandle = require("../src/main/listeners/onJoinRequestHandle");
+    const onJoinRequest = require("./main/listeners/onJoinRequest");
     //const onGroupTransaction = require("../src/main/listeners/onGroupTransaction");
 
-    noblox.onJoinRequestHandle(config.group).on("data", onJoinRequestHandle);
+    noblox.onJoinRequest(config.group).on("data", onJoinRequest);
     //noblox.onGroupTransaction(config.group, "Sale").on("data", onGroupTransaction);
 })().catch((err) => {
     console.error(err);
