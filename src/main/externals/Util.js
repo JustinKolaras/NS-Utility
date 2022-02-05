@@ -470,9 +470,9 @@ class Utility {
 
         if (endpointResponse) {
             endpointResponse = endpointResponse.data;
-            return { success: endpointResponse.status === "ok" };
+            return { success: endpointResponse.status === "ok", raw: endpointResponse };
         } else {
-            return { success: false };
+            return { success: false, raw: endpointResponse };
         }
     };
 }

@@ -119,7 +119,7 @@ class Command {
         if (response.success) {
             return main.edit(`<@${Msg.author.id}>, Nice! Your command was executed remotely on all game servers.`);
         } else {
-            return main.edit(`<@${Msg.author.id}>, There was an error.`);
+            return main.edit(`<@${Msg.author.id}>, There was an error.\n\n\`@ns-api\`\n\`\`\`\n${response.raw}\n\`\`\``);
         }
     };
 }
