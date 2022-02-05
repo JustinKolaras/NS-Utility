@@ -7,7 +7,7 @@ const uuid = require("uuid");
 
 class Utility {
     combine = (args, first, last) => {
-        last ?? Infinity;
+        last ??= Infinity;
         for (const k in args) {
             if (k > first && k < last) {
                 args[first] += ` ${args[k]}`;
