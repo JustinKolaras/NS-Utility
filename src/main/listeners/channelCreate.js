@@ -12,8 +12,8 @@ module.exports = {
             channels--;
         }, 60000);
 
-        if (users >= 4 && !MASTER_COOLDOWN) {
-            users = 0;
+        if (channels >= 4 && !MASTER_COOLDOWN) {
+            channels = 0;
             MASTER_COOLDOWN = true;
             setTimeout(() => {
                 MASTER_COOLDOWN = false;

@@ -11,8 +11,8 @@ module.exports = {
             channels--;
         }, 60000);
 
-        if (users >= 3 && !MASTER_COOLDOWN) {
-            users = 0;
+        if (channels >= 3 && !MASTER_COOLDOWN) {
+            channels = 0;
 
             const prefix = `@everyone, `;
             const messageToSend = `**Channel Delete Influx Warning:** There seems to be mass channel deletion. Please check audit and <#788872173359071272> for more details.`;
