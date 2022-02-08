@@ -54,7 +54,7 @@ class Command {
 module.exports = {
     class: new Command({
         Name: "8ball",
-        Description: "A wonderful second creation by Magical Cat...",
+        Description: "Gives a random response based on the question.",
         Usage: ";8ball <question>",
         Permission: 0,
     }),

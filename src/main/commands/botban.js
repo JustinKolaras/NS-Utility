@@ -51,7 +51,7 @@ class Command {
         const botBans = database.collection("botBans");
         const modLogs = database.collection("modLogs");
 
-        const currentStat = await botBans.findOne({ id: attributes.id });
+        const botBansData = await botBans.findOne({ id: attributes.id });
         const hasModLogs = await modLogs.findOne({ id: playerId });
 
         const dataFormAdd = {
@@ -64,8 +64,8 @@ class Command {
         };
 
         if (banType === "add") {
-            if (currentStat) {
-                return Msg.reply(`This user is already banned from using NS Utility.`);
+            if (botBansData) {
+                return Msg.reply("This user is already banned from using NS Utility.");
             }
 
             if (logging) {
@@ -94,11 +94,11 @@ class Command {
                 .insertOne({
                     id: attributes.id,
                 })
-                .then(() => Msg.reply(`Successfully banned user from using NS Utility.`))
+                .then(() => Msg.reply("Successfully banned user from using NS Utility."))
                 .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else if (banType === "remove") {
-            if (!currentStat) {
-                return Msg.reply(`This user is not already banned from using NS Utility.`);
+            if (!botBansData) {
+                return Msg.reply("This user is not already banned from using NS Utility.");
             }
 
             if (logging) {
@@ -124,7 +124,7 @@ class Command {
             }
 
             botBans
-                .deleteOne(currentStat)
+                .deleteOne(botBansData)
                 .then(() => Msg.reply(`Successfully removed ban.`))
                 .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         }
