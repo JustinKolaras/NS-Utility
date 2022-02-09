@@ -85,6 +85,7 @@ class Command {
         });
 
         confCollector.on("collect", (i) => {
+            console.log(i.member.id, Msg.author.id);
             if (i.customId === "confirm") {
                 confCollector.stop();
                 confMsg.delete().catch(() => {});

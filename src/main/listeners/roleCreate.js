@@ -7,7 +7,7 @@ module.exports = {
             return role.permissions.has("ADMINISTRATOR");
         };
 
-        const prefix = `@everyone, `;
+        const prefix = `<@&788877981874389014>, `;
         const messageToSend = `**${newRole.name}** (${newRole.id}) has been given the \`ADMINISTRATOR\` permission.\nThis is just a notice. If you know this is intentional, please ignore this message.`;
 
         if (hasAdmin(newRole)) {
