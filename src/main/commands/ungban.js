@@ -113,7 +113,7 @@ class Command {
         const main = await Msg.channel.send(`<@${Msg.author.id}>, Working..`);
 
         const response = await Util.unbanInGame({
-            toUnbanID: playerId,
+            toUnbanID: parseInt(playerId),
         });
 
         if (response.success) {

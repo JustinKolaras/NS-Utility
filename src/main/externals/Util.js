@@ -426,54 +426,51 @@ class Utility {
     };
 
     banInGame = async (payload) => {
-        let endpointResponse = await axios
-            .post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/bans`, payload, {
+        let endpointResponse;
+        try {
+            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/bans`, payload, {
                 headers: {
                     Authorization: process.env.nsAPIAuth,
                 },
-            })
-            .catch(() => {});
-
-        if (endpointResponse) {
-            endpointResponse = endpointResponse.data;
-            return { success: endpointResponse.status === "ok" };
-        } else {
-            return { success: false };
+            });
+        } catch (err) {
+            return { success: false, raw: JSON.stringify(err.response.data) };
         }
+
+        endpointResponse = endpointResponse.data;
+        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
     };
 
     unbanInGame = async (payload) => {
-        let endpointResponse = await axios
-            .post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/unbans`, payload, {
+        let endpointResponse;
+        try {
+            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/unbans`, payload, {
                 headers: {
                     Authorization: process.env.nsAPIAuth,
                 },
-            })
-            .catch(() => {});
-
-        if (endpointResponse) {
-            endpointResponse = endpointResponse.data;
-            return { success: endpointResponse.status === "ok" };
-        } else {
-            return { success: false };
+            });
+        } catch (err) {
+            return { success: false, raw: JSON.stringify(err.response.data) };
         }
+
+        endpointResponse = endpointResponse.data;
+        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
     };
 
     kickInGame = async (payload) => {
-        let endpointResponse = await axios
-            .post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/kicks`, payload, {
+        let endpointResponse;
+        try {
+            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/kicks`, payload, {
                 headers: {
                     Authorization: process.env.nsAPIAuth,
                 },
-            })
-            .catch(() => {});
-
-        if (endpointResponse) {
-            endpointResponse = endpointResponse.data;
-            return { success: endpointResponse.status === "ok", raw: endpointResponse };
-        } else {
-            return { success: false, raw: endpointResponse };
+            });
+        } catch (err) {
+            return { success: false, raw: JSON.stringify(err.response.data) };
         }
+
+        endpointResponse = endpointResponse.data;
+        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
     };
 }
 

@@ -118,9 +118,9 @@ class Command {
         const main = await Msg.channel.send(`<@${Msg.author.id}>, Working..`);
 
         const response = await Util.kickInGame({
-            toKickID: playerId,
+            toKickID: parseInt(playerId),
             reason: reason,
-            executor: executorPlayerId,
+            executor: parseInt(executorPlayerId),
         });
 
         if (response.success) {
