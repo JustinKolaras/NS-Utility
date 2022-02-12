@@ -90,7 +90,7 @@ class Command {
 
         for (const role of roles) {
             if (role.name === "Guest") continue;
-            if (role.rank >= 15) continue;
+            if ((role.rank >= 15 && Context.clientPerm < 6) || (role.rank >= 255 && Context.clientPerm >= 6)) continue;
             discordReadableRoles.push({
                 label: role.name,
                 description: `Group Roleset [${role.id}]`,
