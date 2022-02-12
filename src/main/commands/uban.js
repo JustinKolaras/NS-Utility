@@ -31,12 +31,10 @@ class Command {
         ]);
 
         const database = mongoClient.db("main");
-        const groupBans = database.collection("groupBans");
         const modLogs = database.collection("modLogs");
 
         let playerId;
         let executorPlayerId;
-        let allowGroupBans = true;
         let allowGameBans = true;
         let allowGuildBans = true;
 
@@ -51,9 +49,8 @@ class Command {
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                allowGroupBans = false;
                 allowGameBans = false;
-                Msg.reply(`Could not get Roblox account via Discord syntax. This user won't be group/game banned.`);
+                Msg.reply(`Could not get Roblox account via Discord syntax. This user won't be game banned.`);
             }
         } else {
             allowGuildBans = false;
@@ -116,38 +113,7 @@ class Command {
             }
         }
 
-        const currentStat = await groupBans.findOne({ id: playerId });
         const hasModLogs = await modLogs.findOne({ id: playerId });
-
-        if (allowGroupBans) {
-            if (currentStat) {
-                const gbReason = currentStat.reason;
-                addLog(`Couldn't group ban: already exists: ${gbReason}`);
-            } else {
-                let couldExile = true;
-
-                noblox.exile(config.group, playerId).catch(() => {
-                    couldExile = false;
-                });
-
-                let grbanError;
-
-                groupBans
-                    .insertOne({
-                        id: playerId,
-                        reason: reason,
-                    })
-                    .catch((err) => {
-                        grbanError = err;
-                    });
-
-                if (!grbanError) {
-                    addLog(`Banned from group. ${couldExile ? "" : "Couldn't exile."}`);
-                } else {
-                    addLog(`Couldn't group ban: error: ${grbanError}`);
-                }
-            }
-        }
 
         if (allowGameBans) {
             const response = await Util.banInGame({
@@ -192,7 +158,7 @@ class Command {
 module.exports = {
     class: new Command({
         Name: "uban",
-        Description: "Bans a user from the group, game, and all NS-related Discord servers.",
+        Description: "Bans a user from the game, and all NS-related Discord servers.",
         Usage: ";uban <User> <reason>",
         Permission: 6,
     }),

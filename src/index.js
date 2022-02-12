@@ -3,7 +3,6 @@
 require("dotenv").config({ path: "src/.env" });
 
 const { Client, Intents } = require("discord.js");
-const noblox = require("noblox.js");
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const yaml = require("js-yaml");
@@ -55,19 +54,6 @@ global.discordClient = new Client({
 })().catch((err) => {
     console.error(err);
     Util.dmUser([config.ownerId], `**Event Handler Error**\n${err}`);
-});
-
-// Special Event Handler
-(async () => {
-    await noblox.setCookie(process.env.cookie).catch(console.error);
-    const onJoinRequest = require("./main/listeners/onJoinRequest");
-    //const onGroupTransaction = require("../src/main/listeners/onGroupTransaction");
-
-    noblox.onJoinRequest(config.group).on("data", onJoinRequest);
-    //noblox.onGroupTransaction(config.group, "Sale").on("data", onGroupTransaction);
-})().catch((err) => {
-    console.error(err);
-    Util.dmUser([config.ownerId], `**Special Event Handler Error**\n${err}`);
 });
 
 void discordClient.login(process.env.token);
