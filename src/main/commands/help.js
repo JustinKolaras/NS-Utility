@@ -35,8 +35,6 @@ class Command {
                     // prettier-ignore
                     `Command: \`${command.toLowerCase()}\` **[${result.class.Permission}]**\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`
                 );
-            } else {
-                return Msg.reply(result);
             }
         }
     };
