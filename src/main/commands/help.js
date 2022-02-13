@@ -30,11 +30,13 @@ class Command {
         if (!success) {
             return Msg.reply(result);
         } else {
-            if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= perm) {
+            if ((Msg.guild.id === config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= perm) {
                 return Msg.reply(
                     // prettier-ignore
                     `Command: \`${command.toLowerCase()}\` **[${result.class.Permission}]**\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`
                 );
+            } else {
+                return Msg.reply(result);
             }
         }
     };
