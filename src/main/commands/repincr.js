@@ -29,7 +29,7 @@ class Command {
         const userReputation = await reputation.findOne({ id: attributes.id });
 
         if (!userReputation) {
-            return Msg.reply("This user needs at least some reputation to increment.");
+            return Msg.reply(`This user needs at least some reputation to increment.\nRun \`;repedit ${attributes.id} 0\` and try again.`);
         }
 
         reputation
