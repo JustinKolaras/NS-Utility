@@ -19,8 +19,7 @@ class Command {
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         const amt = parseInt(args[1]);
 
-        if (!attributes.success || (!amt && amt !== 0)) {
-            console.log("Inside");
+        if (!attributes.success || !amt || typeof amt !== "number") {
             return SyntaxErr();
         }
 
@@ -30,15 +29,7 @@ class Command {
         const userReputation = await reputation.findOne({ id: attributes.id });
 
         if (!userReputation) {
-            try {
-                reputation.insertOne({
-                    id: attributes.id,
-                    reputationNum: 0,
-                });
-            } catch (err) {
-                Util.dmUser([config.ownerId], `**Add Reputation to Edit Error**\n\`\`\`\n${err}\n\`\`\``);
-                return Msg.reply("There was an error adding reputation.");
-            }
+            return Msg.reply("This user needs at least some reputation to increment.");
         }
 
         reputation
@@ -47,7 +38,7 @@ class Command {
                     id: attributes.id,
                 },
                 {
-                    $set: {
+                    $inc: {
                         reputationNum: amt,
                     },
                 }
@@ -59,9 +50,9 @@ class Command {
 
 module.exports = {
     class: new Command({
-        Name: "repedit",
-        Description: "Edits a user's reputation.",
-        Usage: `;repedit <User> <amt>`,
+        Name: "repincr",
+        Description: "Increments a user's reputation.",
+        Usage: `;repincr <User> <amt>`,
         Permission: 6,
     }),
 };
