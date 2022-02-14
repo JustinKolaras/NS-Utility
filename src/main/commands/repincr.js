@@ -19,7 +19,7 @@ class Command {
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
         const amt = parseInt(args[1]);
 
-        if (!attributes.success || !amt || typeof amt !== "number") {
+        if (!attributes.success || !amt) {
             return SyntaxErr();
         }
 
