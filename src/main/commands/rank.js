@@ -75,7 +75,7 @@ class Command {
             return Msg.reply(errMessage);
         }
 
-        if (rankId >= 252 && clientPerm < 6) {
+        if (rankId >= 252 && Context.clientPerm < 6) {
             return Msg.reply("Invalid rank! You can only change the rank of members ranked below **Moderator**.");
         }
 
@@ -90,6 +90,7 @@ class Command {
 
         for (const role of roles) {
             if (role.name === "Guest") continue;
+            // This long if statement basically allows those with perm 6+ to ignore rank restrictions.
             if ((role.rank >= 15 && Context.clientPerm < 6) || (role.rank >= 255 && Context.clientPerm >= 6)) continue;
             discordReadableRoles.push({
                 label: role.name,
