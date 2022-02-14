@@ -75,7 +75,7 @@ class Command {
             return Msg.reply(errMessage);
         }
 
-        if (rankId >= 252) {
+        if (rankId >= 252 && clientPerm < 6) {
             return Msg.reply("Invalid rank! You can only change the rank of members ranked below **Moderator**.");
         }
 
