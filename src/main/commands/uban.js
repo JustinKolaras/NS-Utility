@@ -35,6 +35,7 @@ class Command {
 
         let playerId;
         let executorPlayerId;
+        let allowGroupExile = true;
         let allowGameBans = true;
         let allowGuildBans = true;
 
@@ -50,6 +51,7 @@ class Command {
                 playerId = rblxInfo.response.robloxId;
             } else {
                 allowGameBans = false;
+                allowGroupExile = false;
                 Msg.reply(`Could not get Roblox account via Discord syntax. This user won't be game banned.`);
             }
         } else {
@@ -113,8 +115,6 @@ class Command {
             }
         }
 
-        const hasModLogs = await modLogs.findOne({ id: playerId });
-
         if (allowGameBans) {
             const response = await Util.banInGame({
                 toBanID: playerId,
@@ -129,6 +129,18 @@ class Command {
             }
         }
 
+        if (allowGroupExile) {
+            noblox
+                .exile(config.group, playerId)
+                .then(() => {
+                    addLog("Exiled from group.");
+                })
+                .catch((err) => {
+                    addLog(`Could not exile: ${err}`);
+                });
+        }
+
+        const hasModLogs = await modLogs.findOne({ id: playerId });
         const dataForm = Util.makeLogData("ULTRA BAN", `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
 
         if (hasModLogs) {
