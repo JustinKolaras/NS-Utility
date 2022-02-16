@@ -103,39 +103,45 @@ class Command {
         });
 
         collector.on("collect", (i) => {
+            i.deferReply(); // The noblox API request can rarely take over 3 seconds. This happened before.
             if (i.customId === "confirm") {
                 noblox
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
                         collector.stop();
-                        return main.edit({
+                        i.editReply({
                             content: `<@${Msg.member.id}>, Paid out user successfully.`,
                             components: [],
                         });
+                        main.edit({ content: msgContent, components: [] });
                     })
                     .catch((err) => {
                         collector.stop();
                         console.error(err);
-                        return main.edit({
+                        main.edit({ content: msgContent, components: [] });
+                        i.editReply({
                             content: errMessage,
                             components: [],
                         });
+                        main.edit({ content: msgContent, components: [] });
                     });
             } else if (i.customId === "reject") {
                 collector.stop();
-                return main.edit({
+                i.editReply({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
+                main.edit({ content: msgContent, components: [] });
             }
         });
 
-        collector.on("end", (_, reason) => {
+        collector.on("end", (i, reason) => {
             if (reason === "time") {
-                return main.edit({
+                i.editReply({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
+                main.edit({ content: msgContent, components: [] });
             }
         });
     };
