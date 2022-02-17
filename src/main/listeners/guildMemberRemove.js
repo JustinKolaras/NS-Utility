@@ -26,12 +26,22 @@ module.exports = {
         const reputation = database.collection("reputation");
 
         const hasReputation = await reputation.findOne({ id: member.id });
+        const reputationNum = hasReputation?.reputationNum;
 
         if (hasReputation) {
-            reputation.deleteOne(hasReputation).catch((err) => {
-                console.error(err);
-                Util.dmUser([config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
-            });
+            reputation
+                .deleteOne(hasReputation)
+                .catch((err) => {
+                    console.error(err);
+                    Util.dmUser([config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
+                })
+                .then(() =>
+                    Util.sendInChannel(
+                        "761468835600924733",
+                        "923715934370283612",
+                        `<@${member.id}> left with **${reputationNum}** reputation points. It has been cleared.`
+                    )
+                );
         }
 
         if (Util.getPerm(member) >= moderatorConfig.onPermission) {
