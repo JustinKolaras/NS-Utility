@@ -109,9 +109,7 @@ class Command {
             if (i.customId === "confirm") {
                 noblox
                     .groupPayout(config.group, playerId, amt)
-                    .then(() => {
-                        i.editReply(`Paid out user successfully.`);
-                    })
+                    .then(() => i.editReply(`Paid out user successfully.`))
                     .catch((err) => {
                         console.error(err);
                         i.editReply({
