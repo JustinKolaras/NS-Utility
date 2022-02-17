@@ -125,11 +125,9 @@ class Command {
             }
         });
 
-        collector.on("end", async (i, reason) => {
-            await i.deferReply();
-            await main.edit({ content: msgContent, components: [] });
+        collector.on("end", async (_, reason) => {
             if (reason === "time") {
-                i.editReply(`Cancelled command execution.`);
+                main.edit({ content: `<@${Msg.author.id}>, Cancelled command execution.`, components: [] });
             }
         });
     };

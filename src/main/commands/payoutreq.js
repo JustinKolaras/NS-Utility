@@ -171,15 +171,13 @@ class Command {
             }
         });
 
-        collector.on("end", async (i, reason) => {
-            await i.deferReply();
-            await main.edit({ content: msgContent, components: [] });
+        collector.on("end", async (_, reason) => {
             if (reason === "time") {
                 Msg.author
                     .send(
                         `Your payout request has expired! (no one accepted/declined) No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                     )
-                    .then(() => i.editReply(`Payout request from **${playerName}** expired! (24 hours)`))
+                    .then(() => main.edit({ content: `@everyone, Payout request from **${playerName}** expired! (24 hours)`, components: [] }))
                     .catch(() => {});
             }
         });
