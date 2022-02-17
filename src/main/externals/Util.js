@@ -472,6 +472,22 @@ class Utility {
         endpointResponse = endpointResponse.data;
         return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
     };
+
+    sdInGame = async (payload) => {
+        let endpointResponse;
+        try {
+            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/shutdowns`, payload, {
+                headers: {
+                    Authorization: process.env.nsAPIAuth,
+                },
+            });
+        } catch (err) {
+            return { success: false, raw: JSON.stringify(err.response.data) };
+        }
+
+        endpointResponse = endpointResponse.data;
+        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
+    };
 }
 
 module.exports = new Utility();
