@@ -1,6 +1,7 @@
 const Util = require("../externals/Util");
 
 let channels = 0;
+let MASTER_COOLDOWN = false;
 
 module.exports = {
     name: "channelDelete",
@@ -13,6 +14,10 @@ module.exports = {
 
         if (channels >= 3 && !MASTER_COOLDOWN) {
             channels = 0;
+            MASTER_COOLDOWN = true;
+            setTimeout(() => {
+                MASTER_COOLDOWN = false;
+            }, 500000);
 
             const prefix = `@everyone, `;
             const messageToSend = `**Mass Channel Deletion Alert:**  Please check audit and <#788872173359071272> for more details.`;
