@@ -57,7 +57,7 @@ module.exports = {
     class: new Command({
         Name: "gshutdown",
         Description: "Shuts down all servers in the Next Saturday Homestore.",
-        Usage: ";gshutdown <reason>",
+        Usage: ";gshutdown <?reason>",
         Permission: 5,
     }),
 };
