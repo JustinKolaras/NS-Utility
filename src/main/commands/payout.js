@@ -105,22 +105,20 @@ class Command {
         collector.on("collect", async (i) => {
             await i.deferReply(); // The noblox API request can rarely take over 3 seconds. This happened before.
             await main.edit({ content: msgContent, components: [] });
+            await collector.stop();
             if (i.customId === "confirm") {
                 noblox
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
-                        collector.stop();
                         i.editReply(`Paid out user successfully.`);
                     })
                     .catch((err) => {
                         console.error(err);
-                        collector.stop();
                         i.editReply({
                             content: errMessage,
                         });
                     });
             } else if (i.customId === "reject") {
-                collector.stop();
                 i.editReply(`Cancelled command execution.`);
             }
         });

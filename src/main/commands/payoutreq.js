@@ -85,14 +85,12 @@ class Command {
             components: [confRow],
         });
 
-        confCollector.on("collect", (i) => {
-            console.log(i.member.id, Msg.author.id);
+        confCollector.on("collect", async (i) => {
+            await confCollector.stop();
             if (i.customId === "confirm") {
-                confCollector.stop();
                 confMsg.delete().catch(() => {});
                 continuing = true;
             } else if (i.customId === "reject") {
-                confCollector.stop();
                 confMsg.delete().catch(() => {});
                 Msg.delete().catch(() => {});
             }
@@ -139,11 +137,11 @@ class Command {
         collector.on("collect", async (i) => {
             await i.deferReply(); // The noblox API request can rarely take over 3 seconds. This happened before.
             await main.edit({ content: msgContent, components: [] });
+            await collector.stop();
             if (i.customId === `accept-${playerId}-${id}`) {
                 noblox
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
-                        collector.stop();
                         Msg.author
                             .send(
                                 `Your payout request was accepted by ${i.member.user.tag}. **R$${sepAmt}** has been credited into your account.\n**Request ID:** ${playerId}-${id}`
@@ -157,11 +155,9 @@ class Command {
                     })
                     .catch((err) => {
                         console.error(err);
-                        collector.stop();
                         i.editReply(errMessageAdmin);
                     });
             } else if (i.customId === `decline-${playerId}-${id}`) {
-                collector.stop();
                 Msg.author
                     .send(
                         `Your payout request was declined by ${i.member.user.tag}. No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
