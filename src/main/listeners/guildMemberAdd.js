@@ -32,7 +32,7 @@ module.exports = {
             }, 500000);
 
             const prefix = `@everyone, `;
-            const messageToSend = `**Member Add Influx Warning:** An increased amount of members have been joining recently. Please check audit and <#788872173359071272> for more details.\nThe <#797589411381903380> channel has been locked automatically.`;
+            const messageToSend = `**Member Add Influx Warning:** Please check audit and <#788872173359071272> for more details.\nThe <#797589411381903380> channel has been locked automatically.`;
 
             Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
             Util.getChannel(member.guild, "810717109427503174")?.send(prefix + messageToSend);

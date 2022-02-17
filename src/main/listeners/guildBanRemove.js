@@ -12,7 +12,7 @@ module.exports = {
             users--;
         }, 60000);
 
-        if (users >= 4) {
+        if (users >= 4 && !MASTER_COOLDOWN) {
             users = 0;
             MASTER_COOLDOWN = true;
             setTimeout(() => {

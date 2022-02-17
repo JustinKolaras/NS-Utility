@@ -47,7 +47,7 @@ module.exports = {
             Util.getChannel(member.guild, designerConfig.channelId)?.send(prefix + messageToSend);
         }
 
-        if (users >= 6) {
+        if (users >= 6 && !MASTER_COOLDOWN) {
             users = 0;
             MASTER_COOLDOWN = true;
             setTimeout(() => {
@@ -55,7 +55,7 @@ module.exports = {
             }, 500000);
 
             const prefix = `@everyone, `;
-            const messageToSend = `**Member Remove Influx Warning:** An increased amount of members have been leaving recently. Please check audit and <#788872173359071272> for more details.`;
+            const messageToSend = `**Member Remove Influx Warning:** Please check audit and <#788872173359071272> for more details.`;
 
             Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
             Util.getChannel(member.guild, moderatorConfig.channelId)?.send(prefix + messageToSend);
