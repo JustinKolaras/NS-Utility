@@ -14,6 +14,7 @@ let MASTER_COOLDOWN = false;
 
 module.exports = {
     name: "guildMemberRemove",
+    execType: "bind",
     async execute(member) {
         users++;
 

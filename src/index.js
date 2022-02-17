@@ -31,29 +31,30 @@ global.discordClient = new Client({
     partials: ["CHANNEL"],
 });
 
-// MongoDB Server Connection
 (async () => {
+    // Connect to MongoDB
     await mongoClient.connect();
     console.log("MongoDB - Successful connection");
-})().catch((err) => {
-    console.error(err);
-    Util.dmUser([config.ownerId], `**MongoDB Server Connection Error**\n\`\`\`\n${err}\n\`\`\``);
-});
 
-// Event Handler
-(async () => {
-    const files = fs.readdirSync("./src/main/listeners/").filter((file) => file.endsWith(".js"));
-    for (const file of files) {
+    // Register Events
+    const eventFiles = fs.readdirSync("./src/main/listeners/").filter((file) => file.endsWith(".js"));
+    for (const file of eventFiles) {
         const event = require(`../src/main/listeners/${file}`);
-        if (event.once) {
-            discordClient.once(event.name, (...args) => event.execute(...args));
-        } else {
-            discordClient.on(event.name, (...args) => event.execute(...args));
+        if (event.execType === "auto") {
+            event.execute();
+            continue;
+        } else if (event.execType === "bind") {
+            if (event.once) {
+                discordClient.once(event.name, (...args) => event.execute(...args));
+            } else {
+                discordClient.on(event.name, (...args) => event.execute(...args));
+            }
         }
     }
+    console.log("Events Registered");
 })().catch((err) => {
     console.error(err);
-    Util.dmUser([config.ownerId], `**Event Handler Error**\n${err}`);
+    Util.dmUser([config.ownerId], `**Init Error**\n\`\`\`\n${err}\n\`\`\``);
 });
 
 void discordClient.login(process.env.token);

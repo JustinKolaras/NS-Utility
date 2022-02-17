@@ -5,6 +5,7 @@ let MASTER_COOLDOWN = false;
 
 module.exports = {
     name: "guildBanRemove",
+    execType: "bind",
     async execute(member) {
         users++;
 

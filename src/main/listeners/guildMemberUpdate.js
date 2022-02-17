@@ -29,6 +29,7 @@ const adminRolesIndex = [
 
 module.exports = {
     name: "guildMemberUpdate",
+    execType: "bind",
     execute(oldMember, newMember) {
         let hasAdminRole = false;
         let adminRoles = [];

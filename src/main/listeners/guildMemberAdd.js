@@ -10,6 +10,7 @@ const configuration = {
 
 module.exports = {
     name: "guildMemberAdd",
+    execType: "bind",
     async execute(member) {
         if (member.user.bot) {
             Util.dmUser([config.ownerId], `This is a notice that a bot was rejected from ${member.guild.name}.`);

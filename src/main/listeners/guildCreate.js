@@ -2,6 +2,7 @@ const Util = require("../externals/Util");
 
 module.exports = {
     name: "guildCreate",
+    execType: "bind",
     execute(guild) {
         let messageToSend = `<@&907752877798330489>, I was added to a guild.\n**Name:** ${guild.name}\n**Id:** ${guild.id}`;
 

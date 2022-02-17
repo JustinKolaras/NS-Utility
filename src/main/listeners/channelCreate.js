@@ -5,6 +5,7 @@ let MASTER_COOLDOWN = false;
 
 module.exports = {
     name: "channelCreate",
+    execType: "bind",
     async execute(member) {
         channels++;
 

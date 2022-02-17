@@ -29,6 +29,7 @@ const makeEmbed = (Msg, command) => {
 
 module.exports = {
     name: "messageCreate",
+    execType: "bind",
     async execute(Msg) {
         if (!Msg.guild) return;
         if (Msg.webhookId) return;

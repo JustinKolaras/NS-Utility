@@ -2,6 +2,7 @@ const Util = require("../externals/Util");
 
 module.exports = {
     name: "roleCreate",
+    execType: "bind",
     async execute(newRole) {
         const hasAdmin = (role) => {
             return role.permissions.has("ADMINISTRATOR");
