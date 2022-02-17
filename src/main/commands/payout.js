@@ -102,8 +102,9 @@ class Command {
             components: [row],
         });
 
-        collector.on("collect", (i) => {
-            i.deferReply(); // The noblox API request can rarely take over 3 seconds. This happened before.
+        collector.on("collect", async (i) => {
+            await i.deferReply(); // The noblox API request can rarely take over 3 seconds. This happened before.
+            await main.edit({ content: msgContent, components: [] });
             if (i.customId === "confirm") {
                 noblox
                     .groupPayout(config.group, playerId, amt)
@@ -113,17 +114,14 @@ class Command {
                             content: `<@${Msg.member.id}>, Paid out user successfully.`,
                             components: [],
                         });
-                        main.edit({ content: msgContent, components: [] });
                     })
                     .catch((err) => {
-                        collector.stop();
                         console.error(err);
-                        main.edit({ content: msgContent, components: [] });
+                        collector.stop();
                         i.editReply({
                             content: errMessage,
                             components: [],
                         });
-                        main.edit({ content: msgContent, components: [] });
                     });
             } else if (i.customId === "reject") {
                 collector.stop();
@@ -131,17 +129,17 @@ class Command {
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
-                main.edit({ content: msgContent, components: [] });
             }
         });
 
-        collector.on("end", (i, reason) => {
+        collector.on("end", async (i, reason) => {
+            await i.deferReply();
+            await main.edit({ content: msgContent, components: [] });
             if (reason === "time") {
                 i.editReply({
                     content: `<@${Msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
-                main.edit({ content: msgContent, components: [] });
             }
         });
     };
