@@ -23,14 +23,9 @@ class Command {
         }
 
         const args = Context.args;
-        const reason = Util.combine(args, 0);
-        const errMessage = Util.makeError("There was an issue while trying to shutdown all game servers.", ["Something internal occured."]);
+        const reason = Util.combine(args, 0) || "";
 
         let executorPlayerId;
-
-        if (!reason) {
-            return SyntaxErr();
-        }
 
         if (reason.length > 85) {
             return Msg.reply("Too long of a reason. Cap: 85chars");
