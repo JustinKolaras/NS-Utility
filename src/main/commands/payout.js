@@ -110,25 +110,18 @@ class Command {
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
                         collector.stop();
-                        i.editReply({
-                            content: `<@${Msg.member.id}>, Paid out user successfully.`,
-                            components: [],
-                        });
+                        i.editReply(`Paid out user successfully.`);
                     })
                     .catch((err) => {
                         console.error(err);
                         collector.stop();
                         i.editReply({
                             content: errMessage,
-                            components: [],
                         });
                     });
             } else if (i.customId === "reject") {
                 collector.stop();
-                i.editReply({
-                    content: `<@${Msg.member.id}>, Cancelled command execution.`,
-                    components: [],
-                });
+                i.editReply(`Cancelled command execution.`);
             }
         });
 
@@ -136,10 +129,7 @@ class Command {
             await i.deferReply();
             await main.edit({ content: msgContent, components: [] });
             if (reason === "time") {
-                i.editReply({
-                    content: `<@${Msg.member.id}>, Cancelled command execution.`,
-                    components: [],
-                });
+                i.editReply(`Cancelled command execution.`);
             }
         });
     };

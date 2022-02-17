@@ -27,6 +27,7 @@ class Command {
 
         const args = Context.args;
         const amt = parseInt(args[0]);
+        const sepAmt = Util.sep(amt);
         const reason = Util.combine(args, 1);
 
         const errMessage = Util.makeError("There was an issue while trying to submit a payout request.", [
@@ -135,8 +136,9 @@ class Command {
             components: [row],
         });
 
-        collector.on("collect", (i) => {
-            const sepAmt = Util.sep(amt);
+        collector.on("collect", async (i) => {
+            await i.deferReply(); // The noblox API request can rarely take over 3 seconds. This happened before.
+            await main.edit({ content: msgContent, components: [] });
             if (i.customId === `accept-${playerId}-${id}`) {
                 noblox
                     .groupPayout(config.group, playerId, amt)
@@ -146,19 +148,17 @@ class Command {
                             .send(
                                 `Your payout request was accepted by ${i.member.user.tag}. **R$${sepAmt}** has been credited into your account.\n**Request ID:** ${playerId}-${id}`
                             )
+                            .then(() =>
+                                i.editReply(
+                                    `Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})\n**R$${sepAmt}**`
+                                )
+                            )
                             .catch(() => {});
-                        return main.edit({
-                            content: `@everyone, Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})\n**R$${sepAmt}**`,
-                            components: [],
-                        });
                     })
                     .catch((err) => {
-                        collector.stop();
                         console.error(err);
-                        return main.edit({
-                            content: errMessageAdmin,
-                            components: [],
-                        });
+                        collector.stop();
+                        i.editReply(errMessageAdmin);
                     });
             } else if (i.customId === `decline-${playerId}-${id}`) {
                 collector.stop();
@@ -166,25 +166,21 @@ class Command {
                     .send(
                         `Your payout request was declined by ${i.member.user.tag}. No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                     )
+                    .then(() => i.editReply(`Payout request from **${playerName}** declined by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`))
                     .catch(() => {});
-                return main.edit({
-                    content: `@everyone, Payout request from **${playerName}** declined by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`,
-                    components: [],
-                });
             }
         });
 
-        collector.on("end", (_, reason) => {
+        collector.on("end", async (i, reason) => {
+            await i.deferReply();
+            await main.edit({ content: msgContent, components: [] });
             if (reason === "time") {
                 Msg.author
                     .send(
                         `Your payout request has expired! (no one accepted/declined) No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                     )
+                    .then(() => i.editReply(`Payout request from **${playerName}** expired! (24 hours)`))
                     .catch(() => {});
-                return main.edit({
-                    content: `@everyone, Payout request from **${playerName}** expired! (24 hours)`,
-                    components: [],
-                });
             }
         });
 
