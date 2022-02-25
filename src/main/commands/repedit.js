@@ -20,7 +20,6 @@ class Command {
         const amt = parseInt(args[1]);
 
         if (!attributes.success || (!amt && amt !== 0)) {
-            console.log("Inside");
             return SyntaxErr();
         }
 
