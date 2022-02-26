@@ -176,7 +176,7 @@ class Command {
             }
         });
 
-        Msg.reply("Your request has been sent for review.");
+        Msg.reply("Your request has been sent for review.\nIf you have your DMs open, you will be notified of status updates.");
     };
 }
 
