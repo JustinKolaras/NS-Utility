@@ -117,9 +117,9 @@ class Command {
 
         if (allowGameBans) {
             const response = await Util.banInGame({
-                toBanID: playerId,
+                toBanID: parseInt(playerId),
                 reason: reason,
-                executor: executorPlayerId,
+                executor: parseInt(executorPlayerId),
             });
 
             if (response.success) {
