@@ -81,7 +81,7 @@ class Command {
         );
 
         const confMsg = await Msg.reply({
-            content: `You are requesting a payout for your account **${playerName}**. Is this correct?\nhttps://roblox.com/users/${playerId}/profile`,
+            content: `You are requesting a payout for your account **${playerName}**. Is this correct?\nIf this is not correct, you need to re-verify your account.\nhttps://roblox.com/users/${playerId}/profile`,
             components: [confRow],
         });
 
