@@ -121,7 +121,7 @@ class Command {
             }
         });
 
-        collector.on("end", async (_, reason) => {
+        collector.on("end", (_, reason) => {
             if (reason === "time") {
                 main.edit({ content: `<@${Msg.author.id}>, Cancelled command execution.`, components: [] });
             }

@@ -165,7 +165,7 @@ class Command {
             }
         });
 
-        collector.on("end", async (_, reason) => {
+        collector.on("end", (_, reason) => {
             if (reason === "time") {
                 Msg.author
                     .send(
