@@ -32,6 +32,8 @@ global.discordClient = new Client({
 });
 
 const init = async () => {
+    await discordClient.login(process.env.token);
+
     // Connect to MongoDB
     await mongoClient.connect();
     console.log("MongoDB - Successful connection");
@@ -54,11 +56,7 @@ const init = async () => {
     console.log("Events Registered");
 };
 
-(async () => {
-    await init()
-        .catch((err) => {
-            console.error(err);
-            Util.dmUser([config.ownerId], `**Init Error**\n\`\`\`\n${err}\n\`\`\``);
-        })
-        .then(() => discordClient.login(process.env.token));
-})();
+init().catch((err) => {
+    console.error(err);
+    Util.dmUser([config.ownerId], `**Init Error**\n\`\`\`\n${err}\n\`\`\``);
+});
