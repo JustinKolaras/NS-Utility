@@ -28,7 +28,6 @@ class Command {
         const playerName = args[0];
         const errMessage = Util.makeError("There was an issue while trying to change the rank of that user.", [
             "Your argument does not match a valid username.",
-            "The user is already at this rank.",
             "You mistyped the username.",
             "The user is not in the group.",
         ]);
