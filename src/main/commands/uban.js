@@ -33,6 +33,8 @@ class Command {
         const database = mongoClient.db("main");
         const modLogs = database.collection("modLogs");
 
+        const priorLogs = [];
+
         let playerId;
         let executorPlayerId;
         let allowGroupExile = true;
@@ -52,11 +54,11 @@ class Command {
             } else {
                 allowGameBans = false;
                 allowGroupExile = false;
-                Msg.reply(`Could not get Roblox account via Discord syntax. This user won't be game banned.`);
+                priorLogs.push(`Could not get Roblox account via Discord syntax. This user won't be game banned.`);
             }
         } else {
             allowGuildBans = false;
-            Msg.reply(`Could not get Discord account via Roblox syntax. This user won't be banned in Discord.`);
+            priorLogs.push(`Could not get Discord account via Roblox syntax. This user won't be banned in Discord.`);
         }
 
         // ID Support
@@ -74,7 +76,7 @@ class Command {
             return Msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
         }
 
-        Msg.channel.send(`<@${Msg.author.id}>, Let's ban 'em from everything! :gun: :stuck_out_tongue: :stuck_out_tongue:`);
+        Msg.channel.send(`<@${Msg.author.id}>, Let's ban 'em from everything! :gun: :stuck_out_tongue:`);
 
         if (!playerId) {
             try {
@@ -99,6 +101,9 @@ class Command {
             log.push(`\`${logText}\``);
             base.edit(`${prefix}\n${log.join("\n")}`);
         };
+        for (const log of priorLogs) {
+            addLog(log);
+        }
 
         // Ban user in all guilds
         if (allowGuildBans) {
