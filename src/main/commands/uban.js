@@ -74,6 +74,8 @@ class Command {
             return Msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
         }
 
+        Msg.channel.send(`<@${Msg.author.id}>, Let's ban 'em from everything! :gun: :stuck_out_tongue: :stuck_out_tongue:`);
+
         if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
