@@ -40,6 +40,7 @@ class Command {
             cleaned = cleaned.replaceAll(process.env.token, "%REDACTED_TOKEN%");
             cleaned = cleaned.replaceAll(process.env.cookie, "%REDACTED_COOKIE%");
             cleaned = cleaned.replaceAll(process.env.mongoURI, "%REDACTED_MONGO-URI%");
+            cleaned = cleaned.replaceAll(process.env.nsApiAuth, "%REDACTED_API-AUTH%");
 
             if (cleaned.length > 1900) {
                 return Msg.channel.send(`<@${Msg.member.id}>, Message over 2000 characters.`);
