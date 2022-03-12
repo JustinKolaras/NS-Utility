@@ -1,6 +1,8 @@
 require("dotenv").config();
 
 const Util = require("../externals/Util");
+const Pastecord = require("pastecord-wrapper");
+const pcClient = new Pastecord();
 
 class Command {
     constructor(options) {
@@ -43,7 +45,8 @@ class Command {
             cleaned = cleaned.replaceAll(process.env.nsApiAuth, "%REDACTED_API-AUTH%");
 
             if (cleaned.length > 1900) {
-                return Msg.channel.send(`<@${Msg.member.id}>, Message over 2000 characters.`);
+                const url = await pcClient.publish(cleaned);
+                return Msg.channel.send(`<@${Msg.member.id}>, Response over 2000 characters.\nUploaded to Pastecord: ${url}`);
             }
 
             return Msg.channel.send(
