@@ -23,10 +23,6 @@ class Command {
         let playerId;
         let logging = true;
 
-        if (!banType || !attributes.success) {
-            return SyntaxErr();
-        }
-
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
         if (attributes.success) {
@@ -45,6 +41,10 @@ class Command {
             if (isNaN(parseInt(playerId))) {
                 return SyntaxErr();
             }
+        }
+
+        if (!banType || !attributes.success) {
+            return SyntaxErr();
         }
 
         const database = mongoClient.db("main");
