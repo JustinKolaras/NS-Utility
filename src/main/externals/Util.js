@@ -488,6 +488,13 @@ class Utility {
         endpointResponse = endpointResponse.data;
         return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
     };
+
+    mfaIntegrity = async (memberId) => {
+        const database = mongoClient.db("main");
+        const mfaAuthorizedUsers = database.collection("prm5>");
+        const currentData = await mfaAuthorizedUsers.findOne({ user: memberId });
+        return currentData && currentData.authorized === true;
+    };
 }
 
 module.exports = new Utility();

@@ -81,6 +81,10 @@ module.exports = {
                 }
 
                 if ((Msg.guild.id == config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= userPermission) {
+                    if (result.class.Permission >= 5 && !(await Util.mfaIntegrity(Msg.member.id))) {
+                        return Msg.reply("MFA for high-level commands failed. Please contact the bot maintainer to resolve.");
+                    }
+
                     if (result.class.Restriction) {
                         const restrictionObject = result.class.Restriction;
 
