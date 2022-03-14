@@ -16,7 +16,7 @@ module.exports = {
     class: new Command({
         Name: "ping",
         Description: "Test & Debug Command - Replies with 'Pong!'",
-        Usage: ";ping",
+        Usage: SyntaxBuilder.classifyCommand({ name: "ping" }).endBuild(),
         Permission: 0,
     }),
 };

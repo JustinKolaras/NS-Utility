@@ -3,7 +3,6 @@ require("dotenv").config();
 const { MessageActionRow, MessageSelectMenu } = require("discord.js");
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -68,7 +67,7 @@ class Command {
 
         let rankId;
         try {
-            rankId = await noblox.getRankInGroup(config.group, playerId);
+            rankId = await noblox.getRankInGroup(Config.group, playerId);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);
@@ -81,7 +80,7 @@ class Command {
         let roles;
         const discordReadableRoles = [];
         try {
-            roles = await noblox.getRoles(config.group);
+            roles = await noblox.getRoles(Config.group);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);
@@ -118,7 +117,7 @@ class Command {
                 collector.stop();
 
                 noblox
-                    .setRank(config.group, playerId, i.values[0])
+                    .setRank(Config.group, playerId, i.values[0])
                     .then(() => main.edit({ content: `<@${Msg.member.id}>, Successfully ranked user.`, components: [] }))
                     .catch(() => main.edit({ content: errMessage, components: [] }));
             }
@@ -139,7 +138,7 @@ module.exports = {
     class: new Command({
         Name: "rank",
         Description: "Changes a user's rank in the Roblox group.",
-        Usage: ";rank <User>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "rank" }).makeRegular("User").endBuild(),
         Permission: 5,
     }),
 };

@@ -1,5 +1,3 @@
-const Util = require("../externals/Util");
-
 const adminRolesIndex = [
     {
         id: "788877981874389014",

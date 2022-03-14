@@ -30,7 +30,7 @@ module.exports = {
     class: new Command({
         Name: "nping",
         Description: "Test & Debug Command - Tests a connection between Roblox and the Discord Bot.",
-        Usage: ";nping",
+        Usage: SyntaxBuilder.classifyCommand({ name: "nping" }).endBuild(),
         Permission: 7,
     }),
 };

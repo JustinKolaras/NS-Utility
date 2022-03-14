@@ -19,7 +19,7 @@ module.exports = {
     class: new Command({
         Name: "restart",
         Description: "Restarts the bot application.",
-        Usage: ";restart",
+        Usage: SyntaxBuilder.classifyCommand({ name: "restart" }).endBuild(),
         Permission: 7,
     }),
 };

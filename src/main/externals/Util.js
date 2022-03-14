@@ -32,14 +32,14 @@ class Utility {
     };
 
     getPerm = async (member) => {
-        const permissionsTable = config.permissions;
+        const permissionsTable = Config.permissions;
         let highestPerm;
 
         if (!permissionsTable) {
             throw new ReferenceError(`Util.getPerm: Could not reference permissions table.`);
         }
 
-        if (member.id === config.ownerId) {
+        if (member.id === Config.ownerId) {
             return 7;
         }
 
@@ -226,7 +226,7 @@ class Utility {
                 userPermission = await this.getPerm(src.member);
             } catch (err) {
                 return src.reply(
-                    `There was an error fetching permissions, so I couldn't display commands correctly.\nYou shouldn't ever receive an error like this. Contact **${config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
+                    `There was an error fetching permissions, so I couldn't display commands correctly.\nYou shouldn't ever receive an error like this. Contact **${Config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
                 );
             }
 
@@ -289,7 +289,7 @@ class Utility {
     };
 
     isReputableChannel = (channelId) => {
-        for (const c of config.reputationChannels) {
+        for (const c of Config.reputationChannels) {
             if (channelId == c) {
                 return true;
             }

@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -22,7 +21,7 @@ class Command {
         const parsedText = Util.combine(args, 0);
 
         noblox
-            .shout(config.group, parsedText || "")
+            .shout(Config.group, parsedText || "")
             .then(() => Msg.reply(`Successfully ${parsedText ? "changed" : "removed"} group shout.`))
             .catch(() => Msg.reply("There was an issue while trying to change the group shout."));
     };
@@ -32,7 +31,7 @@ module.exports = {
     class: new Command({
         Name: "shout",
         Description: "Changes the Roblox group shout.",
-        Usage: ";shout <?text>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "shout" }).makeRegular("text", { optional: true }).endBuild(),
         Permission: 5,
     }),
 };

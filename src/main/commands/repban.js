@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -58,7 +56,7 @@ module.exports = {
     class: new Command({
         Name: "repban",
         Description: "Bans and prohibits a user from attaining reputation.",
-        Usage: `;repban <"add" | "remove"> <User>`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "repban" }).makeChoice(["add", "remove"], { exactify: true }).makeRegular("User").endBuild(),
         Permission: 5,
     }),
 };

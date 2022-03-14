@@ -1,5 +1,3 @@
-const Util = require("../externals/Util");
-
 const moderatorConfig = {
         channelId: "810717109427503174",
         onPermission: 2,
@@ -33,7 +31,7 @@ module.exports = {
                 .deleteOne(hasReputation)
                 .catch((err) => {
                     console.error(err);
-                    Util.dmUser([config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
+                    Util.dmUser([Config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
                 })
                 .then(() =>
                     Util.sendInChannel(

@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -35,7 +33,7 @@ class Command {
                     reputationNum: 0,
                 });
             } catch (err) {
-                Util.dmUser([config.ownerId], `**Add Reputation to Edit Error**\n\`\`\`\n${err}\n\`\`\``);
+                Util.dmUser([Config.ownerId], `**Add Reputation to Edit Error**\n\`\`\`\n${err}\n\`\`\``);
                 return Msg.reply("There was an error adding reputation.");
             }
         }
@@ -60,7 +58,7 @@ module.exports = {
     class: new Command({
         Name: "repedit",
         Description: "Edits a user's reputation.",
-        Usage: `;repedit <User> <amt>`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "repedit" }).makeRegular("User").makeRegular("amount").endBuild(),
         Permission: 6,
     }),
 };

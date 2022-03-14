@@ -1,7 +1,5 @@
 const { MessageEmbed } = require("discord.js");
 
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -30,7 +28,7 @@ module.exports = {
     class: new Command({
         Name: "uptime",
         Description: "Displays bot uptime.",
-        Usage: `;uptime`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "uptime" }).endBuild(),
         Permission: 0,
     }),
 };

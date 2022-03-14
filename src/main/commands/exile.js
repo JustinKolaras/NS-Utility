@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -66,7 +65,7 @@ class Command {
 
         let rankId;
         try {
-            rankId = await noblox.getRankInGroup(config.group, playerId);
+            rankId = await noblox.getRankInGroup(Config.group, playerId);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);
@@ -77,7 +76,7 @@ class Command {
         }
 
         noblox
-            .exile(config.group, playerId)
+            .exile(Config.group, playerId)
             .then(() => Msg.reply(`Exiled user from group successfully.`))
             .catch(() => Msg.reply(errMessage));
     };
@@ -87,7 +86,7 @@ module.exports = {
     class: new Command({
         Name: "exile",
         Description: "Exiles a user from the Roblox group.",
-        Usage: ";exile <User>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "exile" }).makeRegular("User").endBuild(),
         Permission: 5,
     }),
 };

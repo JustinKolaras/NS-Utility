@@ -1,7 +1,5 @@
 const { MessageEmbed } = require("discord.js");
 
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -64,7 +62,7 @@ module.exports = {
     class: new Command({
         Name: "tax",
         Description: "Calculates tax details of a robux amount.",
-        Usage: `;tax <amount>`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "tax" }).makeRegular("amount").endBuild(),
         Permission: 0,
     }),
 };

@@ -1,7 +1,5 @@
 const { MessageEmbed } = require("discord.js");
 
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -36,7 +34,7 @@ class Command {
                     },
                     {
                         name: "Version",
-                        value: config.version,
+                        value: Config.version,
                         inline: true,
                     },
                     {
@@ -73,7 +71,7 @@ module.exports = {
     class: new Command({
         Name: "about",
         Description: "Gives bot information.",
-        Usage: `;about`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "about" }).endBuild(),
         Permission: 0,
     }),
 };

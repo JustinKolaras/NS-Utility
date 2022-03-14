@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -136,7 +134,7 @@ module.exports = {
     class: new Command({
         Name: "botban",
         Description: "Bans a user from running commands on NS Utility.",
-        Usage: `;botban <"add" | "remove"> <User>`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "botban" }).makeChoice(["add", "remove"], { exactify: true }).makeRegular("User").endBuild(),
         Permission: 7,
     }),
 };

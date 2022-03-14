@@ -1,5 +1,3 @@
-const Util = require("../externals/Util");
-
 module.exports = {
     name: "roleUpdate",
     execType: "bind",

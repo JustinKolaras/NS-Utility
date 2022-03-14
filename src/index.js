@@ -4,12 +4,16 @@ require("dotenv").config({ path: "src/.env" });
 
 const { Client, Intents } = require("discord.js");
 const { MongoClient } = require("mongodb");
-const fs = require("fs");
 const yaml = require("js-yaml");
-const Util = require("./main/externals/Util");
+const fs = require("fs");
+const Initializer = require("./main/startup/Initializer");
+const ArgumentSyntaxBuilder = require("./main/externals/SyntaxBuilder");
 
 // Globals
-global.config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
+global.Config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
+global.SyntaxBuilder = new ArgumentSyntaxBuilder({ defaultPrefix: Config.prefix });
+global.Util = require("./main/externals/Util");
+
 global.mongoClient = new MongoClient(
     process.env.mongoURI,
     { useUnifiedTopology: true },
@@ -17,6 +21,7 @@ global.mongoClient = new MongoClient(
     { connectTimeoutMS: 30000 },
     { keepAlive: 1 }
 );
+
 global.discordClient = new Client({
     // prettier-ignore
     intents: [
@@ -30,32 +35,12 @@ global.discordClient = new Client({
     partials: ["CHANNEL"],
 });
 
-// Init
-const init = async () => {
-    // Connect to MongoDB
-    await mongoClient.connect();
-    console.log("MongoDB - Successful connection");
-
-    // Register Events
-    const eventFiles = fs.readdirSync("./src/main/listeners/").filter((file) => file.endsWith(".js"));
-    for (const file of eventFiles) {
-        const event = require(`../src/main/listeners/${file}`);
-        if (event.execType === "auto") {
-            event.execute();
-        } else if (event.execType === "bind") {
-            if (event.once) {
-                discordClient.once(event.name, (...args) => event.execute(...args));
-            } else {
-                discordClient.on(event.name, (...args) => event.execute(...args));
-            }
-        }
-    }
-    console.log("Events Registered");
-};
-
-init()
+// Initializer
+Initializer()
     .catch((err) => {
         console.error(err);
-        Util.dmUser([config.ownerId], `**Init Error**\n\`\`\`\n${err}\n\`\`\``);
+        Util.dmUser([Config.ownerId], `**Init Error**\n\`\`\`\n${err}\n\`\`\``);
     })
-    .then(() => discordClient.login(process.env.token));
+    .then(() => {
+        discordClient.login(process.env.token);
+    });

@@ -3,7 +3,6 @@ require("dotenv").config();
 const { MessageActionRow, MessageButton } = require("discord.js");
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -108,7 +107,7 @@ class Command {
             await collector.stop();
             if (i.customId === "confirm") {
                 noblox
-                    .groupPayout(config.group, playerId, amt)
+                    .groupPayout(Config.group, playerId, amt)
                     .then(() => i.editReply(`Paid out user successfully.`))
                     .catch((err) => {
                         console.error(err);
@@ -133,7 +132,7 @@ module.exports = {
     class: new Command({
         Name: "payout",
         Description: "Pays robux out from the group to a specific user.",
-        Usage: ";payout <User> <amount>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "payout" }).makeRegular("User").makeRegular("amount").endBuild(),
         Permission: 6,
     }),
 };

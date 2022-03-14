@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -138,7 +137,7 @@ class Command {
 
         if (allowGroupExile) {
             noblox
-                .exile(config.group, playerId)
+                .exile(Config.group, playerId)
                 .then(() => {
                     addLog("Exiled from group.");
                 })
@@ -178,7 +177,7 @@ module.exports = {
     class: new Command({
         Name: "uban",
         Description: "Bans a user from the game, and all NS-related Discord servers.",
-        Usage: ";uban <User> <reason>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "uban" }).makeRegular("User").makeRegular("reason").endBuild(),
         Permission: 6,
     }),
 };

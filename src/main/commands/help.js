@@ -1,5 +1,3 @@
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -30,7 +28,7 @@ class Command {
         if (!success) {
             return Msg.reply(result);
         } else {
-            if ((Msg.guild.id === config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= perm) {
+            if ((Msg.guild.id === Config.testServer && Msg.author.id === Config.ownerId) || result.class.Permission <= perm) {
                 return Msg.reply(
                     // prettier-ignore
                     `Command: \`${command.toLowerCase()}\` **[${result.class.Permission}]**\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`
@@ -44,7 +42,7 @@ module.exports = {
     class: new Command({
         Name: "help",
         Description: "Gives help and info on all usable commands, or specific commands.",
-        Usage: ";help <?command>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "help" }).makeRegular("command", { optional: true }).endBuild(),
         Permission: 0,
     }),
 };

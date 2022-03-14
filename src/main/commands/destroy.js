@@ -1,5 +1,3 @@
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -11,7 +9,7 @@ class Command {
         try {
             await Msg.guild.leave().catch((err) => {
                 console.error(err);
-                Util.dmUser([config.ownerId], `**Guild Leave Error On \`destroy\`**\n\`\`\`\n${err}\n\`\`\``);
+                Util.dmUser([Config.ownerId], `**Guild Leave Error On \`destroy\`**\n\`\`\`\n${err}\n\`\`\``);
             });
             discordClient.destroy();
         } catch (err) {
@@ -24,7 +22,7 @@ module.exports = {
     class: new Command({
         Name: "destroy",
         Description: "Destroys and terminates the connection to Discord.",
-        Usage: ";destroy",
+        Usage: SyntaxBuilder.classifyCommand({ name: "destroy" }).endBuild(),
         Permission: 6,
     }),
 };

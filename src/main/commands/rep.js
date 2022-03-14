@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const Util = require("../externals/Util");
-
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -55,7 +53,7 @@ module.exports = {
     class: new Command({
         Name: "rep",
         Description: "Outputs the command executor's reputation points.",
-        Usage: `;rep`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "rep" }).endBuild(),
         Permission: 0,
     }),
 };

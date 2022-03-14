@@ -55,7 +55,7 @@ module.exports = {
     class: new Command({
         Name: "8ball",
         Description: "Gives a random response based on the question.",
-        Usage: ";8ball <question>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "8ball" }).makeRegular("question").endBuild(),
         Permission: 0,
     }),
 };

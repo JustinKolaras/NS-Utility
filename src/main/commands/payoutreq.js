@@ -3,7 +3,7 @@ require("dotenv").config();
 const { MessageActionRow, MessageButton } = require("discord.js");
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
+
 const uuid = require("uuid");
 
 class Command {
@@ -138,7 +138,7 @@ class Command {
             await collector.stop();
             if (i.customId === `accept-${playerId}-${id}`) {
                 noblox
-                    .groupPayout(config.group, playerId, amt)
+                    .groupPayout(Config.group, playerId, amt)
                     .then(() => {
                         Msg.author
                             .send(
@@ -184,7 +184,7 @@ module.exports = {
     class: new Command({
         Name: "payoutreq",
         Description: "Requests a group payment for review.",
-        Usage: ";payoutreq <amount> <reason>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "payoutreq" }).makeRegular("amount").makeRegular("reason").endBuild(),
         Permission: 0,
         Restriction: {
             byCategory: {

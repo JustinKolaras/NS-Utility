@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -76,7 +75,7 @@ class Command {
 
         let rankId;
         try {
-            rankId = await noblox.getRankInGroup(config.group, playerId);
+            rankId = await noblox.getRankInGroup(Config.group, playerId);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);
@@ -128,7 +127,7 @@ module.exports = {
     class: new Command({
         Name: "ungban",
         Description: "Unbans a user remotely in the Next Saturday Homestore.",
-        Usage: ";ungban <User>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "ungban" }).makeRegular("User").endBuild(),
         Permission: 5,
     }),
 };

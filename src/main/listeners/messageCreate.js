@@ -1,4 +1,3 @@
-const Util = require("../externals/Util");
 const ReputationAlgorithm = require("../externals/reputation/Algorithm");
 const CommandProcessor = require("../externals/CommandProcessor");
 

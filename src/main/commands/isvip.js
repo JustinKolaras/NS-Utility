@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -79,7 +78,7 @@ module.exports = {
     class: new Command({
         Name: "isvip",
         Description: "Returns a yes/no answer on if the user provided has the NS VIP gamepass or not.",
-        Usage: ";isvip <User>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "isvip" }).makeRegular("User").endBuild(),
         Permission: 2,
     }),
 };

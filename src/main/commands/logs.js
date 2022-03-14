@@ -1,7 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -106,7 +105,7 @@ module.exports = {
     class: new Command({
         Name: "logs",
         Description: "Fetches NS Utility moderation logs on a user.",
-        Usage: ";logs <User>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "logs" }).makeRegular("User").endBuild(),
         Permission: 5,
     }),
 };

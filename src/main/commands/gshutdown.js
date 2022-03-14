@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -57,7 +56,7 @@ module.exports = {
     class: new Command({
         Name: "gshutdown",
         Description: "Shuts down all servers in the Next Saturday Homestore.",
-        Usage: ";gshutdown <?reason>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "gshutdown" }).makeRegular("reason", { optional: true }).endBuild(),
         Permission: 5,
     }),
 };

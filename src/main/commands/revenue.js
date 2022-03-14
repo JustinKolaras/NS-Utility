@@ -3,7 +3,6 @@ require("dotenv").config();
 const { MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -37,14 +36,14 @@ class Command {
 
         let revenueSummary;
         try {
-            revenueSummary = await noblox.getGroupRevenueSummary(config.group, revType);
+            revenueSummary = await noblox.getGroupRevenueSummary(Config.group, revType);
         } catch (err) {
             console.error(err);
             return Msg.reply("There was an issue while trying to gather revenue statistics.");
         }
 
         try {
-            revenueSummary["currentFunds"] = await noblox.getGroupFunds(config.group);
+            revenueSummary["currentFunds"] = await noblox.getGroupFunds(Config.group);
         } catch (err) {
             console.error(err);
             return Msg.reply("There was an error while trying to gather group funds.");
@@ -59,7 +58,7 @@ class Command {
             messageEmbed = new MessageEmbed()
                 .setColor("#3ac376")
                 .setTitle(`Group Revenue (${revType})`)
-                .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
+                .setURL(`https://www.roblox.com/groups/configure?id=${Config.group}#!/revenue`)
                 .setDescription(
                     [
                         `Current Group Funds: **R$${revenueSummary.currentFunds}**`,
@@ -90,7 +89,7 @@ module.exports = {
     class: new Command({
         Name: "revenue",
         Description: "DMs revenue statistics of a past timeframe.",
-        Usage: `;revenue <"day" | "week" | "month" | "year">`,
+        Usage: SyntaxBuilder.classifyCommand({ name: "revenue" }).makeChoice(["day", "week", "month", "year"], { exactify: true }).endBuild(),
         Permission: 6,
     }),
 };

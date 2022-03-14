@@ -3,7 +3,6 @@ require("dotenv").config();
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");
-const Util = require("../externals/Util");
 
 class Command {
     constructor(options) {
@@ -83,8 +82,8 @@ class Command {
         }
 
         try {
-            const rank = await noblox.getRankInGroup(config.group, playerId);
-            info["ns_rank"] = await noblox.getRole(config.group, rank);
+            const rank = await noblox.getRankInGroup(Config.group, playerId);
+            info["ns_rank"] = await noblox.getRole(Config.group, rank);
         } catch (err) {
             console.error(err);
             return main.edit(errMessage);
@@ -171,7 +170,7 @@ module.exports = {
     class: new Command({
         Name: "info",
         Description: "Gathers information on a Roblox user.",
-        Usage: ";info <User>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "info" }).makeRegular("User").endBuild(),
         Permission: 0,
     }),
 };

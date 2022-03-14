@@ -1,5 +1,3 @@
-const Util = require("../externals/Util");
-
 let users = 0;
 let MASTER_COOLDOWN = false;
 

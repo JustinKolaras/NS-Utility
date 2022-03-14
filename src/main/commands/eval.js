@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-const Util = require("../externals/Util");
 const Pastecord = require("pastecord-wrapper");
 const pcClient = new Pastecord();
 
@@ -18,7 +17,7 @@ class Command {
 
         // Secondary check..
         if (Msg.author.id !== "360239086117584906") {
-            Util.dmUser([config.ownerId], `<${Msg.member.id}> ran \`eval\` and somehow passed basic permission systems. Their command was blocked.`);
+            Util.dmUser([Config.ownerId], `<${Msg.member.id}> ran \`eval\` and somehow passed basic permission systems. Their command was blocked.`);
             discordClient.destroy();
             return;
         }
@@ -65,7 +64,7 @@ module.exports = {
     class: new Command({
         Name: "eval",
         Description: "Evaluates JavaScript code.",
-        Usage: ";eval <code>",
+        Usage: SyntaxBuilder.classifyCommand({ name: "eval" }).makeRegular("code").endBuild(),
         Permission: 7,
     }),
 };
