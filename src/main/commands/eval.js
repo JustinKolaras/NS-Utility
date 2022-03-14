@@ -45,7 +45,8 @@ class Command {
             cleaned = cleaned.replaceAll(process.env.nsApiAuth, "%REDACTED_API-AUTH%");
 
             if (cleaned.length > 1900) {
-                const url = await pcClient.publish(cleaned);
+                const result = await pcClient.publish(cleaned);
+                const url = result.url;
                 return Msg.channel.send(`<@${Msg.member.id}>, Response over 2000 characters.\nUploaded to Pastecord: ${url}`);
             }
 
