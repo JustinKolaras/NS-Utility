@@ -46,7 +46,6 @@ const init = async () => {
             if (event.once) {
                 discordClient.once(event.name, (...args) => event.execute(...args));
             } else {
-                if (event.name === "messageCreate") console.log("msgCrt");
                 discordClient.on(event.name, (...args) => event.execute(...args));
             }
         }
