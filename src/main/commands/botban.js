@@ -105,6 +105,7 @@ class Command {
                 if (hasModLogs) {
                     const modLogData = hasModLogs.data;
                     modLogData.push(dataFormRemove);
+                    console.log(dataFormRemove);
                     await modLogs
                         .updateOne(
                             {

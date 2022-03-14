@@ -8,8 +8,8 @@ const fs = require("fs");
 const yaml = require("js-yaml");
 const Util = require("./main/externals/Util");
 
+// Globals
 global.config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
-
 global.mongoClient = new MongoClient(
     process.env.mongoURI,
     { useUnifiedTopology: true },
@@ -17,7 +17,6 @@ global.mongoClient = new MongoClient(
     { connectTimeoutMS: 30000 },
     { keepAlive: 1 }
 );
-
 global.discordClient = new Client({
     // prettier-ignore
     intents: [
@@ -31,6 +30,7 @@ global.discordClient = new Client({
     partials: ["CHANNEL"],
 });
 
+// Init
 const init = async () => {
     // Connect to MongoDB
     await mongoClient.connect();
@@ -42,11 +42,11 @@ const init = async () => {
         const event = require(`../src/main/listeners/${file}`);
         if (event.execType === "auto") {
             event.execute();
-            continue;
         } else if (event.execType === "bind") {
             if (event.once) {
                 discordClient.once(event.name, (...args) => event.execute(...args));
             } else {
+                if (event.name === "messageCreate") console.log("msgCrt");
                 discordClient.on(event.name, (...args) => event.execute(...args));
             }
         }
