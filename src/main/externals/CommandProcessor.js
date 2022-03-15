@@ -35,7 +35,7 @@ module.exports = async (msg) => {
             setTimeout(() => {
                 Invocations[msg.member.id]--;
             }, 5000);
-            if (Invocations[msg.member.id] > 2) return;
+            if (Invocations[msg.member.id] > 2) return { success: false };
 
             // Validate permissions
             let userPermission;
