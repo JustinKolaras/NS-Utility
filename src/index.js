@@ -8,6 +8,7 @@ const yaml = require("js-yaml");
 const fs = require("fs");
 const Initializer = require("./main/startup/Initializer");
 const ArgumentSyntaxBuilder = require("./main/externals/SyntaxBuilder");
+const Util = require("./main/externals/Util");
 
 // Globals
 global.Config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));

@@ -8,6 +8,10 @@ class Command {
     }
 
     fn = async (Msg, Context) => {
+        const SyntaxErr = () => {
+            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+        };
+
         const args = Context.args;
 
         const attributes = await Util.getUserAttributes(Msg.guild, args[0]);

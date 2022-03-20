@@ -3,24 +3,23 @@ const uuid = require("uuid");
 const database = mongoClient.db("main");
 const epochClass = database.collection("epochClass");
 
+// Not done
 module.exports = class EpochTime {
-    async impl(plusMs) {
-        if (typeof plusMs !== "number") throw new RangeError("Not a number!");
-
+    async impl(options) {
         const identifier = uuid.v4();
+
         await epochClass.insertOne({
             id: identifier,
-            newDate: Date.now() + plusMs,
+            newDate: Date.now() + options.plusMs,
+            linker: options.linker,
         });
 
         return identifier;
     }
 
     async stat(options) {
-        if (!options?.id || !options?.scope) throw new RangeError("Invalid options.");
-
-        const result = await epochClass.findOne({ id: identifier });
-        if (!result) throw new Error("No result!");
+        const result = await epochClass.findOne({ id: options.id });
+        if (!result) return false;
 
         switch (options.scope) {
             case "g":
@@ -32,7 +31,13 @@ module.exports = class EpochTime {
             case "l+e":
                 return Date.now() <= result.newDate;
             default:
-                throw new ReferenceError("Invalid scope.");
+                throw new ReferenceError("Invalid scope!");
         }
+    }
+
+    async getId(options) {
+        const result = await epochClass.findOne({ linker: options.linker });
+        if (!result) return false;
+        return result.id;
     }
 };
