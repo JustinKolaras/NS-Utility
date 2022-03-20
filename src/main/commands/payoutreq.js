@@ -153,7 +153,12 @@ class Command {
                     })
                     .catch((err) => {
                         console.error(err);
-                        i.editReply(errMessageAdmin);
+                        Msg.author
+                            .send(
+                                `Your payout request could not be accepted due to an error in the transaction. No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
+                            )
+                            .then(() => i.editReply(errMessageAdmin))
+                            .catch(() => {});
                     });
             } else if (i.customId === `decline-${playerId}-${id}`) {
                 Msg.author
