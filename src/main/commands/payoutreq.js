@@ -116,7 +116,6 @@ class Command {
 
         const row = new MessageActionRow().addComponents(
             new MessageButton().setCustomId(`accept-${playerId}-${id}`).setLabel("Accept").setStyle("SUCCESS"),
-            new MessageButton().setCustomId(`counter-${playerId}-${id}`).setLabel("Counter").setStyle("SECONDARY"),
             new MessageButton().setCustomId(`decline-${playerId}-${id}`).setLabel("Decline").setStyle("DANGER")
         );
 
