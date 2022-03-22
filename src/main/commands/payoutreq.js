@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { MessageActionRow, MessageButton, Util } = require("discord.js");
 
 const noblox = require("noblox.js");
 
@@ -116,6 +116,7 @@ class Command {
 
         const row = new MessageActionRow().addComponents(
             new MessageButton().setCustomId(`accept-${playerId}-${id}`).setLabel("Accept").setStyle("SUCCESS"),
+            new MessageButton().setCustomId(`counter-${playerId}-${id}`).setLabel("Counter").setStyle("SECONDARY"),
             new MessageButton().setCustomId(`decline-${playerId}-${id}`).setLabel("Decline").setStyle("DANGER")
         );
 
@@ -144,7 +145,7 @@ class Command {
                             .send(
                                 `Your payout request was accepted by ${i.member.user.tag}. **R$${sepAmt}** has been credited into your account.\n**Request ID:** ${playerId}-${id}`
                             )
-                            .then(() =>
+                            .finally(() =>
                                 i.editReply(
                                     `Payout request from **${playerName}** accepted by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})\n**R$${sepAmt}**`
                                 )
@@ -157,7 +158,7 @@ class Command {
                             .send(
                                 `Your payout request could not be accepted due to an error in the transaction. No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                             )
-                            .then(() => i.editReply(errMessageAdmin))
+                            .finally(() => i.editReply(errMessageAdmin))
                             .catch(() => {});
                     });
             } else if (i.customId === `decline-${playerId}-${id}`) {
@@ -165,7 +166,7 @@ class Command {
                     .send(
                         `Your payout request was declined by ${i.member.user.tag}. No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                     )
-                    .then(() => i.editReply(`Payout request from **${playerName}** declined by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`))
+                    .finally(() => i.editReply(`Payout request from **${playerName}** declined by <@${i.member.id}> (${i.member.user.tag} :: ${i.member.id})`))
                     .catch(() => {});
             }
         });
@@ -176,7 +177,7 @@ class Command {
                     .send(
                         `Your payout request has expired! (no one accepted/declined) No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                     )
-                    .then(() => main.edit({ content: `@everyone, Payout request from **${playerName}** expired! (24 hours)`, components: [] }))
+                    .finally(() => main.edit({ content: `@everyone, Payout request from **${playerName}** expired! (24 hours)`, components: [] }))
                     .catch(() => {});
             }
         });
