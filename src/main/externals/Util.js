@@ -361,7 +361,7 @@ class Utility {
 
                 // prettier-ignore
                 if (!role)
-                    throw new Error(`Util.handleRoles: Could not retrieve role. Err: ${err}`);
+                    throw new Error(`Util.handleRoles: Could not retrieve role.`);
 
                 this.giveRole(member, role).catch((err) => {
                     throw new Error(`Util.handleRoles: Could not give role (${roleId}). Err: ${err}`);

@@ -1,5 +1,34 @@
 require("dotenv").config();
 
+const roleHandle = (member, currentRep) => {
+    Util.handleRoles(member, {
+        "953137241419571240": () => {
+            return currentRep >= 10;
+        },
+        "927710449716318228": () => {
+            return currentRep >= 50;
+        },
+        "927710734555688992": () => {
+            return currentRep >= 135;
+        },
+        "927710891678502952": () => {
+            return currentRep >= 300;
+        },
+        "927711487554900068": () => {
+            return currentRep >= 500;
+        },
+        "927903591434428486": () => {
+            return currentRep >= 700;
+        },
+        "927711654760841258": () => {
+            return currentRep >= 1000;
+        },
+    }).catch((err) => {
+        console.error(err);
+        Util.dmUser([config.ownerId], `Could not assign role to \`${member.id}\`\n\`\`\`\n${err}\n\`\`\``);
+    });
+};
+
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -27,8 +56,18 @@ class Command {
         const userReputation = await reputation.findOne({ id: attributes.id });
 
         if (!userReputation) {
-            return Msg.reply(`This user needs at least some reputation to increment.\nRun \`;repedit ${attributes.id} 0\` and try again.`);
+            try {
+                reputation.insertOne({
+                    id: attributes.id,
+                    reputationNum: 0,
+                });
+            } catch (err) {
+                Util.dmUser([Config.ownerId], `**Add Reputation to Incr Error**\n\`\`\`\n${err}\n\`\`\``);
+                return Msg.reply("There was an error adding reputation.");
+            }
         }
+
+        const previous = userReputation.reputationNum;
 
         reputation
             .updateOne(
@@ -41,7 +80,15 @@ class Command {
                     },
                 }
             )
-            .then(() => Msg.reply(`Successfully altered reputation amount.`))
+            .then(() => {
+                Util.sendInChannel(
+                    "761468835600924733",
+                    "923715934370283612",
+                    `Incremented <@${attributes.id}> REP from **${previous}** to **${previous + amt}**.`
+                );
+                roleHandle(Msg.member, userReputation.reputationNum + amt);
+                Msg.reply(`Successfully altered reputation amount.`);
+            })
             .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
     };
 }
@@ -51,6 +98,6 @@ module.exports = {
         Name: "repincr",
         Description: "Increments a user's reputation.",
         Usage: SyntaxBuilder.classifyCommand({ name: "repincr" }).makeRegular("User").makeRegular("amount").endBuild(),
-        Permission: 6,
+        Permission: 5,
     }),
 };

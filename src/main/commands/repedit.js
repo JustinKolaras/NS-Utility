@@ -1,5 +1,34 @@
 require("dotenv").config();
 
+const roleHandle = (member, currentRep) => {
+    Util.handleRoles(member, {
+        "953137241419571240": () => {
+            return currentRep >= 10;
+        },
+        "927710449716318228": () => {
+            return currentRep >= 50;
+        },
+        "927710734555688992": () => {
+            return currentRep >= 135;
+        },
+        "927710891678502952": () => {
+            return currentRep >= 300;
+        },
+        "927711487554900068": () => {
+            return currentRep >= 500;
+        },
+        "927903591434428486": () => {
+            return currentRep >= 700;
+        },
+        "927711654760841258": () => {
+            return currentRep >= 1000;
+        },
+    }).catch((err) => {
+        console.error(err);
+        Util.dmUser([config.ownerId], `Could not assign role to \`${member.id}\`\n\`\`\`\n${err}\n\`\`\``);
+    });
+};
+
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -38,6 +67,8 @@ class Command {
             }
         }
 
+        const previous = userReputation.reputationNum;
+
         reputation
             .updateOne(
                 {
@@ -49,7 +80,11 @@ class Command {
                     },
                 }
             )
-            .then(() => Msg.reply(`Successfully altered reputation amount.`))
+            .then(() => {
+                Util.sendInChannel("761468835600924733", "923715934370283612", `Edited <@${attributes.id}> REP from **${previous}** to **${amt}**.`);
+                roleHandle(Msg.member, amt);
+                Msg.reply(`Successfully altered reputation amount.`);
+            })
             .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
     };
 }
@@ -59,6 +94,6 @@ module.exports = {
         Name: "repedit",
         Description: "Edits a user's reputation.",
         Usage: SyntaxBuilder.classifyCommand({ name: "repedit" }).makeRegular("User").makeRegular("amount").endBuild(),
-        Permission: 6,
+        Permission: 5,
     }),
 };
