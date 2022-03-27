@@ -88,5 +88,6 @@ module.exports = {
         Description: "Exiles a user from the Roblox group.",
         Usage: SyntaxBuilder.classifyCommand({ name: "exile" }).makeRegular("User").endBuild(),
         Permission: 5,
+        Group: "Remote",
     }),
 };

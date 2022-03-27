@@ -59,5 +59,6 @@ module.exports = {
         Description: "Outputs the command executor's reputation points.",
         Usage: SyntaxBuilder.classifyCommand({ name: "rep" }).endBuild(),
         Permission: 0,
+        Group: "Reputation",
     }),
 };

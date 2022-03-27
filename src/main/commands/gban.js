@@ -136,5 +136,6 @@ module.exports = {
         Description: "Bans a user remotely in the Next Saturday Homestore.",
         Usage: SyntaxBuilder.classifyCommand({ name: "gban" }).makeRegular("User").makeRegular("reason").endBuild(),
         Permission: 5,
+        Group: "Remote",
     }),
 };

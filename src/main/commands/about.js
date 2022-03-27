@@ -73,5 +73,6 @@ module.exports = {
         Description: "Gives bot information.",
         Usage: SyntaxBuilder.classifyCommand({ name: "about" }).endBuild(),
         Permission: 0,
+        Group: "General",
     }),
 };

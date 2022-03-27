@@ -136,5 +136,6 @@ module.exports = {
         Description: "Bans a user from running commands on NS Utility.",
         Usage: SyntaxBuilder.classifyCommand({ name: "botban" }).makeChoice(["add", "remove"], { exactify: true }).makeRegular("User").endBuild(),
         Permission: 7,
+        Group: "Moderation",
     }),
 };

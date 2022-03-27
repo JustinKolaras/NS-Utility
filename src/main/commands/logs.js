@@ -107,5 +107,6 @@ module.exports = {
         Description: "Fetches NS Utility moderation logs on a user.",
         Usage: SyntaxBuilder.classifyCommand({ name: "logs" }).makeRegular("User").endBuild(),
         Permission: 5,
+        Group: "Moderation",
     }),
 };

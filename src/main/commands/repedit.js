@@ -95,5 +95,6 @@ module.exports = {
         Description: "Edits a user's reputation.",
         Usage: SyntaxBuilder.classifyCommand({ name: "repedit" }).makeRegular("User").makeRegular("amount").endBuild(),
         Permission: 5,
+        Group: "Reputation",
     }),
 };

@@ -179,5 +179,6 @@ module.exports = {
         Description: "Bans a user from the game, and all NS-related Discord servers.",
         Usage: SyntaxBuilder.classifyCommand({ name: "uban" }).makeRegular("User").makeRegular("reason").endBuild(),
         Permission: 6,
+        Group: "Moderation",
     }),
 };

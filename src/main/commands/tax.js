@@ -64,5 +64,6 @@ module.exports = {
         Description: "Calculates tax details of a robux amount.",
         Usage: SyntaxBuilder.classifyCommand({ name: "tax" }).makeRegular("amount").endBuild(),
         Permission: 0,
+        Group: "Misc",
     }),
 };

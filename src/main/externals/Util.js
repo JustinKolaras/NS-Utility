@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-const fs = require("fs");
 const axios = require("axios");
 const defaultUtil = require("util");
 const uuid = require("uuid");
@@ -105,75 +104,6 @@ class Utility {
         return `${prefix}\n${errors}`;
     };
 
-    prompt = (source, prefix, responses, options) => {
-        let functions = {};
-        let responseStr = prefix;
-
-        for (const k in responses) {
-            const arr = responses[k];
-            if (typeof arr[0] === "string") {
-                functions[arr[0]] = arr[1];
-            }
-        }
-
-        const getAvailResponses = () => {
-            let toReturn = [];
-            for (const k in functions) {
-                if (!k.startsWith("/") && !k.endsWith(":")) {
-                    toReturn.push(k);
-                }
-            }
-            return toReturn.join(", ");
-        };
-
-        const responseTypes = getAvailResponses();
-        responseStr += `\n**Available Responses:** ${responseTypes}`;
-
-        source.channel.send(responseStr);
-
-        const filter = (m) => m.user.id === source.user.id;
-        const collector = source.channel.createMessageCollector({
-            filter,
-            time: options.timeout,
-        });
-
-        collector.on("collect", (m) => {
-            for (const r in functions) {
-                if (m.content.toString().toLowerCase() === r.toString().toLowerCase()) {
-                    functions[r](m);
-                    collector.stop();
-                }
-            }
-        });
-
-        collector.on("end", (_, reason) => {
-            if (reason === "time") {
-                functions["/timeout:"]();
-            }
-        });
-    };
-
-    promptAny = (source, message, func, timeoutFunc, options) => {
-        source.channel.send(message);
-
-        const filter = (m) => m.user.id === source.user.id;
-        const collector = source.channel.createMessageCollector({
-            filter,
-            time: options.timeout,
-        });
-
-        collector.on("collect", (m) => {
-            func(m);
-            collector.stop();
-        });
-
-        collector.on("end", (_, reason) => {
-            if (reason.toString() === "time") {
-                timeoutFunc();
-            }
-        });
-    };
-
     clean = async (text) => {
         // prettier-ignore
         if (text && text.constructor.name == "Promise") 
@@ -197,49 +127,6 @@ class Utility {
 
     verify = (define, func) => {
         return func(define) ? define : null;
-    };
-
-    /*
-        %c - Command Name
-        %p - Command Perm
-        %d - Command Desc
-        %u - Command Usage
-    */
-    getCommandList = async (src, format, usableOnly) => {
-        const cmdArray = [];
-        const commandFiles = fs.readdirSync("./src/main/commands").filter((file) => file.endsWith(".js"));
-
-        const parseString = (str, context) => {
-            str = str.replaceAll("%c", context.Name);
-            str = str.replaceAll("%p", context.Permission);
-            str = str.replaceAll("%d", context.Description);
-            str = str.replaceAll("%u", context.Usage);
-            return str;
-        };
-
-        for (const file of commandFiles) {
-            const command = require(`../commands/${file}`);
-            const commandClass = command.class;
-
-            let userPermission;
-            try {
-                userPermission = await this.getPerm(src.member);
-            } catch (err) {
-                return src.reply(
-                    `There was an error fetching permissions, so I couldn't display commands correctly.\nYou shouldn't ever receive an error like this. Contact **${Config.developerTag}** immediately.\n<@360239086117584906>\n\`\`\`xl\n${err}\n\`\`\``
-                );
-            }
-
-            if (usableOnly) {
-                if (commandClass.Permission <= userPermission) {
-                    cmdArray.push(parseString(format, commandClass));
-                }
-            } else {
-                cmdArray.push(parseString(format, commandClass));
-            }
-        }
-
-        return cmdArray.length > 0 ? cmdArray.join("\n") : "No commands to show.";
     };
 
     getUserAttributes = async (guild, str) => {

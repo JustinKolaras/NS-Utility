@@ -140,5 +140,6 @@ module.exports = {
         Description: "Changes a user's rank in the Roblox group.",
         Usage: SyntaxBuilder.classifyCommand({ name: "rank" }).makeRegular("User").endBuild(),
         Permission: 5,
+        Group: "Remote",
     }),
 };

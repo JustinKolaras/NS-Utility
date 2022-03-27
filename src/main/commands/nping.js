@@ -32,5 +32,6 @@ module.exports = {
         Description: "Test & Debug Command - Tests a connection between Roblox and the Discord Bot.",
         Usage: SyntaxBuilder.classifyCommand({ name: "nping" }).endBuild(),
         Permission: 7,
+        Group: "Debug",
     }),
 };

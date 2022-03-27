@@ -172,5 +172,6 @@ module.exports = {
         Description: "Gathers information on a Roblox user.",
         Usage: SyntaxBuilder.classifyCommand({ name: "info" }).makeRegular("User").endBuild(),
         Permission: 0,
+        Group: "Misc",
     }),
 };

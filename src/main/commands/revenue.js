@@ -91,5 +91,6 @@ module.exports = {
         Description: "DMs revenue statistics of a past timeframe.",
         Usage: SyntaxBuilder.classifyCommand({ name: "revenue" }).makeChoice(["day", "week", "month", "year"], { exactify: true }).endBuild(),
         Permission: 6,
+        Group: "Remote",
     }),
 };

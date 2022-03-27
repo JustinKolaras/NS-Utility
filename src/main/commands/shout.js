@@ -33,5 +33,6 @@ module.exports = {
         Description: "Changes the Roblox group shout.",
         Usage: SyntaxBuilder.classifyCommand({ name: "shout" }).makeRegular("text", { optional: true }).endBuild(),
         Permission: 5,
+        Group: "Remote",
     }),
 };

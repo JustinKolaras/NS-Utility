@@ -18,5 +18,6 @@ module.exports = {
         Description: "Test & Debug Command - Replies with 'Pong!'",
         Usage: SyntaxBuilder.classifyCommand({ name: "ping" }).endBuild(),
         Permission: 0,
+        Group: "Debug",
     }),
 };

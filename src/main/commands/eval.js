@@ -61,5 +61,6 @@ module.exports = {
         Description: "Evaluates JavaScript code.",
         Usage: SyntaxBuilder.classifyCommand({ name: "eval" }).makeRegular("code").endBuild(),
         Permission: 7,
+        Group: "Developer",
     }),
 };

@@ -197,5 +197,6 @@ module.exports = {
                 errorMessage: "Please run this command in the **Design Team** category.",
             },
         },
+        Group: "Remote",
     }),
 };

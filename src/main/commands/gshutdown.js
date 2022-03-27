@@ -58,5 +58,6 @@ module.exports = {
         Description: "Shuts down all servers in the Next Saturday Homestore.",
         Usage: SyntaxBuilder.classifyCommand({ name: "gshutdown" }).makeRegular("reason", { optional: true }).endBuild(),
         Permission: 5,
+        Group: "Remote",
     }),
 };

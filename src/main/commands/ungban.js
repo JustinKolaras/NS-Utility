@@ -129,5 +129,6 @@ module.exports = {
         Description: "Unbans a user remotely in the Next Saturday Homestore.",
         Usage: SyntaxBuilder.classifyCommand({ name: "ungban" }).makeRegular("User").endBuild(),
         Permission: 5,
+        Group: "Remote",
     }),
 };

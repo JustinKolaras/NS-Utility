@@ -136,5 +136,6 @@ module.exports = {
         Description: "Kicks a user remotely in the Next Saturday Homestore.",
         Usage: SyntaxBuilder.classifyCommand({ name: "gkick" }).makeRegular("User").makeRegular("reason").endBuild(),
         Permission: 5,
+        Group: "Remote",
     }),
 };

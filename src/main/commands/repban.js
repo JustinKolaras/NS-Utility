@@ -58,5 +58,6 @@ module.exports = {
         Description: "Bans and prohibits a user from attaining reputation.",
         Usage: SyntaxBuilder.classifyCommand({ name: "repban" }).makeChoice(["add", "remove"], { exactify: true }).makeRegular("User").endBuild(),
         Permission: 5,
+        Group: "Reputation",
     }),
 };

@@ -80,5 +80,6 @@ module.exports = {
         Description: "Returns a yes/no answer on if the user provided has the NS VIP gamepass or not.",
         Usage: SyntaxBuilder.classifyCommand({ name: "isvip" }).makeRegular("User").endBuild(),
         Permission: 2,
+        Group: "Misc",
     }),
 };

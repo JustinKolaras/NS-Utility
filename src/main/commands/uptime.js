@@ -30,5 +30,6 @@ module.exports = {
         Description: "Displays bot uptime.",
         Usage: SyntaxBuilder.classifyCommand({ name: "uptime" }).endBuild(),
         Permission: 0,
+        Group: "Debug",
     }),
 };
