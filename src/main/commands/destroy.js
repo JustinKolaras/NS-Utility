@@ -24,6 +24,6 @@ module.exports = {
         Description: "Destroys and terminates the connection to Discord.",
         Usage: SyntaxBuilder.classifyCommand({ name: "destroy" }).endBuild(),
         Permission: 6,
-        Group: "Misc",
+        Group: "Developer",
     }),
 };
