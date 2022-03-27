@@ -5,7 +5,6 @@ module.exports = {
     name: "messageUpdate",
     execType: "bind",
     async execute(_, msg) {
-        console.log("Running");
         if (!msg.guild) return;
         if (msg.webhookId) return;
 
