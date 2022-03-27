@@ -86,7 +86,7 @@ class Command {
                     "923715934370283612",
                     `Incremented <@${attributes.id}> REP from **${previous}** to **${previous + amt}**.`
                 );
-                roleHandle(Msg.member, userReputation.reputationNum + amt);
+                roleHandle(attributes.member, userReputation.reputationNum + amt);
                 Msg.reply(`Successfully altered reputation amount.`);
             })
             .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));

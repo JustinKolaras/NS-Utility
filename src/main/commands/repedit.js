@@ -82,7 +82,7 @@ class Command {
             )
             .then(() => {
                 Util.sendInChannel("761468835600924733", "923715934370283612", `Edited <@${attributes.id}> REP from **${previous}** to **${amt}**.`);
-                roleHandle(Msg.member, amt);
+                roleHandle(attributes.member, amt);
                 Msg.reply(`Successfully altered reputation amount.`);
             })
             .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
