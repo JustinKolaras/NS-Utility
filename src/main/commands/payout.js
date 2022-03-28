@@ -107,7 +107,7 @@ class Command {
             await collector.stop();
             if (i.customId === "confirm") {
                 noblox
-                    .groupPayout(Config.group, playerId, amt)
+                    .groupPayout(config.group, playerId, amt)
                     .then(() => i.editReply(`Paid out user successfully.`))
                     .catch((err) => {
                         console.error(err);

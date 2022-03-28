@@ -138,7 +138,7 @@ class Command {
             await collector.stop();
             if (i.customId === `accept-${playerId}-${id}`) {
                 noblox
-                    .groupPayout(Config.group, playerId, amt)
+                    .groupPayout(config.group, playerId, amt)
                     .then(() => {
                         Msg.author
                             .send(

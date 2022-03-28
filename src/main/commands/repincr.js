@@ -62,7 +62,7 @@ class Command {
                     reputationNum: 0,
                 });
             } catch (err) {
-                Util.dmUser([Config.ownerId], `**Add Reputation to Incr Error**\n\`\`\`\n${err}\n\`\`\``);
+                Util.dmUser([config.ownerId], `**Add Reputation to Incr Error**\n\`\`\`\n${err}\n\`\`\``);
                 return Msg.reply("There was an error adding reputation.");
             }
         }

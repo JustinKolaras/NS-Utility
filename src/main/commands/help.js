@@ -1,4 +1,4 @@
-const CommandList = require("../externals/CommandList");
+const CommandList = require("../modules/CommandList");
 const List = new CommandList();
 
 class Command {
@@ -14,7 +14,7 @@ class Command {
         };
 
         const args = Context.args;
-        const perm = Context.clientPerm;
+        const perm = Context.permission;
         const command = args[0];
 
         if (!command) {
@@ -36,7 +36,7 @@ class Command {
         if (!success) {
             return Msg.reply(result);
         } else {
-            if ((Msg.guild.id === Config.testServer && Msg.author.id === Config.ownerId) || result.class.Permission <= perm) {
+            if ((Msg.guild.id === config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= perm) {
                 return Msg.reply(
                     // prettier-ignore
                     `Command: \`${command.toLowerCase()}\` **[${result.class.Permission}]**\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`

@@ -137,7 +137,7 @@ class Command {
 
         if (allowGroupExile) {
             noblox
-                .exile(Config.group, playerId)
+                .exile(config.group, playerId)
                 .then(() => {
                     addLog("Exiled from group.");
                 })

@@ -30,27 +30,6 @@ class Utility {
         return new Promise((resolve) => setTimeout(resolve, ms));
     };
 
-    getPerm = async (member) => {
-        const permissionsTable = Config.permissions;
-        let highestPerm;
-
-        if (!permissionsTable) {
-            throw new ReferenceError(`Util.getPerm: Could not reference permissions table.`);
-        }
-
-        if (member.id === Config.ownerId) {
-            return 7;
-        }
-
-        for (const k in permissionsTable) {
-            if (this.hasRole(member, permissionsTable[k])) {
-                highestPerm = k;
-            }
-        }
-
-        return highestPerm === undefined ? -1 : parseInt(highestPerm);
-    };
-
     hasRole = (member, roleId) => {
         return member.roles.cache.has(roleId);
     };
@@ -176,7 +155,7 @@ class Utility {
     };
 
     isReputableChannel = (channelId) => {
-        for (const c of Config.reputationChannels) {
+        for (const c of config.reputationChannels) {
             if (channelId == c) {
                 return true;
             }

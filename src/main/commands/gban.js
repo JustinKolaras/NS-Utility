@@ -80,7 +80,7 @@ class Command {
 
         let rankId;
         try {
-            rankId = await noblox.getRankInGroup(Config.group, playerId);
+            rankId = await noblox.getRankInGroup(config.group, playerId);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);

@@ -65,7 +65,7 @@ class Command {
 
         let rankId;
         try {
-            rankId = await noblox.getRankInGroup(Config.group, playerId);
+            rankId = await noblox.getRankInGroup(config.group, playerId);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);
@@ -76,7 +76,7 @@ class Command {
         }
 
         noblox
-            .exile(Config.group, playerId)
+            .exile(config.group, playerId)
             .then(() => Msg.reply(`Exiled user from group successfully.`))
             .catch(() => Msg.reply(errMessage));
     };

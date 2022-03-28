@@ -34,7 +34,7 @@ class Command {
                     },
                     {
                         name: "Version",
-                        value: Config.version,
+                        value: config.version,
                         inline: true,
                     },
                     {

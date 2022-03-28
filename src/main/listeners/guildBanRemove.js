@@ -22,7 +22,7 @@ module.exports = {
             const messageToSend = `**Mass Unban Alert:** Please check audit and <#788872173359071272> for more details.`;
 
             Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
-            Util.getChannel(member.guild, moderatorConfig.channelId)?.send(prefix + messageToSend);
+            Util.getChannel(member.guild, moderatorconfig.channelId)?.send(prefix + messageToSend);
         }
     },
 };

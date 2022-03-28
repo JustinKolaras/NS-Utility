@@ -36,14 +36,14 @@ class Command {
 
         let revenueSummary;
         try {
-            revenueSummary = await noblox.getGroupRevenueSummary(Config.group, revType);
+            revenueSummary = await noblox.getGroupRevenueSummary(config.group, revType);
         } catch (err) {
             console.error(err);
             return Msg.reply("There was an issue while trying to gather revenue statistics.");
         }
 
         try {
-            revenueSummary["currentFunds"] = await noblox.getGroupFunds(Config.group);
+            revenueSummary["currentFunds"] = await noblox.getGroupFunds(config.group);
         } catch (err) {
             console.error(err);
             return Msg.reply("There was an error while trying to gather group funds.");
@@ -58,7 +58,7 @@ class Command {
             messageEmbed = new MessageEmbed()
                 .setColor("#3ac376")
                 .setTitle(`Group Revenue (${revType})`)
-                .setURL(`https://www.roblox.com/groups/configure?id=${Config.group}#!/revenue`)
+                .setURL(`https://www.roblox.com/groups/configure?id=${config.group}#!/revenue`)
                 .setDescription(
                     [
                         `Current Group Funds: **R$${revenueSummary.currentFunds}**`,

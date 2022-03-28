@@ -20,9 +20,9 @@ class Command {
         const reputation = database.collection("reputation");
         let data;
 
-        if (attributes.success && Context.clientPerm < 5) {
+        if (attributes.success && Context.permission < 5) {
             return SyntaxErr();
-        } else if (attributes.success && Context.clientPerm >= 5) {
+        } else if (attributes.success && Context.permission >= 5) {
             data = await reputation.findOne({ id: attributes.id });
             let amount = data?.reputationNum || 0;
             return Msg.reply(`<@${attributes.id}> :: **${amount}**`);

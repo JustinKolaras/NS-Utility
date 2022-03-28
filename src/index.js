@@ -7,13 +7,13 @@ const { MongoClient } = require("mongodb");
 const yaml = require("js-yaml");
 const fs = require("fs");
 const Initializer = require("./main/startup/Initializer");
-const ArgumentSyntaxBuilder = require("./main/externals/SyntaxBuilder");
-const Util = require("./main/externals/Util");
+const ArgumentSyntaxBuilder = require("./main/modules/SyntaxBuilder");
+const Util = require("./main/modules/Util");
 
 // Globals
-global.Config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
-global.SyntaxBuilder = new ArgumentSyntaxBuilder({ defaultPrefix: Config.prefix });
-global.Util = require("./main/externals/Util");
+global.config = yaml.load(fs.readFileSync("./src/config.yaml", "utf8"));
+global.SyntaxBuilder = new ArgumentSyntaxBuilder({ defaultPrefix: config.prefix });
+global.Util = require("./main/modules/Util");
 
 global.mongoClient = new MongoClient(
     process.env.mongoURI,
@@ -40,7 +40,7 @@ global.discordClient = new Client({
 Initializer()
     .catch((err) => {
         console.error(err);
-        Util.dmUser([Config.ownerId], `**Init Error**\n\`\`\`\n${err}\n\`\`\``);
+        Util.dmUser([config.ownerId], `**Init Error**\n\`\`\`\n${err}\n\`\`\``);
     })
     .then(() => {
         discordClient.login(process.env.token);

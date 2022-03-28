@@ -12,10 +12,10 @@ module.exports = {
     async execute(member) {
         await Util.sendInChannel("761468835600924733", "956808639434334298", `**${member.user.tag} (${member.user.id}) <@${member.user.id}>**`);
 
-        if (member.user.bot && Config.allowBots === false) {
-            Util.dmUser([Config.ownerId], `This is a notice that a bot was rejected from ${member.guild.name}.`);
+        if (member.user.bot && config.allowBots === false) {
+            Util.dmUser([config.ownerId], `This is a notice that a bot was rejected from ${member.guild.name}.`);
             member.ban({
-                reason: `This bot is not authorized to join the server.\nContact ${Config.developerTag} to whitelist this bot.`,
+                reason: `This bot is not authorized to join the server.\nContact ${config.developerTag} to whitelist this bot.`,
             });
         }
 
@@ -49,7 +49,7 @@ module.exports = {
                 })
                 .catch((err) => {
                     console.error(err);
-                    Util.dmUser([Config.ownerId], `**Verify Channel Lock Error**\n\`\`\`\n${err}\n\`\`\``);
+                    Util.dmUser([config.ownerId], `**Verify Channel Lock Error**\n\`\`\`\n${err}\n\`\`\``);
                 });
         }
     },

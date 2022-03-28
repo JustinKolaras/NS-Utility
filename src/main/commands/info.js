@@ -82,8 +82,8 @@ class Command {
         }
 
         try {
-            const rank = await noblox.getRankInGroup(Config.group, playerId);
-            info["ns_rank"] = await noblox.getRole(Config.group, rank);
+            const rank = await noblox.getRankInGroup(config.group, playerId);
+            info["ns_rank"] = await noblox.getRole(config.group, rank);
         } catch (err) {
             console.error(err);
             return main.edit(errMessage);

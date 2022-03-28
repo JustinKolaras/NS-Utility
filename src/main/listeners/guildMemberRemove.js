@@ -1,3 +1,6 @@
+const Permissions = require("../modules/Permissions");
+const PermissionsHandler = new Permissions();
+
 const moderatorConfig = {
         channelId: "810717109427503174",
         onPermission: 2,
@@ -31,7 +34,7 @@ module.exports = {
                 .deleteOne(hasReputation)
                 .catch((err) => {
                     console.error(err);
-                    Util.dmUser([Config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
+                    Util.dmUser([config.ownerId], `guildMemberRemove: Failure deleting reputation data from **${member.user.id}**\n\`\`\`${err}\n\`\`\``);
                 })
                 .then(() =>
                     Util.sendInChannel(
@@ -42,7 +45,7 @@ module.exports = {
                 );
         }
 
-        if (Util.getPerm(member) >= moderatorConfig.onPermission) {
+        if (PermissionsHandler.validate(member) >= moderatorConfig.onPermission) {
             const prefix = `@everyone, `;
             const messageToSend = `<@${member.id}> (${member.user.tag} :: ${member.id}) has left the server. They could have been kicked or banned.`;
 

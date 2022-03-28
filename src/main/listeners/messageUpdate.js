@@ -1,5 +1,5 @@
-const ReputationAlgorithm = require("../externals/reputation/Algorithm");
-const CommandProcessor = require("../externals/CommandProcessor");
+const ReputationAlgorithm = require("../modules/reputation/Algorithm");
+const CommandProcessor = require("../modules/CommandProcessor");
 
 module.exports = {
     name: "messageUpdate",

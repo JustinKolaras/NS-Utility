@@ -9,7 +9,7 @@ class Command {
         try {
             await Msg.guild.leave().catch((err) => {
                 console.error(err);
-                Util.dmUser([Config.ownerId], `**Guild Leave Error On \`destroy\`**\n\`\`\`\n${err}\n\`\`\``);
+                Util.dmUser([config.ownerId], `**Guild Leave Error On \`destroy\`**\n\`\`\`\n${err}\n\`\`\``);
             });
             discordClient.destroy();
         } catch (err) {

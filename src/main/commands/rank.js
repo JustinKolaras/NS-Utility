@@ -67,20 +67,20 @@ class Command {
 
         let rankId;
         try {
-            rankId = await noblox.getRankInGroup(Config.group, playerId);
+            rankId = await noblox.getRankInGroup(config.group, playerId);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);
         }
 
-        if (rankId >= 252 && Context.clientPerm < 6) {
+        if (rankId >= 252 && Context.permission < 6) {
             return Msg.reply("Invalid rank! You can only change the rank of members ranked below **Moderator**.");
         }
 
         let roles;
         const discordReadableRoles = [];
         try {
-            roles = await noblox.getRoles(Config.group);
+            roles = await noblox.getRoles(config.group);
         } catch (err) {
             console.error(err);
             return Msg.reply(errMessage);
@@ -89,7 +89,7 @@ class Command {
         for (const role of roles) {
             if (role.name === "Guest") continue;
             // This long if statement basically allows those with perm 6+ to ignore rank restrictions.
-            if ((role.rank >= 15 && Context.clientPerm < 6) || (role.rank >= 255 && Context.clientPerm >= 6)) continue;
+            if ((role.rank >= 15 && Context.permission < 6) || (role.rank >= 255 && Context.permission >= 6)) continue;
             discordReadableRoles.push({
                 label: role.name,
                 description: `Group Roleset [${role.id}]`,
@@ -117,7 +117,7 @@ class Command {
                 collector.stop();
 
                 noblox
-                    .setRank(Config.group, playerId, i.values[0])
+                    .setRank(config.group, playerId, i.values[0])
                     .then(() => main.edit({ content: `<@${Msg.member.id}>, Successfully ranked user.`, components: [] }))
                     .catch(() => main.edit({ content: errMessage, components: [] }));
             }
