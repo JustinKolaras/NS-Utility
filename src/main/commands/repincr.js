@@ -36,14 +36,14 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
 
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         const amt = parseInt(args[1]);
 
         if (!attributes.success || !amt) {
@@ -63,7 +63,7 @@ class Command {
                 });
             } catch (err) {
                 Util.dmUser([config.ownerId], `**Add Reputation to Incr Error**\n\`\`\`\n${err}\n\`\`\``);
-                return Msg.reply("There was an error adding reputation.");
+                return msg.reply("There was an error adding reputation.");
             }
         }
 
@@ -87,9 +87,9 @@ class Command {
                     `Incremented <@${attributes.id}> REP from **${previous}** to **${previous + amt}**.`
                 );
                 roleHandle(attributes.member, userReputation.reputationNum + amt);
-                Msg.reply(`Successfully altered reputation amount.`);
+                msg.reply(`Successfully altered reputation amount.`);
             })
-            .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+            .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
     };
 }
 

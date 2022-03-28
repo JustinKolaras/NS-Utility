@@ -9,16 +9,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -45,7 +45,7 @@ class Command {
         }
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
@@ -68,21 +68,21 @@ class Command {
             }
         }
 
-        const executorRblxInfo = await Util.getRobloxAccount(Msg.author.id);
+        const executorRblxInfo = await Util.getRobloxAccount(msg.author.id);
         if (executorRblxInfo.success) {
             executorPlayerId = executorRblxInfo.response.robloxId;
         } else {
-            return Msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
+            return msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
         }
 
-        Msg.channel.send(`<@${Msg.author.id}>, Let's ban 'em from everything! :gun: :stuck_out_tongue:`);
+        msg.channel.send(`<@${msg.author.id}>, Let's ban 'em from everything! :gun: :stuck_out_tongue:`);
 
         if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return Msg.reply(errMessage);
+                return msg.reply(errMessage);
             }
         }
 
@@ -90,11 +90,11 @@ class Command {
             playerName = await noblox.getUsernameFromId(playerId);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
-        const prefix = `<@${Msg.author.id}>, Logs for **${playerName}**:`;
-        const base = await Msg.channel.send(prefix);
+        const prefix = `<@${msg.author.id}>, Logs for **${playerName}**:`;
+        const base = await msg.channel.send(prefix);
         const log = [];
         const addLog = (logText) => {
             log.push(`\`${logText}\``);
@@ -109,7 +109,7 @@ class Command {
             for (const guild of discordClient.guilds.cache) {
                 guild[1].members
                     .ban(attributes.id, {
-                        reason: `Ultra Ban By ${Msg.member.user.tag}: ${reason}`,
+                        reason: `Ultra Ban By ${msg.member.user.tag}: ${reason}`,
                     })
                     .then(() => {
                         addLog(`Banned in guild: ${guild[1].name}`);
@@ -147,7 +147,7 @@ class Command {
         }
 
         const hasModLogs = await modLogs.findOne({ id: playerId });
-        const dataForm = Util.makeLogData("ULTRA BAN", `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
+        const dataForm = Util.makeLogData("ULTRA BAN", `**Executor:** ${msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
 
         if (hasModLogs) {
             const modLogData = hasModLogs.data;
@@ -159,17 +159,17 @@ class Command {
                     },
                     { $set: { data: modLogData } }
                 )
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else {
             await modLogs
                 .insertOne({
                     id: playerId,
                     data: [dataForm],
                 })
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         }
 
-        return Msg.channel.send(`<@${Msg.author.id}>, :pray: All done! :face_exhaling: :hugging: :innocent:`);
+        return msg.channel.send(`<@${msg.author.id}>, :pray: All done! :face_exhaling: :hugging: :innocent:`);
     };
 }
 

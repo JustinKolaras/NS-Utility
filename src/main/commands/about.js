@@ -7,7 +7,7 @@ class Command {
         }
     }
 
-    fn = async (Msg) => {
+    fn = async (msg) => {
         const timeParameters = Util.getTimeParameters(discordClient.uptime);
 
         let messageEmbed;
@@ -57,13 +57,13 @@ class Command {
                     }
                 )
                 .setTimestamp()
-                .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
+                .setFooter({ text: `Requested by ${msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
-            return Msg.channel.send("There was an issue generating the embed.");
+            return msg.channel.send("There was an issue generating the embed.");
         }
 
-        return Msg.channel.send({ embeds: [messageEmbed] });
+        return msg.channel.send({ embeds: [messageEmbed] });
     };
 }
 

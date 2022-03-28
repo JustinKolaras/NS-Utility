@@ -11,16 +11,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -38,13 +38,13 @@ class Command {
         }
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
@@ -56,7 +56,7 @@ class Command {
             }
         }
 
-        const main = await Msg.reply(":mag_right: Searching..");
+        const main = await msg.reply(":mag_right: Searching..");
 
         if (!playerId) {
             try {
@@ -152,7 +152,7 @@ class Command {
                     { name: `Past Names ${pastUsernamesOverflow ? "[Overflow]" : ""}`, value: oldNames }
                 )
                 .setTimestamp()
-                .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
+                .setFooter({ text: `Requested by ${msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
             return main.edit("There was an issue generating the info embed; this user might not exist.");
@@ -162,7 +162,7 @@ class Command {
             new MessageButton().setLabel("Profile").setStyle("LINK").setURL(`https://roblox.com/users/${playerId}/profile`)
         );
 
-        return main.edit({ content: `\`${Date.now() - Msg.createdTimestamp}ms\``, embeds: [messageEmbed], components: [row] });
+        return main.edit({ content: `\`${Date.now() - msg.createdTimestamp}ms\``, embeds: [messageEmbed], components: [row] });
     };
 }
 

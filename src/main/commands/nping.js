@@ -9,19 +9,19 @@ class Command {
         }
     }
 
-    fn = async (Msg) => {
+    fn = async (msg) => {
         noblox
             .setCookie(process.env.cookie)
             .then(() => {
-                return Msg.reply(
-                    `:electric_plug: nPong! Latency of *${Date.now() - Msg.createdTimestamp}ms/${Number.parseFloat(
-                        (Date.now() - Msg.createdTimestamp) / 1000
+                return msg.reply(
+                    `:electric_plug: nPong! Latency of *${Date.now() - msg.createdTimestamp}ms/${Number.parseFloat(
+                        (Date.now() - msg.createdTimestamp) / 1000
                     ).toFixed(4)}s*`
                 );
             })
             .catch((err) => {
                 console.error(err);
-                return Msg.reply(`Uh oh :worried: :grimacing: There was an error..\n\`\`\`\n${err}\n\`\`\``);
+                return msg.reply(`Uh oh :worried: :grimacing: There was an error..\n\`\`\`\n${err}\n\`\`\``);
             });
     };
 }

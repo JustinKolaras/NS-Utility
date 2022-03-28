@@ -5,9 +5,9 @@ class Command {
         }
     }
 
-    fn = async (Msg) => {
-        return Msg.reply(
-            `:ping_pong: Pong! Latency of *${Date.now() - Msg.createdTimestamp}ms/${Number.parseFloat((Date.now() - Msg.createdTimestamp) / 1000).toFixed(4)}s*`
+    fn = async (msg) => {
+        return msg.reply(
+            `:ping_pong: Pong! Latency of *${Date.now() - msg.createdTimestamp}ms/${Number.parseFloat((Date.now() - msg.createdTimestamp) / 1000).toFixed(4)}s*`
         );
     };
 }

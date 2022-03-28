@@ -5,12 +5,12 @@ class Command {
         }
     }
 
-    fn = async (Msg) => {
+    fn = async (msg) => {
         try {
-            await Msg.reply("Restarting via *process.exit* on PM2..");
+            await msg.reply("Restarting via *process.exit* on PM2..");
             process.exit();
         } catch (err) {
-            Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``);
+            msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``);
         }
     };
 }

@@ -7,9 +7,9 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
@@ -48,13 +48,13 @@ class Command {
                     }
                 )
                 .setTimestamp()
-                .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
+                .setFooter({ text: `Requested by ${msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
-            return Msg.channel.send("There was an issue generating the embed.");
+            return msg.channel.send("There was an issue generating the embed.");
         }
 
-        return Msg.channel.send({ embeds: [messageEmbed] });
+        return msg.channel.send({ embeds: [messageEmbed] });
     };
 }
 

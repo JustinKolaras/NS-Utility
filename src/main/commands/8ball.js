@@ -5,9 +5,9 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
@@ -47,7 +47,7 @@ class Command {
             return SyntaxErr();
         }
 
-        return Msg.reply(`:8ball: ${results[Math.floor(Math.random() * results.length)]}`);
+        return msg.reply(`:8ball: ${results[Math.floor(Math.random() * results.length)]}`);
     };
 }
 

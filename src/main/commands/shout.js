@@ -9,12 +9,12 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -22,8 +22,8 @@ class Command {
 
         noblox
             .shout(config.group, parsedText || "")
-            .then(() => Msg.reply(`Successfully ${parsedText ? "changed" : "removed"} group shout.`))
-            .catch(() => Msg.reply("There was an issue while trying to change the group shout."));
+            .then(() => msg.reply(`Successfully ${parsedText ? "changed" : "removed"} group shout.`))
+            .catch(() => msg.reply("There was an issue while trying to change the group shout."));
     };
 }
 

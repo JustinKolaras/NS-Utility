@@ -7,14 +7,14 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
 
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
 
         const database = mongoClient.db("main");
         const reputation = database.collection("reputation");
@@ -25,10 +25,10 @@ class Command {
         } else if (attributes.success && Context.permission >= 5) {
             data = await reputation.findOne({ id: attributes.id });
             let amount = data?.reputationNum || 0;
-            return Msg.reply(`<@${attributes.id}> :: **${amount}**`);
+            return msg.reply(`<@${attributes.id}> :: **${amount}**`);
         }
 
-        data = await reputation.findOne({ id: Msg.author.id });
+        data = await reputation.findOne({ id: msg.author.id });
         let amount = 0;
         let response;
         amount = data?.reputationNum || 0;
@@ -46,10 +46,10 @@ class Command {
             // prettier-ignore
             response = `:innocent: :innocent: Hello! The mighty kingdom of NS Reputation :crown: told me you have **${Util.sep(amount)}** reputation points in your bank today. :money_with_wings: :money_with_wings: Gosh, go ahead and share some! :gem: :gem: :money_mouth:`;
         } else {
-            return Msg.reply("There was an error generating the required response.");
+            return msg.reply("There was an error generating the required response.");
         }
 
-        return Msg.reply(response);
+        return msg.reply(response);
     };
 }
 

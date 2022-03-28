@@ -7,9 +7,9 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
@@ -17,7 +17,7 @@ class Command {
         const banType = Util.verify(args[0], (self) => {
             return Util.isValid(self || ".", false, "add", "remove")[0];
         });
-        const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[1]);
 
         if (!banType || !attributes.success) {
             return SyntaxErr();
@@ -30,24 +30,24 @@ class Command {
 
         if (banType === "add") {
             if (currentStat) {
-                return Msg.reply(`This user is already banned from gaining reputation.`);
+                return msg.reply(`This user is already banned from gaining reputation.`);
             }
 
             repBans
                 .insertOne({
                     id: attributes.id,
                 })
-                .then(() => Msg.reply(`Successfully banned user from gaining reputation.`))
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .then(() => msg.reply(`Successfully banned user from gaining reputation.`))
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else if (banType === "remove") {
             if (!currentStat) {
-                return Msg.reply(`This user is not already banned from gaining reputation.`);
+                return msg.reply(`This user is not already banned from gaining reputation.`);
             }
 
             repBans
                 .deleteOne(currentStat)
-                .then(() => Msg.reply(`Successfully removed ban.`))
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .then(() => msg.reply(`Successfully removed ban.`))
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         }
     };
 }

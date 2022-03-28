@@ -9,9 +9,9 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
@@ -30,13 +30,13 @@ class Command {
         }
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
@@ -53,7 +53,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return Msg.reply(errMessage);
+                return msg.reply(errMessage);
             }
         }
 
@@ -61,15 +61,15 @@ class Command {
             playerName = await noblox.getUsernameFromId(playerId);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
-        Msg.channel.send(`<@${Msg.author.id}>, :mag_right: Searching..`);
+        msg.channel.send(`<@${msg.author.id}>, :mag_right: Searching..`);
 
         const hasModLogs = await modLogs.findOne({ id: playerId });
 
         if (!hasModLogs) {
-            return Msg.channel.send(`<@${Msg.author.id}>, All clean! :pray: :innocent: Looks like they have no moderation logs.`);
+            return msg.channel.send(`<@${msg.author.id}>, All clean! :pray: :innocent: Looks like they have no moderation logs.`);
         }
 
         const modLogData = hasModLogs.data;
@@ -88,14 +88,14 @@ class Command {
                 .setColor("#2f3136")
                 .addFields(...discordReadableData)
                 .setTimestamp()
-                .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
+                .setFooter({ text: `Requested by ${msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
-            return Msg.reply("There was an issue generating the embed.");
+            return msg.reply("There was an issue generating the embed.");
         }
 
-        return Msg.channel.send({
-            content: `<@${Msg.author.id}>, Moderation logs for **${playerName}**:`,
+        return msg.channel.send({
+            content: `<@${msg.author.id}>, Moderation logs for **${playerName}**:`,
             embeds: [messageEmbed],
         });
     };

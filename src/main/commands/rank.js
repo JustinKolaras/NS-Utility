@@ -11,16 +11,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -38,13 +38,13 @@ class Command {
         }
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
@@ -61,7 +61,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return Msg.reply(errMessage);
+                return msg.reply(errMessage);
             }
         }
 
@@ -70,11 +70,11 @@ class Command {
             rankId = await noblox.getRankInGroup(config.group, playerId);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
         if (rankId >= 252 && Context.permission < 6) {
-            return Msg.reply("Invalid rank! You can only change the rank of members ranked below **Moderator**.");
+            return msg.reply("Invalid rank! You can only change the rank of members ranked below **Moderator**.");
         }
 
         let roles;
@@ -83,7 +83,7 @@ class Command {
             roles = await noblox.getRoles(config.group);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
         for (const role of roles) {
@@ -101,14 +101,14 @@ class Command {
             new MessageSelectMenu().setCustomId("selectRole").setPlaceholder("Select role..").addOptions(discordReadableRoles)
         );
 
-        const filter = (i) => i.member.id === Msg.author.id;
-        const collector = Msg.channel.createMessageComponentCollector({
+        const filter = (i) => i.member.id === msg.author.id;
+        const collector = msg.channel.createMessageComponentCollector({
             filter,
             time: 30000,
         });
 
-        const main = await Msg.channel.send({
-            content: `<@${Msg.member.id}>, Role to appoint? Select from the dropdown below.\nThis command will cancel in 30 seconds if no option is selected.`,
+        const main = await msg.channel.send({
+            content: `<@${msg.member.id}>, Role to appoint? Select from the dropdown below.\nThis command will cancel in 30 seconds if no option is selected.`,
             components: [row],
         });
 
@@ -118,7 +118,7 @@ class Command {
 
                 noblox
                     .setRank(config.group, playerId, i.values[0])
-                    .then(() => main.edit({ content: `<@${Msg.member.id}>, Successfully ranked user.`, components: [] }))
+                    .then(() => main.edit({ content: `<@${msg.member.id}>, Successfully ranked user.`, components: [] }))
                     .catch(() => main.edit({ content: errMessage, components: [] }));
             }
         });
@@ -126,7 +126,7 @@ class Command {
         collector.on("end", (_, reason) => {
             if (reason === "time") {
                 return main.edit({
-                    content: `<@${Msg.member.id}>, Cancelled command execution.`,
+                    content: `<@${msg.member.id}>, Cancelled command execution.`,
                     components: [],
                 });
             }

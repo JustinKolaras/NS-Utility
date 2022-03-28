@@ -42,7 +42,7 @@ module.exports = async (msg) => {
             // Validate permissions
             let userPermission;
             try {
-                userPermission = PermissionsHandler.validate(Msg.member);
+                userPermission = PermissionsHandler.validate(msg.member);
             } catch (err) {
                 console.error(err);
                 return {

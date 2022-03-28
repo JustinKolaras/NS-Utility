@@ -8,9 +8,9 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
@@ -24,20 +24,20 @@ class Command {
                 Usable: true,
             });
 
-            return Msg.author
+            return msg.author
                 .send(helpMessage)
-                .then(() => Msg.reply("Sent you a DM with information."))
-                .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));
+                .then(() => msg.reply("Sent you a DM with information."))
+                .catch(() => msg.reply("I couldn't DM you. Are your DMs off?"));
         } else if ((command && args.length > 1) || command.toString().toLowerCase() === "help") {
             return SyntaxErr();
         }
 
         let [success, result] = Util.getLibrary(command);
         if (!success) {
-            return Msg.reply(result);
+            return msg.reply(result);
         } else {
-            if ((Msg.guild.id === config.testServer && Msg.author.id === config.ownerId) || result.class.Permission <= perm) {
-                return Msg.reply(
+            if ((msg.guild.id === config.testServer && msg.author.id === config.ownerId) || result.class.Permission <= perm) {
+                return msg.reply(
                     // prettier-ignore
                     `Command: \`${command.toLowerCase()}\` **[${result.class.Permission}]**\nUsage: \`${result.class.Usage}\`\nDescription: **${result.class.Description}**`
                 );

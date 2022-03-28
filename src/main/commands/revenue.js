@@ -11,16 +11,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -39,14 +39,14 @@ class Command {
             revenueSummary = await noblox.getGroupRevenueSummary(config.group, revType);
         } catch (err) {
             console.error(err);
-            return Msg.reply("There was an issue while trying to gather revenue statistics.");
+            return msg.reply("There was an issue while trying to gather revenue statistics.");
         }
 
         try {
             revenueSummary["currentFunds"] = await noblox.getGroupFunds(config.group);
         } catch (err) {
             console.error(err);
-            return Msg.reply("There was an error while trying to gather group funds.");
+            return msg.reply("There was an error while trying to gather group funds.");
         }
 
         for (const k in revenueSummary) {
@@ -72,16 +72,16 @@ class Command {
                     ].join("\n")
                 )
                 .setTimestamp()
-                .setFooter({ text: `Requested by ${Msg.member.user.tag}` });
+                .setFooter({ text: `Requested by ${msg.member.user.tag}` });
         } catch (err) {
             console.error(err);
-            return Msg.channel.send("There was an issue generating the revenue embed.");
+            return msg.channel.send("There was an issue generating the revenue embed.");
         }
 
-        return Msg.author
+        return msg.author
             .send({ embeds: [messageEmbed] })
-            .then(() => Msg.reply("Sent you a DM with information."))
-            .catch(() => Msg.reply("I couldn't DM you. Are your DMs off?"));
+            .then(() => msg.reply("Sent you a DM with information."))
+            .catch(() => msg.reply("I couldn't DM you. Are your DMs off?"));
     };
 }
 

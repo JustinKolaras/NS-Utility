@@ -9,16 +9,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -35,13 +35,13 @@ class Command {
         }
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
@@ -58,7 +58,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return Msg.reply(errMessage);
+                return msg.reply(errMessage);
             }
         }
 
@@ -67,10 +67,10 @@ class Command {
             ownership = await noblox.getOwnership(playerId, 13375778, "GamePass");
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
-        return Msg.reply(ownership ? "This user owns NS VIP." : "Not owned, or their inventory is private.");
+        return msg.reply(ownership ? "This user owns NS VIP." : "Not owned, or their inventory is private.");
     };
 }
 

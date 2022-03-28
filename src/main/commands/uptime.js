@@ -7,7 +7,7 @@ class Command {
         }
     }
 
-    fn = async (Msg) => {
+    fn = async (msg) => {
         const timeParameters = Util.getTimeParameters(discordClient.uptime);
 
         let messageEmbed;
@@ -17,10 +17,10 @@ class Command {
                 .setTitle(`${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s`);
         } catch (err) {
             console.error(err);
-            return Msg.channel.send(`**${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s**`);
+            return msg.channel.send(`**${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s**`);
         }
 
-        return Msg.reply({ embeds: [messageEmbed] });
+        return msg.reply({ embeds: [messageEmbed] });
     };
 }
 

@@ -9,16 +9,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -36,13 +36,13 @@ class Command {
         }
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
@@ -59,7 +59,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return Msg.reply(errMessage);
+                return msg.reply(errMessage);
             }
         }
 
@@ -68,17 +68,17 @@ class Command {
             rankId = await noblox.getRankInGroup(config.group, playerId);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
         if (rankId >= 252) {
-            return Msg.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
+            return msg.reply("Invalid rank! You can only exile members ranked below **Moderator**.");
         }
 
         noblox
             .exile(config.group, playerId)
-            .then(() => Msg.reply(`Exiled user from group successfully.`))
-            .catch(() => Msg.reply(errMessage));
+            .then(() => msg.reply(`Exiled user from group successfully.`))
+            .catch(() => msg.reply(errMessage));
     };
 }
 

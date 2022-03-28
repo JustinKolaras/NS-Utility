@@ -7,20 +7,20 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         // Secondary check..
-        if (Msg.author.id !== "360239086117584906") {
-            Util.dmUser([config.ownerId], `<${Msg.member.id}> ran \`eval\` and somehow passed basic permission systems. Their command was blocked.`);
+        if (msg.author.id !== "360239086117584906") {
+            Util.dmUser([config.ownerId], `<${msg.member.id}> ran \`eval\` and somehow passed basic permission systems. Their command was blocked.`);
             discordClient.destroy();
             return;
         }
 
         // Make aliases
-        const msg = Msg;
+        const msg = msg;
         const client = discordClient;
         const mongo = mongoClient;
 
@@ -41,15 +41,15 @@ class Command {
             cleaned = cleaned.replaceAll(process.env.nsApiAuth, "%REDACTED_API-AUTH%");
 
             if (cleaned.length > 1900) {
-                return Msg.channel.send(`<@${Msg.member.id}>, Response over 2000 characters.`);
+                return msg.channel.send(`<@${msg.member.id}>, Response over 2000 characters.`);
             }
 
-            return Msg.channel.send(
-                `<@${Msg.member.id}>, *Evaluation callback..* **Success:** [${Date.now() - Msg.createdTimestamp}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
+            return msg.channel.send(
+                `<@${msg.member.id}>, *Evaluation callback..* **Success:** [${Date.now() - msg.createdTimestamp}ms]\n\`\`\`js\n${cleaned}\n\`\`\``
             );
         } catch (err) {
-            return Msg.channel.send(
-                `<@${Msg.member.id}>, *Evaluation callback..* **Error:** [${Date.now() - Msg.createdTimestamp}ms]\n\`\`\`xl\n${new EvalError(err)}\n\`\`\``
+            return msg.channel.send(
+                `<@${msg.member.id}>, *Evaluation callback..* **Error:** [${Date.now() - msg.createdTimestamp}ms]\n\`\`\`xl\n${new EvalError(err)}\n\`\`\``
             );
         }
     };

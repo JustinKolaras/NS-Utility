@@ -7,9 +7,9 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         const args = Context.args;
@@ -22,14 +22,14 @@ class Command {
         let logging = true;
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[1]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[1]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
                 logging = false;
-                Msg.channel.send(`Could not get Roblox account via Discord syntax - this action won't be logged in moderation logs.`);
+                msg.channel.send(`Could not get Roblox account via Discord syntax - this action won't be logged in moderation logs.`);
             }
         }
 
@@ -54,16 +54,16 @@ class Command {
 
         const dataFormAdd = {
             head: "Bot Ban",
-            body: `**Executor:** ${Msg.member.user.tag} **@ ${Util.getDateNow()}**`,
+            body: `**Executor:** ${msg.member.user.tag} **@ ${Util.getDateNow()}**`,
         };
         const dataFormRemove = {
             head: "Bot Ban Removal",
-            body: `**Executor:** ${Msg.member.user.tag} **@ ${Util.getDateNow()}**`,
+            body: `**Executor:** ${msg.member.user.tag} **@ ${Util.getDateNow()}**`,
         };
 
         if (banType === "add") {
             if (botBansData) {
-                return Msg.reply("This user is already banned from using NS Utility.");
+                return msg.reply("This user is already banned from using NS Utility.");
             }
 
             if (logging) {
@@ -77,14 +77,14 @@ class Command {
                             },
                             { $set: { data: dataFormAdd } }
                         )
-                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                        .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
                 } else {
                     await modLogs
                         .insertOne({
                             id: playerId,
                             data: [dataFormAdd],
                         })
-                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                        .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
                 }
             }
 
@@ -92,11 +92,11 @@ class Command {
                 .insertOne({
                     id: attributes.id,
                 })
-                .then(() => Msg.reply("Successfully banned user from using NS Utility."))
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .then(() => msg.reply("Successfully banned user from using NS Utility."))
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else if (banType === "remove") {
             if (!botBansData) {
-                return Msg.reply("This user is not already banned from using NS Utility.");
+                return msg.reply("This user is not already banned from using NS Utility.");
             }
 
             if (logging) {
@@ -111,21 +111,21 @@ class Command {
                             },
                             { $set: { data: dataFormRemove } }
                         )
-                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                        .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
                 } else {
                     await modLogs
                         .insertOne({
                             id: playerId,
                             data: [dataFormRemove],
                         })
-                        .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                        .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
                 }
             }
 
             botBans
                 .deleteOne(botBansData)
-                .then(() => Msg.reply(`Successfully removed ban.`))
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .then(() => msg.reply(`Successfully removed ban.`))
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         }
     };
 }

@@ -13,16 +13,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -43,11 +43,11 @@ class Command {
         let playerId;
         let playerName;
 
-        const rblxInfo = await Util.getRobloxAccount(Msg.author.id);
+        const rblxInfo = await Util.getRobloxAccount(msg.author.id);
         if (rblxInfo.success) {
             playerId = rblxInfo.response.robloxId;
         } else {
-            return Msg.reply(`Could not get Roblox account. If you're not verified with RoVer, please do so via the \`!verify\` command and try again.`);
+            return msg.reply(`Could not get Roblox account. If you're not verified with RoVer, please do so via the \`!verify\` command and try again.`);
         }
 
         if (!amt || typeof amt !== "number" || !reason) {
@@ -55,22 +55,22 @@ class Command {
         }
 
         if (amt > 3000) {
-            return Msg.reply("Too high amount to request.");
+            return msg.reply("Too high amount to request.");
         } else if (amt < 1) {
-            return Msg.reply("Too low amount; payout amount must be greater than 0.");
+            return msg.reply("Too low amount; payout amount must be greater than 0.");
         }
 
         try {
             playerName = await noblox.getUsernameFromId(playerId);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
         let continuing = false;
 
-        const confFilter = (i) => i.member.id === Msg.author.id;
-        const confCollector = Msg.channel.createMessageComponentCollector({
+        const confFilter = (i) => i.member.id === msg.author.id;
+        const confCollector = msg.channel.createMessageComponentCollector({
             confFilter,
             time: 30000,
         });
@@ -80,7 +80,7 @@ class Command {
             new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER")
         );
 
-        const confMsg = await Msg.reply({
+        const confmsg = await msg.reply({
             content: `You are requesting a payout for your account **${playerName}**. Is this correct?\nIf this is not correct, you need to re-verify your account.\nhttps://roblox.com/users/${playerId}/profile`,
             components: [confRow],
         });
@@ -88,18 +88,18 @@ class Command {
         confCollector.on("collect", async (i) => {
             await confCollector.stop();
             if (i.customId === "confirm") {
-                confMsg.delete().catch(() => {});
+                confmsg.delete().catch(() => {});
                 continuing = true;
             } else if (i.customId === "reject") {
-                confMsg.delete().catch(() => {});
-                Msg.delete().catch(() => {});
+                confmsg.delete().catch(() => {});
+                msg.delete().catch(() => {});
             }
         });
 
         confCollector.on("end", (_, reason) => {
             if (reason === "time") {
-                confMsg.delete().catch(() => {});
-                Msg.delete().catch(() => {});
+                confmsg.delete().catch(() => {});
+                msg.delete().catch(() => {});
             }
         });
 
@@ -107,9 +107,9 @@ class Command {
             return continuing === true;
         });
 
-        const logChannel = await Util.getChannel(Msg.guild, "930350546232147998");
+        const logChannel = await Util.getChannel(msg.guild, "930350546232147998");
         if (!logChannel) {
-            return Msg.reply("I couldn't retrieve proper configuration channels.");
+            return msg.reply("I couldn't retrieve proper configuration channels.");
         }
 
         const id = uuid.v4();
@@ -125,7 +125,7 @@ class Command {
             time: 8.64e7,
         });
 
-        const msgContent = `@everyone, New payout request from **${playerName}** (${Msg.member.user.tag} :: ${Msg.author.id}):\n\n**R$:** ${sepAmt}\n**Reason:** ${reason}\n\n**Accepting this request is stricly irreversible.**\nThis request will expire in 24 hours if no option is selected.`;
+        const msgContent = `@everyone, New payout request from **${playerName}** (${msg.member.user.tag} :: ${msg.author.id}):\n\n**R$:** ${sepAmt}\n**Reason:** ${reason}\n\n**Accepting this request is stricly irreversible.**\nThis request will expire in 24 hours if no option is selected.`;
 
         const main = await logChannel.send({
             content: msgContent,
@@ -140,7 +140,7 @@ class Command {
                 noblox
                     .groupPayout(config.group, playerId, amt)
                     .then(() => {
-                        Msg.author
+                        msg.author
                             .send(
                                 `Your payout request was accepted by ${i.member.user.tag}. **R$${sepAmt}** has been credited into your account.\n**Request ID:** ${playerId}-${id}`
                             )
@@ -153,7 +153,7 @@ class Command {
                     })
                     .catch((err) => {
                         console.error(err);
-                        Msg.author
+                        msg.author
                             .send(
                                 `Your payout request could not be accepted due to an error in the transaction. No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                             )
@@ -161,7 +161,7 @@ class Command {
                             .catch(() => {});
                     });
             } else if (i.customId === `decline-${playerId}-${id}`) {
-                Msg.author
+                msg.author
                     .send(
                         `Your payout request was declined by ${i.member.user.tag}. No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                     )
@@ -172,7 +172,7 @@ class Command {
 
         collector.on("end", (_, reason) => {
             if (reason === "time") {
-                Msg.author
+                msg.author
                     .send(
                         `Your payout request has expired! (no one accepted/declined) No robux have been credited into your account.\n**Request ID:** ${playerId}-${id}`
                     )
@@ -181,7 +181,7 @@ class Command {
             }
         });
 
-        Msg.reply("Your request has been sent for review.\nIf you have your DMs open, you will be notified of status updates.");
+        msg.reply("Your request has been sent for review.\nIf you have your DMs open, you will be notified of status updates.");
     };
 }
 

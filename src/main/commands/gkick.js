@@ -9,16 +9,16 @@ class Command {
         }
     }
 
-    fn = async (Msg, Context) => {
+    fn = async (msg, Context) => {
         const SyntaxErr = () => {
-            return Msg.reply(`**Syntax Error:** \`${this.Usage}\``);
+            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
         };
 
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
             console.error(err);
-            return Msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
+            return msg.reply("Issue logging into NSGroupOwner. <@360239086117584906>\nRoblox may be down.");
         }
 
         const args = Context.args;
@@ -40,17 +40,17 @@ class Command {
         }
 
         if (reason.length > 85) {
-            return Msg.reply("Too long of a reason. Cap: 85chars");
+            return msg.reply("Too long of a reason. Cap: 85chars");
         }
 
         // Discord Mention Support
-        const attributes = await Util.getUserAttributes(Msg.guild, args[0]);
+        const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
             const rblxInfo = await Util.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
-                return Msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
+                return msg.reply(`Could not get Roblox account via Discord syntax. Please provide a Roblox username.`);
             }
         }
 
@@ -62,11 +62,11 @@ class Command {
             }
         }
 
-        const executorRblxInfo = await Util.getRobloxAccount(Msg.author.id);
+        const executorRblxInfo = await Util.getRobloxAccount(msg.author.id);
         if (executorRblxInfo.success) {
             executorPlayerId = executorRblxInfo.response.robloxId;
         } else {
-            return Msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
+            return msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
         }
 
         if (!playerId) {
@@ -74,7 +74,7 @@ class Command {
                 playerId = await noblox.getIdFromUsername(playerName);
             } catch (err) {
                 console.error(err);
-                return Msg.reply(errMessage);
+                return msg.reply(errMessage);
             }
         }
 
@@ -83,16 +83,16 @@ class Command {
             rankId = await noblox.getRankInGroup(config.group, playerId);
         } catch (err) {
             console.error(err);
-            return Msg.reply(errMessage);
+            return msg.reply(errMessage);
         }
 
         if (rankId >= 252) {
-            return Msg.reply("Invalid rank! You can only game-kick members ranked below **Moderator**.");
+            return msg.reply("Invalid rank! You can only game-kick members ranked below **Moderator**.");
         }
 
         const hasModLogs = await modLogs.findOne({ id: playerId });
 
-        const dataForm = Util.makeLogData("Remote Kick", `**Executor:** ${Msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
+        const dataForm = Util.makeLogData("Remote Kick", `**Executor:** ${msg.member.user.tag} **Reason:** ${reason} **@ ${Util.getDateNow()}**`);
 
         if (hasModLogs) {
             const modLogData = hasModLogs.data;
@@ -104,17 +104,17 @@ class Command {
                     },
                     { $set: { data: modLogData } }
                 )
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         } else {
             await modLogs
                 .insertOne({
                     id: playerId,
                     data: [dataForm],
                 })
-                .catch((err) => Msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
+                .catch((err) => msg.reply(`*Error:*\n\`\`\`\n${err}\n\`\`\``));
         }
 
-        const main = await Msg.channel.send(`<@${Msg.author.id}>, Working..`);
+        const main = await msg.channel.send(`<@${msg.author.id}>, Working..`);
 
         const response = await Util.kickInGame({
             toKickID: parseInt(playerId),
@@ -123,9 +123,9 @@ class Command {
         });
 
         if (response.success) {
-            return main.edit(`<@${Msg.author.id}>, Nice! Your command was executed remotely on all game servers.`);
+            return main.edit(`<@${msg.author.id}>, Nice! Your command was executed remotely on all game servers.`);
         } else {
-            return main.edit(`<@${Msg.author.id}>, There was an error.\n\n\`@ns-api\`\n\`\`\`\n${response.raw}\n\`\`\``);
+            return main.edit(`<@${msg.author.id}>, There was an error.\n\n\`@ns-api\`\n\`\`\`\n${response.raw}\n\`\`\``);
         }
     };
 }
