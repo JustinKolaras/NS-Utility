@@ -20,7 +20,6 @@ class Command {
         }
 
         // Make aliases
-        const msg = msg;
         const client = discordClient;
         const mongo = mongoClient;
 
