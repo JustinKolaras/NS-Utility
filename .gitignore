@@ -122,3 +122,5 @@ config.yaml
 config.json
 # Confidential algorithms
 reputation/
+BackgroundChecks.js
+bgc.js
