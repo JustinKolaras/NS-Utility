@@ -88,7 +88,7 @@ class Command {
         const filter = (i) => i.member.id === msg.author.id;
         const collector = msg.channel.createMessageComponentCollector({
             filter,
-            time: 30000,
+            time: 33000,
         });
 
         let msgContent = `<@%ID>, Are you sure you want to payout **R$%AMT** to **%NAME**? **This action is stricly irreversible.**\nThis command will cancel in 30 seconds if no option is selected.`;
@@ -97,6 +97,17 @@ class Command {
         msgContent = msgContent.replace("%NAME", playerName);
 
         const main = await msg.channel.send({
+            content: msgContent,
+        });
+
+        for (let i = 2; i > 0; i--) {
+            await main.edit({
+                content: msgContent + `\nButtons will appear in **${i}** ${i === 1 ? "second" : "seconds"}.`,
+            });
+            await Util.sleep(1000);
+        }
+
+        await main.edit({
             content: msgContent,
             components: [row],
         });
