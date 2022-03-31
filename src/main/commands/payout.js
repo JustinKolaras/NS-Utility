@@ -80,6 +80,11 @@ class Command {
             return msg.reply(errMessage);
         }
 
+        const disabledRow = new MessageActionRow().addComponents(
+            new MessageButton().setCustomId("confirm").setLabel("Confirm").setStyle("PRIMARY").setDisabled(true),
+            new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER").setDisabled(true)
+        );
+
         const row = new MessageActionRow().addComponents(
             new MessageButton().setCustomId("confirm").setLabel("Confirm").setStyle("PRIMARY"),
             new MessageButton().setCustomId("reject").setLabel("Reject").setStyle("DANGER")
@@ -98,11 +103,13 @@ class Command {
 
         const main = await msg.channel.send({
             content: msgContent,
+            components: [disabledRow],
         });
 
         for (let i = 2; i > 0; i--) {
             await main.edit({
-                content: msgContent + `\nButtons will appear in **${i}** ${i === 1 ? "second" : "seconds"}.`,
+                content: msgContent + `\nButtons will activate in **${i}** ${i === 1 ? "second" : "seconds"}.`,
+                components: [disabledRow],
             });
             await Util.sleep(1000);
         }
