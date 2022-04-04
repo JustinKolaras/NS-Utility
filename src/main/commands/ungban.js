@@ -113,6 +113,7 @@ class Command {
 
         const response = await Util.unbanInGame({
             toUnbanID: parseInt(playerId),
+            executor: parseInt(executorPlayerId),
         });
 
         if (response.success) {
