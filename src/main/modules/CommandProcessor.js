@@ -19,6 +19,13 @@ module.exports = async (msg) => {
         const database = mongoClient.db("main");
         const botBans = database.collection("botBans");
 
+        // Update command invocations
+        Invocations[msg.member.id]++;
+        setTimeout(() => {
+            Invocations[msg.member.id]--;
+        }, 5000);
+        if (Invocations[msg.member.id] > 2) return { success: false };
+
         const [success, result] = Util.getLibrary(command);
         if (success) {
             // See if restrict usage is enabled
@@ -31,13 +38,6 @@ module.exports = async (msg) => {
 
             // Block banned users
             if (await botBans.findOne({ id: msg.author.id })) return { success: false };
-
-            // Update command invocations
-            Invocations[msg.member.id]++;
-            setTimeout(() => {
-                Invocations[msg.member.id]--;
-            }, 5000);
-            if (Invocations[msg.member.id] > 2) return { success: false };
 
             // Validate permissions
             let userPermission;
