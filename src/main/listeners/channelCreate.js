@@ -1,3 +1,4 @@
+let channels = 0;
 let MASTER_COOLDOWN = false;
 
 module.exports = {

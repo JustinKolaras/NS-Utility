@@ -361,6 +361,10 @@ class Utility {
         const currentData = await mfaAuthorizedUsers.findOne({ user: memberId });
         return currentData && currentData.authorized === true;
     };
+
+    inRange = (num, min, max) => {
+        return num >= min && num <= max;
+    };
 }
 
 module.exports = new Utility();
