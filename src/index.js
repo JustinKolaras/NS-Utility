@@ -6,7 +6,7 @@ const { Client, Intents } = require("discord.js");
 const { MongoClient } = require("mongodb");
 const yaml = require("js-yaml");
 const fs = require("fs");
-const Initializer = require("./main/startup/Initializer");
+const Initializer = require("./main/modules/Initializer");
 const ArgumentSyntaxBuilder = require("./main/modules/SyntaxBuilder");
 const Util = require("./main/modules/Util");
 

@@ -1,4 +1,4 @@
-const ReputationAlgorithm = require("../modules/reputation/Algorithm");
+const ReputationAlgorithm = require("../modules/reputation/RepAlgorithm");
 const CommandProcessor = require("../modules/CommandProcessor");
 const Permissions = require("../modules/Permissions");
 const Util = require("../modules/Util");

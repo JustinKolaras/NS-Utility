@@ -1,6 +1,6 @@
 const CommandLogs = require("./CommandLogs");
 const Restrictions = require("./RestrictionHandler");
-const Permissions = require("../modules/Permissions");
+const Permissions = require("./Permissions");
 const PermissionsHandler = new Permissions();
 const CommandLogConstructor = new CommandLogs();
 const RestrictionHandler = new Restrictions();
