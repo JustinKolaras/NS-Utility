@@ -10,6 +10,11 @@ module.exports = [
     },
 
     {
+        name: "Payouts",
+        precedence: 60,
+    },
+
+    {
         name: "Reputation",
         precedence: 50,
     },

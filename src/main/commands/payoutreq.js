@@ -134,7 +134,7 @@ class Command {
 
         collector.on("collect", async (i) => {
             await i.deferReply(); // The noblox API request can rarely take over 3 seconds. This happened before.
-            await main.edit({ content: msgContent, components: [] });
+            await main.edit({ components: [] });
             await collector.stop();
             if (i.customId === `accept-${playerId}-${id}`) {
                 noblox
@@ -197,6 +197,6 @@ module.exports = {
                 errorMessage: "Please run this command in the **Design Team** category.",
             },
         },
-        Group: "Remote",
+        Group: "Payouts",
     }),
 };
