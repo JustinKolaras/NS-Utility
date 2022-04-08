@@ -8,7 +8,7 @@ let pingInvocations = [];
 
 const sendToCommand = (type, member) => {
     const prefix = `@everyone, `;
-    const messageToSend = `**Ping Quota Exceeded (${type}):** <@${member.id}> exceeded their ping quota.${type === "BANNED" ? " They've been banned." : ""}`;
+    const messageToSend = `**Ping Quota Exceeded (${type}):** <@${member.id}> exceeded their ping quota.${type === "Banned" ? " They've been banned." : ""}`;
 
     Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
     Util.getChannel(member.guild, "810717109427503174")?.send(prefix + messageToSend);
@@ -35,18 +35,17 @@ module.exports = {
                 }, 120000);
 
                 switch (pingInvocations[msg.member.id]) {
-                    case 1:
-                        await msg.member
-                            .send("**You have reached your server-wide mass-ping quota.** Please wait at least two minutes before pinging again.")
-                            .catch(() => {});
-                        break;
                     case 2:
-                        sendToCommand("WARNING", msg.member);
-                        await msg.member.send("**This is a final warning.** Please wait at least four minutes to ping again.").catch(() => {});
+                        sendToCommand("Warning", msg.member);
+                        await msg.member
+                            .send(
+                                "**You have exceeded your server-wide mass-ping quota.** Please wait at least four minutes before pinging again. **Do not ping!**"
+                            )
+                            .catch(() => {});
                         break;
                     case 3:
                         pingInvocations[msg.member.id] = null;
-                        sendToCommand("BANNED", msg.member);
+                        sendToCommand("Banned", msg.member);
                         await msg.member
                             .send("**You've been banned for exceeding your ping quota by two.** Please contact a member of the Command Team.")
                             .catch(() => {});
