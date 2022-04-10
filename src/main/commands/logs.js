@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, mongoClient*/
+/*eslint no-undef: "error"*/
+
 const { MessageEmbed } = require("discord.js");
 
 const noblox = require("noblox.js");

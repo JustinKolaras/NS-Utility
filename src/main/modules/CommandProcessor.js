@@ -1,11 +1,13 @@
+/*global Util, config, mongoClient*/
+/*eslint no-undef: "error"*/
+
 const CommandLogs = require("./CommandLogs");
 const Restrictions = require("./RestrictionHandler");
 const Permissions = require("./Permissions");
-const PermissionsHandler = new Permissions();
-const CommandLogConstructor = new CommandLogs();
-const RestrictionHandler = new Restrictions();
+const MFA = require("./MFA");
+const GetLibrary = require("./GetLibrary");
 
-let Invocations = [];
+const Invocations = [];
 
 module.exports = async (msg) => {
     if (typeof Invocations[msg.member.id] !== "number") {
@@ -26,7 +28,7 @@ module.exports = async (msg) => {
         }, 5000);
         if (Invocations[msg.member.id] > 2) return { success: false };
 
-        const [success, result] = Util.getLibrary(command);
+        const [success, result] = GetLibrary.get(command);
         if (success) {
             // See if restrict usage is enabled
             if (config.restrictUsage === true && msg.guild.id === "761468835600924733") {
@@ -42,7 +44,7 @@ module.exports = async (msg) => {
             // Validate permissions
             let userPermission;
             try {
-                userPermission = PermissionsHandler.validate(msg.member);
+                userPermission = Permissions.validate(msg.member);
             } catch (err) {
                 console.error(err);
                 return {
@@ -53,12 +55,12 @@ module.exports = async (msg) => {
 
             if ((msg.guild.id === config.testServer && msg.author.id === config.ownerId) || result.class.Permission <= userPermission) {
                 // MFA for high-level commands
-                if (result.class.Permission >= 5 && !(await Util.mfaIntegrity(msg.member.id))) {
+                if (result.class.Permission >= 5 && !(await MFA.integrity(msg.member.id))) {
                     return { success: false, message: "MFA for high-level commands failed. Please contact the bot maintainer to resolve." };
                 }
 
                 // Validate category/channel restrictions
-                const restrictionResult = RestrictionHandler.validate({ class: result.class, message: msg });
+                const restrictionResult = Restrictions.validate({ class: result.class, message: msg });
                 if (!restrictionResult.success) return restrictionResult;
 
                 // Execute command
@@ -66,7 +68,7 @@ module.exports = async (msg) => {
                     await result.class.fn(msg, { args: args, permission: userPermission });
 
                     if (msg.guild.id !== config.testServer) {
-                        const embed = CommandLogConstructor.makeLog({ user: msg.member.user, command: command, messageContent: msg.content });
+                        const embed = CommandLogs.makeLog({ user: msg.member.user, command: command, messageContent: msg.content });
                         Util.sendInChannel("761468835600924733", config.logChannel, { embeds: [embed] });
                     }
 

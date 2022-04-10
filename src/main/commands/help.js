@@ -1,5 +1,7 @@
-const CommandList = require("../modules/CommandList");
-const List = new CommandList();
+/*global SyntaxBuilder, Util, config*/
+/*eslint no-undef: "error"*/
+
+const List = require("../modules/CommandList");
 
 class Command {
     constructor(options) {

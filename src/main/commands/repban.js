@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, mongoClient*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
 class Command {

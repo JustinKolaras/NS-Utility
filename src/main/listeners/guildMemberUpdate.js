@@ -1,3 +1,6 @@
+/*global Util*/
+/*eslint no-undef: "error"*/
+
 const adminRolesIndex = [
     {
         id: "788877981874389014",
@@ -29,8 +32,8 @@ module.exports = {
     name: "guildMemberUpdate",
     execType: "bind",
     execute(oldMember, newMember) {
+        const adminRoles = [];
         let hasAdminRole = false;
-        let adminRoles = [];
         for (const dict of adminRolesIndex) {
             if (Util.hasRole(newMember, dict.id) && !Util.hasRole(oldMember, dict.id)) {
                 hasAdminRole = true;

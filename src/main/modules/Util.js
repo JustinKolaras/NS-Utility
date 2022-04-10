@@ -1,6 +1,8 @@
+/*global config, mongoClient, discordClient*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
-const axios = require("axios");
 const defaultUtil = require("util");
 const uuid = require("uuid");
 
@@ -14,16 +16,6 @@ class Utility {
         }
         args.splice(first + 1, last);
         return args[first];
-    };
-
-    getLibrary = (lib) => {
-        try {
-            const library = require(`../commands/${lib}`);
-            return [true, library];
-        } catch (err) {
-            console.error(err);
-            return [false, "Couldn't retrieve command library!\nThis command may not exist, or been archived/moved."];
-        }
     };
 
     sleep = (ms) => {
@@ -143,17 +135,6 @@ class Utility {
         return returnValue || { success: false };
     };
 
-    getRobloxAccount = async (discordId) => {
-        let endpointResponse = await axios.get(`https://verify.eryn.io/api/user/${discordId.toString()}`).catch(() => {});
-
-        if (endpointResponse) {
-            endpointResponse = endpointResponse.data;
-            return { success: endpointResponse.status === "ok", response: endpointResponse };
-        } else {
-            return { success: false };
-        }
-    };
-
     isReputableChannel = (channelId) => {
         for (const c of config.reputationChannels) {
             if (channelId == c) {
@@ -256,23 +237,6 @@ class Utility {
         });
     };
 
-    // Splits a string into multiples based on character count.
-    // Returns an array of the split strings.
-    splitString = (string, charLimit) => {
-        const arr = [];
-        let newStr = string;
-
-        while (newStr.length >= charLimit) {
-            const subStr = newStr.substring(0, charLimit);
-            newStr = newStr.substring(charLimit, newStr.length);
-            arr.push(subStr);
-        }
-
-        arr.push(newStr);
-
-        return arr;
-    };
-
     getDateNow = () => {
         const date = new Date();
         return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
@@ -289,77 +253,6 @@ class Utility {
 
     parseNumericalsAfterHash = (str) => {
         return str.match(/(?<=#)\d+/);
-    };
-
-    banInGame = async (payload) => {
-        let endpointResponse;
-        try {
-            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/bans`, payload, {
-                headers: {
-                    Authorization: process.env.nsAPIAuth,
-                },
-            });
-        } catch (err) {
-            return { success: false, raw: JSON.stringify(err.response.data) };
-        }
-
-        endpointResponse = endpointResponse.data;
-        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
-    };
-
-    unbanInGame = async (payload) => {
-        let endpointResponse;
-        try {
-            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/unbans`, payload, {
-                headers: {
-                    Authorization: process.env.nsAPIAuth,
-                },
-            });
-        } catch (err) {
-            return { success: false, raw: JSON.stringify(err.response.data) };
-        }
-
-        endpointResponse = endpointResponse.data;
-        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
-    };
-
-    kickInGame = async (payload) => {
-        let endpointResponse;
-        try {
-            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/kicks`, payload, {
-                headers: {
-                    Authorization: process.env.nsAPIAuth,
-                },
-            });
-        } catch (err) {
-            return { success: false, raw: JSON.stringify(err.response.data) };
-        }
-
-        endpointResponse = endpointResponse.data;
-        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
-    };
-
-    sdInGame = async (payload) => {
-        let endpointResponse;
-        try {
-            endpointResponse = await axios.post(`https://ns-api-nnrz4.ondigitalocean.app/api/remote/outbound/shutdowns`, payload, {
-                headers: {
-                    Authorization: process.env.nsAPIAuth,
-                },
-            });
-        } catch (err) {
-            return { success: false, raw: JSON.stringify(err.response.data) };
-        }
-
-        endpointResponse = endpointResponse.data;
-        return { success: endpointResponse ? endpointResponse.status === "ok" : false, raw: JSON.stringify(endpointResponse.data) };
-    };
-
-    mfaIntegrity = async (memberId) => {
-        const database = mongoClient.db("main");
-        const mfaAuthorizedUsers = database.collection("prm5>");
-        const currentData = await mfaAuthorizedUsers.findOne({ user: memberId });
-        return currentData && currentData.authorized === true;
     };
 
     inRange = (num, min, max) => {

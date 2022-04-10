@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, discordClient*/
+/*eslint no-undef: "error"*/
+
 const { MessageEmbed } = require("discord.js");
 
 class Command {

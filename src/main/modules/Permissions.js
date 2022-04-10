@@ -1,4 +1,7 @@
-module.exports = class PermissionsHandler {
+/*global Util, config*/
+/*eslint no-undef: "error"*/
+
+class Permissions {
     validate(member) {
         const permissionsArr = config.permissions;
         let highestPerm;
@@ -19,4 +22,6 @@ module.exports = class PermissionsHandler {
 
         return highestPerm === undefined ? -1 : parseInt(highestPerm);
     }
-};
+}
+
+module.exports = new Permissions();

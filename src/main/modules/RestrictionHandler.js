@@ -1,4 +1,4 @@
-module.exports = class RestrictionHandler {
+class RestrictionHandler {
     validate(options) {
         const classInstance = options.class;
         const message = options.message;
@@ -33,7 +33,7 @@ module.exports = class RestrictionHandler {
                 if (!whitelistedCategories || !errorMessage) {
                     return {
                         success: false,
-                        message: `Improper restriction form.\n\`\`\`\nwhitelistedChannels: ${whitelistedChannels.toString()}\nerrorMessage: ${errorMessage.toString()}\n\`\`\``,
+                        message: `Improper restriction form.\n\`\`\`\nwhitelistedCategories: ${whitelistedCategories.toString()}\nerrorMessage: ${errorMessage.toString()}\n\`\`\``,
                     };
                 }
 
@@ -49,4 +49,6 @@ module.exports = class RestrictionHandler {
         }
         return { success: true };
     }
-};
+}
+
+module.exports = new RestrictionHandler();

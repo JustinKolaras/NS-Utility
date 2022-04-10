@@ -1,4 +1,3 @@
-const ReputationAlgorithm = require("../modules/reputation/Algorithm");
 const CommandProcessor = require("../modules/CommandProcessor");
 
 module.exports = {

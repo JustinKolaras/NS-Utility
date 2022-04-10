@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, config, mongoClient*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
 const roleHandle = (member, currentRep) => {

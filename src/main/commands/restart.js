@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, process*/
+/*eslint no-undef: "error"*/
+
 class Command {
     constructor(options) {
         for (const k in options) {

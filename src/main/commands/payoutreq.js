@@ -1,6 +1,9 @@
+/*global SyntaxBuilder, Util, config, process*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
-const { MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
+const { MessageActionRow, MessageButton } = require("discord.js");
 
 const noblox = require("noblox.js");
 

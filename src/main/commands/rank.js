@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, config, process*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
 const { MessageActionRow, MessageSelectMenu } = require("discord.js");

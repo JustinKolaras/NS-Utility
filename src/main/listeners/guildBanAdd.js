@@ -1,28 +1,18 @@
-let users = 0;
-let MASTER_COOLDOWN = false;
+/*global Util*/
+/*eslint no-undef: "error"*/
+
+const MassGuildBan = require("../alerts/MassGuildBan");
 
 module.exports = {
     name: "guildBanAdd",
     execType: "bind",
     async execute(member) {
-        users++;
+        const results = MassGuildBan.incr();
 
-        setTimeout(() => {
-            users--;
-        }, 60000);
-
-        if (users >= 4 && !MASTER_COOLDOWN) {
-            users = 0;
-            MASTER_COOLDOWN = true;
-            setTimeout(() => {
-                MASTER_COOLDOWN = false;
-            }, 500000);
-
-            const prefix = `@everyone, `;
-            const messageToSend = `**Mass Ban Alert:** Please check audit and <#788872173359071272> for more details.`;
-
-            Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
-            Util.getChannel(member.guild, moderatorconfig.channelId)?.send(prefix + messageToSend);
+        if (results.broadcast) {
+            Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${results.data.message}`)
+                .finally(() => Util.getChannel(member.guild, "810717109427503174")?.send(results.data.prefix + results.data.message))
+                .catch(() => {});
         }
     },
 };

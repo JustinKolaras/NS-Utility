@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, process*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
 const noblox = require("noblox.js");

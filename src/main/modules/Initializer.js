@@ -1,3 +1,6 @@
+/*global mongoClient, discordClient*/
+/*eslint no-undef: "error"*/
+
 const fs = require("fs");
 
 module.exports = async () => {

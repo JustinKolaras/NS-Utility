@@ -1,5 +1,9 @@
+/*global SyntaxBuilder, Util, config, process, mongoClient*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
+const RemoteInteraction = require("../modules/RemoteInteraction");
 const noblox = require("noblox.js");
 
 class Command {
@@ -111,7 +115,7 @@ class Command {
 
         const main = await msg.channel.send(`<@${msg.author.id}>, Working..`);
 
-        const response = await Util.unbanInGame({
+        const response = await RemoteInteraction.unbanInGame({
             toUnbanID: parseInt(playerId),
             executor: parseInt(executorPlayerId),
         });

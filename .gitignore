@@ -120,7 +120,6 @@ dist
 node_modules
 config.yaml
 config.json
-# Confidential algorithms
-reputation/
+RepAlgorithm.js
 BackgroundChecks.js
 bgc.js

@@ -1,31 +1,28 @@
-const Permissions = require("../modules/Permissions");
-const PermissionsHandler = new Permissions();
+/*global Util, config, mongoClient*/
+/*eslint no-undef: "error"*/
 
-const moderatorConfig = {
+const MassGuildMemberRemove = require("../alerts/MassGuildMemberRemove");
+const Permissions = require("../modules/Permissions");
+
+const configuration = {
+    moderator: {
         channelId: "810717109427503174",
-        onPermission: 2,
+        perm: 2,
     },
-    designerConfig = {
+    designer: {
         channelId: "836839078469042177",
         roleId: "790298819090448436",
-    };
-
-let users = 0;
-let MASTER_COOLDOWN = false;
+    },
+};
 
 module.exports = {
     name: "guildMemberRemove",
     execType: "bind",
     async execute(member) {
-        users++;
-
-        setTimeout(() => {
-            users--;
-        }, 60000);
-
         const database = mongoClient.db("main");
         const reputation = database.collection("reputation");
 
+        // Delete Reputation
         const hasReputation = await reputation.findOne({ id: member.id });
         const reputationNum = hasReputation?.reputationNum;
 
@@ -45,32 +42,23 @@ module.exports = {
                 );
         }
 
-        if (PermissionsHandler.validate(member) >= moderatorConfig.onPermission) {
-            const prefix = `@everyone, `;
-            const messageToSend = `<@${member.id}> (${member.user.tag} :: ${member.id}) has left the server. They could have been kicked or banned.`;
+        const prefix = `@everyone, `;
+        const messageToSend = `<@${member.id}> (${member.user.tag} :: ${member.id}) has left the server. They could have been kicked or banned.`;
 
+        if (Permissions.validate(member) >= configuration.moderator.perm) {
             Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
-            Util.getChannel(member.guild, moderatorConfig.channelId)?.send(prefix + messageToSend);
-        } else if (Util.hasRole(member, designerConfig.roleId)) {
-            const prefix = `@everyone, `;
-            const messageToSend = `<@${member.id}> (${member.user.tag} :: ${member.id}) has left the server. They could have been kicked or banned.`;
-
+            Util.getChannel(member.guild, configuration.moderator.channelId)?.send(prefix + messageToSend);
+        } else if (Util.hasRole(member, configuration.designer.roleId)) {
             Util.dmUsersIn(member.guild, "851082141235937300", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
-            Util.getChannel(member.guild, designerConfig.channelId)?.send(prefix + messageToSend);
+            Util.getChannel(member.guild, configuration.designer.channelId)?.send(prefix + messageToSend);
         }
 
-        if (users >= 6 && !MASTER_COOLDOWN) {
-            users = 0;
-            MASTER_COOLDOWN = true;
-            setTimeout(() => {
-                MASTER_COOLDOWN = false;
-            }, 500000);
+        const results = MassGuildMemberRemove.incr();
 
-            const prefix = `@everyone, `;
-            const messageToSend = `**Member Remove Influx Warning:** Please check audit and <#788872173359071272> for more details.`;
-
-            Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${messageToSend}`).catch(() => {});
-            Util.getChannel(member.guild, moderatorConfig.channelId)?.send(prefix + messageToSend);
+        if (results.broadcast) {
+            Util.dmUsersIn(member.guild, "788877981874389014", `An important server action may need your attention.\n\n${results.data.message}`)
+                .finally(() => Util.getChannel(member.guild, "810717109427503174")?.send(results.data.prefix + results.data.message))
+                .catch(() => {});
         }
     },
 };

@@ -1,7 +1,7 @@
 const CommandGroups = require("./CommandGroups");
 const fs = require("fs");
 
-module.exports = class CommandList {
+class CommandList {
     generate(options) {
         const linedArray = [];
         const commandFiles = fs.readdirSync("./src/main/commands").filter((file) => file.endsWith(".js"));
@@ -42,4 +42,6 @@ module.exports = class CommandList {
 
         return linedArray.length > 0 ? linedArray.join("\n") : "No commands to show.";
     }
-};
+}
+
+module.exports = new CommandList();

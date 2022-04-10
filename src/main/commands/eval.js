@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, config, process, discordClient*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
 class Command {
@@ -18,10 +21,6 @@ class Command {
             discordClient.destroy();
             return;
         }
-
-        // Make aliases
-        const client = discordClient;
-        const mongo = mongoClient;
 
         const args = Context.args;
 

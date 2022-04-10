@@ -1,5 +1,9 @@
+/*global SyntaxBuilder, Util, process*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config();
 
+const RemoteInteraction = require("../modules/RemoteInteraction");
 const noblox = require("noblox.js");
 
 class Command {
@@ -10,10 +14,6 @@ class Command {
     }
 
     fn = async (msg, Context) => {
-        const SyntaxErr = () => {
-            return msg.reply(`**Syntax Error:** \`${this.Usage}\``);
-        };
-
         try {
             await noblox.setCookie(process.env.cookie);
         } catch (err) {
@@ -39,7 +39,7 @@ class Command {
 
         const main = await msg.channel.send(`<@${msg.author.id}>, Working..`);
 
-        const response = await Util.sdInGame({
+        const response = await RemoteInteraction.sdInGame({
             reason: reason,
             executor: parseInt(executorPlayerId),
         });

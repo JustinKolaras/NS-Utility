@@ -1,10 +1,13 @@
+/*global mongoClient*/
+/*eslint no-undef: "error"*/
+
 const uuid = require("uuid");
 
 const database = mongoClient.db("main");
 const epochClass = database.collection("epochClass");
 
 // Not done
-module.exports = class EpochTime {
+class EpochTime {
     async impl(options) {
         const identifier = uuid.v4();
 
@@ -40,4 +43,6 @@ module.exports = class EpochTime {
         if (!result) return false;
         return result.id;
     }
-};
+}
+
+module.exports = new EpochTime();

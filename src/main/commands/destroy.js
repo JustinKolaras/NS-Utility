@@ -1,3 +1,6 @@
+/*global SyntaxBuilder, Util, config, discordClient*/
+/*eslint no-undef: "error"*/
+
 class Command {
     constructor(options) {
         for (const k in options) {

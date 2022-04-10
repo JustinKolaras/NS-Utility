@@ -1,3 +1,6 @@
+/*global Util*/
+/*eslint no-undef: "error"*/
+
 module.exports = {
     name: "roleCreate",
     execType: "bind",

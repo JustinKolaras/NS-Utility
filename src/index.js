@@ -1,5 +1,8 @@
 // This is the entry point of the project.
 
+/*global process, config, discordClient*/
+/*eslint no-undef: "error"*/
+
 require("dotenv").config({ path: "src/.env" });
 
 const { Client, Intents } = require("discord.js");
