@@ -30,7 +30,7 @@ class Command {
             return msg.reply("Too long of a reason. Cap: 85chars");
         }
 
-        const executorRblxInfo = await Util.getRobloxAccount(msg.author.id);
+        const executorRblxInfo = await RemoteInteraction.getRobloxAccount(msg.author.id);
         if (executorRblxInfo.success) {
             executorPlayerId = executorRblxInfo.response.robloxId;
         } else {

@@ -8,6 +8,7 @@ const { MessageActionRow, MessageButton } = require("discord.js");
 const noblox = require("noblox.js");
 
 const uuid = require("uuid");
+const RemoteInteraction = require("../modules/RemoteInteraction");
 
 class Command {
     constructor(options) {
@@ -46,7 +47,7 @@ class Command {
         let playerId;
         let playerName;
 
-        const rblxInfo = await Util.getRobloxAccount(msg.author.id);
+        const rblxInfo = await RemoteInteraction.getRobloxAccount(msg.author.id);
         if (rblxInfo.success) {
             playerId = rblxInfo.response.robloxId;
         } else {

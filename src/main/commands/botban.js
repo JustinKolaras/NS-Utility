@@ -3,6 +3,8 @@
 
 require("dotenv").config();
 
+const RemoteInteraction = require("../modules/RemoteInteraction");
+
 class Command {
     constructor(options) {
         for (const k in options) {
@@ -27,7 +29,7 @@ class Command {
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(msg.guild, args[1]);
         if (attributes.success) {
-            const rblxInfo = await Util.getRobloxAccount(attributes.id);
+            const rblxInfo = await RemoteInteraction.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {

@@ -3,6 +3,8 @@
 
 require("dotenv").config();
 
+const RemoteInteraction = require("../modules/RemoteInteraction");
+
 const noblox = require("noblox.js");
 
 class Command {
@@ -41,7 +43,7 @@ class Command {
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
-            const rblxInfo = await Util.getRobloxAccount(attributes.id);
+            const rblxInfo = await RemoteInteraction.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {

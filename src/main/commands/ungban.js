@@ -45,7 +45,7 @@ class Command {
         // Discord Mention Support
         const attributes = await Util.getUserAttributes(msg.guild, args[0]);
         if (attributes.success) {
-            const rblxInfo = await Util.getRobloxAccount(attributes.id);
+            const rblxInfo = await RemoteInteraction.getRobloxAccount(attributes.id);
             if (rblxInfo.success) {
                 playerId = rblxInfo.response.robloxId;
             } else {
@@ -61,7 +61,7 @@ class Command {
             }
         }
 
-        const executorRblxInfo = await Util.getRobloxAccount(msg.author.id);
+        const executorRblxInfo = await RemoteInteraction.getRobloxAccount(msg.author.id);
         if (executorRblxInfo.success) {
             executorPlayerId = executorRblxInfo.response.robloxId;
         } else {
