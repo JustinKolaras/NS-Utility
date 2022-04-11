@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-module.exports = class CommandLogConstructor {
+class CommandLogConstructor {
     makeLog(options) {
         return new MessageEmbed()
             .setColor("#58a2b4")
@@ -9,4 +9,6 @@ module.exports = class CommandLogConstructor {
             .setDescription(options.messageContent)
             .setTimestamp();
     }
-};
+}
+
+module.exports = new CommandLogConstructor();
