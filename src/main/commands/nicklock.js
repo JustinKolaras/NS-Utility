@@ -43,7 +43,7 @@ class Command {
 
         const userPermission = Permissions.validate(attributes.member);
         if (userPermission >= Context.permission) {
-            return msg.reply("You can't lock the nickname of this user.");
+            return msg.reply("You can't manage the nickname of this user.");
         }
 
         const userLock = await nickLocks.findOne({ id: attributes.id });
