@@ -11,7 +11,6 @@ module.exports = {
     execType: "bind",
     async execute(msg) {
         if (!msg.guild) return;
-        if (msg.member.bot) return;
         if (msg.webhookId) return;
 
         // Ping Quota Handler

@@ -9,10 +9,11 @@ const Util = require("../modules/Util");
 const database = mongoClient.db("main");
 const nickLocks = database.collection("nickLocks");
 
-const update = (member, data) => {
+const update = (member, newNick, oldNick) => {
     return nickLocks.insertOne({
         id: member.id,
-        data: data,
+        data: newNick,
+        old: oldNick,
     });
 };
 
@@ -36,13 +37,13 @@ class Command {
         const attributes = await Util.getUserAttributes(msg.guild, args[1]);
         const data = Util.combine(args, 2);
 
-        if (!attributes.success || !toleranceType || (!data && toleranceType === "add")) {
+        if (!attributes.success || !toleranceType) {
             return SyntaxErr();
         }
 
         const userPermission = Permissions.validate(attributes.member);
         if (userPermission >= Context.permission) {
-            return msg.reply("Insufficient permissions.");
+            return msg.reply("You can't lock the nickname of this user.");
         }
 
         const userLock = await nickLocks.findOne({ id: attributes.id });
@@ -50,10 +51,14 @@ class Command {
         if (toleranceType === "add") {
             if (userLock) return msg.reply("This user already has their nickname locked. Remove their lock and try again.");
 
-            await attributes.member.setNickname(data).catch(() => {});
+            const oldNick = attributes.member.nickname;
 
-            update(attributes.member, data)
-                .then(() => msg.reply("Successfully locked nickname."))
+            if (data) {
+                await attributes.member.setNickname(data).catch(() => {});
+            }
+
+            update(attributes.member, data ?? oldNick, oldNick)
+                .then(() => msg.reply(`Successfully locked nickname.${!data ? " You never provided a new nickname, so I locked it at the original." : ""}`))
                 .catch((err) => {
                     console.error(err);
                     msg.reply("There was an error.");
@@ -63,11 +68,13 @@ class Command {
 
             nickLocks
                 .deleteOne(userLock)
-                .then(() => msg.reply("Successfully removed nickname lock."))
+                .then(() => msg.reply("Successfully removed nickname lock. I'll change their nickname back."))
                 .catch((err) => {
                     console.error(err);
                     msg.reply("There was an error.");
                 });
+
+            await attributes.member.setNickname(userLock.old).catch(() => {});
         }
     };
 }
@@ -79,7 +86,7 @@ module.exports = {
         Usage: SyntaxBuilder.classifyCommand({ name: "nicklock" })
             .makeChoice(["add", "remove"], { exactify: true })
             .makeRegular("User")
-            .makeRegular("data")
+            .makeRegular("data", { optional: true })
             .endBuild(),
         Permission: 3,
         Group: "Moderation",
