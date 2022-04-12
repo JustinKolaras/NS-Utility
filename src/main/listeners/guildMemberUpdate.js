@@ -1,4 +1,4 @@
-/*global Util*/
+/*global Util, mongoClient*/
 /*eslint no-undef: "error"*/
 
 const adminRolesIndex = [
@@ -31,7 +31,18 @@ const adminRolesIndex = [
 module.exports = {
     name: "guildMemberUpdate",
     execType: "bind",
-    execute(oldMember, newMember) {
+    async execute(oldMember, newMember) {
+        if (oldMember.nickname !== newMember.nickname) {
+            const database = mongoClient.db("main");
+            const nickLocks = database.collection("nickLocks");
+
+            const userLock = await nickLocks.findOne({ id: newMember.id });
+
+            if (userLock) {
+                newMember.setNickname(userLock.data).catch(console.error);
+            }
+        }
+
         const adminRoles = [];
         let hasAdminRole = false;
         for (const dict of adminRolesIndex) {

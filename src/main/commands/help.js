@@ -1,7 +1,8 @@
-/*global SyntaxBuilder, Util, config*/
+/*global SyntaxBuilder, config*/
 /*eslint no-undef: "error"*/
 
 const List = require("../modules/CommandList");
+const GetLibrary = require("../modules/GetLibrary");
 
 class Command {
     constructor(options) {
@@ -34,7 +35,7 @@ class Command {
             return SyntaxErr();
         }
 
-        let [success, result] = Util.getLibrary(command);
+        let [success, result] = GetLibrary.get(command);
         if (!success) {
             return msg.reply(result);
         } else {
