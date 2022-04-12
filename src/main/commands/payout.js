@@ -156,6 +156,6 @@ module.exports = {
         Description: "Pays robux out from the group to a specific user.",
         Usage: SyntaxBuilder.classifyCommand({ name: "payout" }).makeRegular("User").makeRegular("amount").endBuild(),
         Permission: 6,
-        Group: "Payouts",
+        Group: "Payouts - Remote",
     }),
 };

@@ -10,7 +10,7 @@ module.exports = [
     },
 
     {
-        name: "Payouts",
+        name: "Payouts - Remote",
         precedence: 60,
     },
 
