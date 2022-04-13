@@ -1,4 +1,4 @@
-module.exports = class MassChannelDeletion {
+class MassChannelDeletion {
     #_channels = 0;
     #_cooldown = false;
     #_limit = 3;
@@ -35,4 +35,6 @@ module.exports = class MassChannelDeletion {
             broadcast: false,
         };
     }
-};
+}
+
+module.exports = new MassChannelDeletion();

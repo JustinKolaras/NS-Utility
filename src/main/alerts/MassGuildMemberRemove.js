@@ -1,4 +1,4 @@
-module.exports = class MassGuildMemberRemove {
+class MassGuildMemberRemove {
     #_users = 0;
     #_cooldown = false;
     #_limit = 6;
@@ -35,4 +35,6 @@ module.exports = class MassGuildMemberRemove {
             broadcast: false,
         };
     }
-};
+}
+
+module.exports = new MassGuildMemberRemove();

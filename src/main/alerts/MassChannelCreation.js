@@ -1,4 +1,4 @@
-module.exports = class MassChannelCreation {
+class MassChannelCreation {
     #_channels = 0;
     #_cooldown = false;
     #_limit = 4;
@@ -35,4 +35,6 @@ module.exports = class MassChannelCreation {
             broadcast: false,
         };
     }
-};
+}
+
+module.exports = new MassChannelCreation();

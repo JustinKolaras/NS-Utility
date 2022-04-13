@@ -113,7 +113,7 @@ class Command {
             for (const guild of discordClient.guilds.cache) {
                 guild[1].members
                     .ban(attributes.id, {
-                        reason: `Ultra Ban By ${msg.member.user.tag}: ${reason}`,
+                        reason: `Ultra ban by ${msg.member.user.tag}: ${reason}`,
                     })
                     .then(() => {
                         addLog(`Banned in guild: ${guild[1].name}`);
@@ -126,7 +126,7 @@ class Command {
         }
 
         if (allowGameBans) {
-            const response = await Util.banInGame({
+            const response = await RemoteInteraction.banInGame({
                 toBanID: parseInt(playerId),
                 reason: reason,
                 executor: parseInt(executorPlayerId),
