@@ -1,4 +1,5 @@
-/* eslint-disable */
+/*global discordClient*/
+/*eslint no-undef: "error"*/
 
 class PingQuotas {
     #_pingInvocations = [];
@@ -19,6 +20,10 @@ class PingQuotas {
     run = (options) => {
         const member = options.member;
         const mentions = options.mentions;
+
+        if (member.id === discordClient.user.id) {
+            return;
+        }
 
         if (typeof this.#_pingInvocations[member.id] !== "number") {
             this.#_pingInvocations[member.id] = 0;
