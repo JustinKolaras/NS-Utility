@@ -79,8 +79,6 @@ class Command {
             return msg.reply(`You must be verified with RoVer to use this command. Please run the \`!verify\` command and try again.`);
         }
 
-        msg.channel.send(`<@${msg.author.id}>, Let's ban 'em from everything! :gun: :stuck_out_tongue:`);
-
         if (!playerId) {
             try {
                 playerId = await noblox.getIdFromUsername(playerName);
@@ -97,13 +95,17 @@ class Command {
             return msg.reply(errMessage);
         }
 
+        msg.channel.send(`<@${msg.author.id}>, Let's ban 'em from everything! :gun: :stuck_out_tongue:`);
+
         const prefix = `<@${msg.author.id}>, Logs for **${playerName}**:`;
         const base = await msg.channel.send(prefix);
         const log = [];
+
         const addLog = (logText) => {
             log.push(`\`${logText}\``);
             base.edit(`${prefix}\n${log.join("\n")}`);
         };
+
         for (const log of priorLogs) {
             addLog(log);
         }
