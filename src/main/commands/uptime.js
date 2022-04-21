@@ -1,4 +1,4 @@
-/*global SyntaxBuilder, Util, discordClient*/
+/*global SyntaxBuilder, Util, discordClient, config*/
 /*eslint no-undef: "error"*/
 
 const { MessageEmbed } = require("discord.js");
@@ -17,7 +17,8 @@ class Command {
         try {
             messageEmbed = new MessageEmbed()
                 .setColor("#2f3136")
-                .setTitle(`${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s`);
+                .setTitle(`${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s`)
+                .setFooter({ text: config.version });
         } catch (err) {
             console.error(err);
             return msg.channel.send(`**${timeParameters.days}d, ${timeParameters.hours}h, ${timeParameters.minutes}m, ${timeParameters.seconds}s**`);
