@@ -1,4 +1,4 @@
-/*global discordClient*/
+/*global Util, discordClient*/
 /*eslint no-undef: "error"*/
 
 class PingQuotas {
@@ -20,6 +20,7 @@ class PingQuotas {
     run = (options) => {
         const member = options.member;
         const mentions = options.mentions;
+        const permission = options.permission;
 
         if (member.id === discordClient.user.id) {
             return;
@@ -38,7 +39,7 @@ class PingQuotas {
 
             switch (this.#_pingInvocations[member.id]) {
                 case 2:
-                    this.#_send({ type: "Warning", member: member });
+                    if (permission >= 2) this.#_send({ type: "Warning", member: member });
                     member
                         .send(
                             "**You have exceeded your server-wide mass-ping quota.** Please wait at least four minutes before pinging again. **Do not ping!**"
@@ -46,7 +47,7 @@ class PingQuotas {
                         .catch(() => {});
                     break;
                 case 3:
-                    this.#_send({ type: "Banned", member: member });
+                    if (permission >= 2) this.#_send({ type: "Banned", member: member });
                     member.send("**You've been banned for exceeding your ping quota by two.**").catch(() => {});
                     member.ban({ reason: "Server-wide ping quota exceeded." }).catch(() => {});
                     this.#_pingInvocations[member.id] = null;

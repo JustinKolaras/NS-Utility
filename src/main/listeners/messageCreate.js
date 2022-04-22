@@ -16,7 +16,7 @@ module.exports = {
         // Ping Quota Handler
         const userPermission = Permissions.validate(msg.member);
         if (Util.inRange(userPermission, -1, 4) && msg.mentions) {
-            PingQuotas.run({ member: msg.member, mentions: msg.mentions });
+            PingQuotas.run({ member: msg.member, permission: userPermission, mentions: msg.mentions });
         }
 
         if (Util.isReputableChannel(msg.channel.id)) {
