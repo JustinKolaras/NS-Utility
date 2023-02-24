@@ -1,7 +1,7 @@
 /*global SyntaxBuilder, Util, config, process, mongoClient, discordClient*/
 /*eslint no-undef: "error"*/
 
-// NOTE: This is an owner-only command. Owner commands rarely have restriction. There is no maximum rank restriction to "victims" (you can ban anyone). 
+// NOTE: This is an owner-only command. Owner commands rarely have restriction. There is no maximum rank restriction to "victims" (you can ban anyone, including other owners). 
 // This is generally regarded as an "emergency" command.
 
 require("dotenv").config();
