@@ -14,5 +14,6 @@ _(can be seen in command registration near bottom of command files)_
 **4** Administrator<br>
 **5** Chief Administrator<br>
 **6** Co-Owner<br>
+**7** Bot Author<br>
 
 ![image](https://user-images.githubusercontent.com/78659866/158257236-bde26469-3b7f-41cd-bcaf-554f981a79a7.png)
