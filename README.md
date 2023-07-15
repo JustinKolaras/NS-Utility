@@ -3,9 +3,9 @@
 
 Not in use.
 
-#### Publication Notes
-##### Permission System
-(can be seen in command registration near bottom of command files)
+### Publication Notes
+#### Permission System
+_(can be seen in command registration near bottom of command files)_
 
 **0** Everyone<br>
 **1** Bot Developer<br>
